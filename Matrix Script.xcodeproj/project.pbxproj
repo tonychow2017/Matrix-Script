@@ -7,14 +7,64 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA01459920886A9300675B14 /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA01459720886A9300675B14 /* error.cpp */; };
+		EA01459A20887C7E00675B14 /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA01459720886A9300675B14 /* error.cpp */; };
+		EA408346201C63D8001EAB93 /* main_calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408344201C63D8001EAB93 /* main_calculator.cpp */; };
+		EA40834C201C6693001EAB93 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40834A201C6693001EAB93 /* matrix.cpp */; };
+		EA40835E201C675D001EAB93 /* expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40835C201C675D001EAB93 /* expression.cpp */; };
+		EA408370201C6834001EAB93 /* token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40836E201C6834001EAB93 /* token.cpp */; };
+		EA408376201C6AE6001EAB93 /* entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408374201C6AE6001EAB93 /* entry.cpp */; };
+		EA408379201C6AF7001EAB93 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408377201C6AF7001EAB93 /* number.cpp */; };
+		EA408382201C9746001EAB93 /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
+		EA9096A8205A50F300D3903A /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9096A6205A50F300D3903A /* function.cpp */; };
+		EA9096AB205A5C4F00D3903A /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9096A6205A50F300D3903A /* function.cpp */; };
 		EA958B4A200B56E900696366 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA958B49200B56E900696366 /* AppDelegate.swift */; };
 		EA958B4C200B56E900696366 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA958B4B200B56E900696366 /* ViewController.swift */; };
 		EA958B4F200B56E900696366 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA958B4D200B56E900696366 /* Main.storyboard */; };
 		EA958B51200B56E900696366 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA958B50200B56E900696366 /* Assets.xcassets */; };
 		EA958B54200B56E900696366 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA958B52200B56E900696366 /* LaunchScreen.storyboard */; };
+		EAAAAD8520233CA7007CA3DA /* main_calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408344201C63D8001EAB93 /* main_calculator.cpp */; };
+		EAAAAD8620233CA7007CA3DA /* entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408374201C6AE6001EAB93 /* entry.cpp */; };
+		EAAAAD8720233CA7007CA3DA /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408377201C6AF7001EAB93 /* number.cpp */; };
+		EAAAAD8820233CA7007CA3DA /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40834A201C6693001EAB93 /* matrix.cpp */; };
+		EAAAAD8920233CA7007CA3DA /* expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40835C201C675D001EAB93 /* expression.cpp */; };
+		EAAAAD8A20233CA7007CA3DA /* token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40836E201C6834001EAB93 /* token.cpp */; };
+		EAAAAD8B20233CA7007CA3DA /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
+		EAAAAD8D20233CE0007CA3DA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAAAD8C20233CE0007CA3DA /* main.cpp */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		EAAAAD7C20233C8F007CA3DA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		EA01459720886A9300675B14 /* error.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = error.cpp; sourceTree = "<group>"; };
+		EA01459820886A9300675B14 /* error.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = error.hpp; sourceTree = "<group>"; };
+		EA408344201C63D8001EAB93 /* main_calculator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_calculator.cpp; sourceTree = "<group>"; };
+		EA408345201C63D8001EAB93 /* main_calculator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_calculator.hpp; sourceTree = "<group>"; };
+		EA40834A201C6693001EAB93 /* matrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = matrix.cpp; sourceTree = "<group>"; };
+		EA40834B201C6693001EAB93 /* matrix.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = matrix.hpp; sourceTree = "<group>"; };
+		EA40835C201C675D001EAB93 /* expression.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = expression.cpp; sourceTree = "<group>"; };
+		EA40835D201C675D001EAB93 /* expression.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = expression.hpp; sourceTree = "<group>"; };
+		EA40836E201C6834001EAB93 /* token.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = token.cpp; sourceTree = "<group>"; };
+		EA40836F201C6834001EAB93 /* token.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = token.hpp; sourceTree = "<group>"; };
+		EA408374201C6AE6001EAB93 /* entry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = entry.cpp; sourceTree = "<group>"; };
+		EA408375201C6AE6001EAB93 /* entry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = entry.hpp; sourceTree = "<group>"; };
+		EA408377201C6AF7001EAB93 /* number.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = number.cpp; sourceTree = "<group>"; };
+		EA408378201C6AF7001EAB93 /* number.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = number.hpp; sourceTree = "<group>"; };
+		EA40837C201C8EF3001EAB93 /* Matrix Script-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Matrix Script-Bridging-Header.h"; sourceTree = "<group>"; };
+		EA408380201C9746001EAB93 /* main_calculator_c.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_calculator_c.cpp; sourceTree = "<group>"; };
+		EA408381201C9746001EAB93 /* main_calculator_c.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_calculator_c.hpp; sourceTree = "<group>"; };
+		EA9096A6205A50F300D3903A /* function.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = function.cpp; sourceTree = "<group>"; };
+		EA9096A7205A50F300D3903A /* function.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = function.hpp; sourceTree = "<group>"; };
 		EA958B46200B56E900696366 /* Matrix Script.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Matrix Script.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA958B49200B56E900696366 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA958B4B200B56E900696366 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,10 +72,19 @@
 		EA958B50200B56E900696366 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA958B53200B56E900696366 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA958B55200B56E900696366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Matrix Script CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAAAAD8C20233CE0007CA3DA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		EA958B43200B56E800696366 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAAAAD7B20233C8F007CA3DA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				EA958B48200B56E900696366 /* Matrix Script */,
+				EAAAAD7F20233C8F007CA3DA /* Matrix Script CLI */,
 				EA958B47200B56E900696366 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				EA958B46200B56E900696366 /* Matrix Script.app */,
+				EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,8 +121,35 @@
 				EA958B50200B56E900696366 /* Assets.xcassets */,
 				EA958B52200B56E900696366 /* LaunchScreen.storyboard */,
 				EA958B55200B56E900696366 /* Info.plist */,
+				EA408344201C63D8001EAB93 /* main_calculator.cpp */,
+				EA408345201C63D8001EAB93 /* main_calculator.hpp */,
+				EA408374201C6AE6001EAB93 /* entry.cpp */,
+				EA408375201C6AE6001EAB93 /* entry.hpp */,
+				EA408377201C6AF7001EAB93 /* number.cpp */,
+				EA408378201C6AF7001EAB93 /* number.hpp */,
+				EA40834A201C6693001EAB93 /* matrix.cpp */,
+				EA40834B201C6693001EAB93 /* matrix.hpp */,
+				EA40835C201C675D001EAB93 /* expression.cpp */,
+				EA40835D201C675D001EAB93 /* expression.hpp */,
+				EA40836E201C6834001EAB93 /* token.cpp */,
+				EA40836F201C6834001EAB93 /* token.hpp */,
+				EA408380201C9746001EAB93 /* main_calculator_c.cpp */,
+				EA408381201C9746001EAB93 /* main_calculator_c.hpp */,
+				EA40837C201C8EF3001EAB93 /* Matrix Script-Bridging-Header.h */,
+				EA9096A6205A50F300D3903A /* function.cpp */,
+				EA9096A7205A50F300D3903A /* function.hpp */,
+				EA01459720886A9300675B14 /* error.cpp */,
+				EA01459820886A9300675B14 /* error.hpp */,
 			);
 			path = "Matrix Script";
+			sourceTree = "<group>";
+		};
+		EAAAAD7F20233C8F007CA3DA /* Matrix Script CLI */ = {
+			isa = PBXGroup;
+			children = (
+				EAAAAD8C20233CE0007CA3DA /* main.cpp */,
+			);
+			path = "Matrix Script CLI";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -84,6 +172,23 @@
 			productReference = EA958B46200B56E900696366 /* Matrix Script.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EAAAAD7D20233C8F007CA3DA /* Matrix Script CLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAAAAD8220233C8F007CA3DA /* Build configuration list for PBXNativeTarget "Matrix Script CLI" */;
+			buildPhases = (
+				EAAAAD7A20233C8F007CA3DA /* Sources */,
+				EAAAAD7B20233C8F007CA3DA /* Frameworks */,
+				EAAAAD7C20233C8F007CA3DA /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Matrix Script CLI";
+			productName = "Matrix Script CLI";
+			productReference = EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -91,10 +196,15 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Tony Chow";
 				TargetAttributes = {
 					EA958B45200B56E800696366 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
+					EAAAAD7D20233C8F007CA3DA = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
@@ -114,6 +224,7 @@
 			projectRoot = "";
 			targets = (
 				EA958B45200B56E800696366 /* Matrix Script */,
+				EAAAAD7D20233C8F007CA3DA /* Matrix Script CLI */,
 			);
 		};
 /* End PBXProject section */
@@ -136,8 +247,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA40834C201C6693001EAB93 /* matrix.cpp in Sources */,
 				EA958B4C200B56E900696366 /* ViewController.swift in Sources */,
+				EA408376201C6AE6001EAB93 /* entry.cpp in Sources */,
+				EA9096A8205A50F300D3903A /* function.cpp in Sources */,
 				EA958B4A200B56E900696366 /* AppDelegate.swift in Sources */,
+				EA408379201C6AF7001EAB93 /* number.cpp in Sources */,
+				EA40835E201C675D001EAB93 /* expression.cpp in Sources */,
+				EA408346201C63D8001EAB93 /* main_calculator.cpp in Sources */,
+				EA408370201C6834001EAB93 /* token.cpp in Sources */,
+				EA408382201C9746001EAB93 /* main_calculator_c.cpp in Sources */,
+				EA01459920886A9300675B14 /* error.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAAAAD7A20233C8F007CA3DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA01459A20887C7E00675B14 /* error.cpp in Sources */,
+				EA9096AB205A5C4F00D3903A /* function.cpp in Sources */,
+				EAAAAD8520233CA7007CA3DA /* main_calculator.cpp in Sources */,
+				EAAAAD8620233CA7007CA3DA /* entry.cpp in Sources */,
+				EAAAAD8720233CA7007CA3DA /* number.cpp in Sources */,
+				EAAAAD8820233CA7007CA3DA /* matrix.cpp in Sources */,
+				EAAAAD8920233CA7007CA3DA /* expression.cpp in Sources */,
+				EAAAAD8A20233CA7007CA3DA /* token.cpp in Sources */,
+				EAAAAD8D20233CE0007CA3DA /* main.cpp in Sources */,
+				EAAAAD8B20233CA7007CA3DA /* main_calculator_c.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +314,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -184,6 +322,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -234,6 +373,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -241,6 +381,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -274,11 +415,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Matrix Script/Matrix Script-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -288,13 +432,39 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Matrix Script/Matrix Script-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EAAAAD8320233C8F007CA3DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		EAAAAD8420233C8F007CA3DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -315,6 +485,15 @@
 			buildConfigurations = (
 				EA958B59200B56E900696366 /* Debug */,
 				EA958B5A200B56E900696366 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAAAAD8220233C8F007CA3DA /* Build configuration list for PBXNativeTarget "Matrix Script CLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAAAAD8320233C8F007CA3DA /* Debug */,
+				EAAAAD8420233C8F007CA3DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
