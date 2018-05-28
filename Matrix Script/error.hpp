@@ -26,6 +26,7 @@ public:
     static const int ERROR_WRONG_ARG_COUNT = 6;
     static const int ERROR_DIM_MISMATCH = 7;
     static const int ERROR_INTERNAL = 500;
+    static const int ERROR_UNKNOWN_FUNC = 10;
     error();
     error(int,std::string);
     int get_type();

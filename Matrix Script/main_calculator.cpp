@@ -384,14 +384,24 @@ size_t get_function_argument_count(const std::string& name) {
 }
 
 matrix evaluate_function(const std::string& name, const std::vector<token>& argv, bool& has_error, error& e) {
-    if (name == "+") {
-        token t1 = argv[0];
+    token t1 = argv[0];
+    matrix m1 = *(matrix*)(t1.get_content());
+    if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
-        return matrix_add(*(matrix*)(t1.get_content()),*(matrix*)(t2.get_content()),has_error,e);
-    } else {
-        matrix m(0,0);
-        return m;
+        matrix m2 = *(matrix*)(t2.get_content());
+        if (name == "+") {
+            return matrix_add(m1,m2,has_error,e);
+        } else if (name == "-") {
+            return matrix_subtract(m1,m2,has_error,e);
+        } else if (name == "*") {
+            return matrix_mult(m1,m2,has_error,e);
+        }
     }
+    //still not returned
+    matrix m(0,0);
+    has_error = true;
+    e = error(error::ERROR_UNKNOWN_FUNC,std::string("Unknwon function: ") + name);
+    return m;
 }
 
 matrix evaluate(const expression& exp, bool has_error, error& e) {
@@ -459,7 +469,7 @@ matrix evaluate(const expression& exp, bool has_error, error& e) {
             return *(matrix*)(t.get_content());
         }
     } else {
-        has_error = false;
+        has_error = true;
         matrix m(0,0);
         return m;
     }
