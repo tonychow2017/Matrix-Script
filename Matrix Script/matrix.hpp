@@ -25,6 +25,7 @@ public:
     size_t column_count() const;
     std::string get_string_representation() const override;
     entry* clone() const override;
+    void exchange_rows(size_t i, size_t j, size_t starting_col = 0);
     
 private:
     size_t row, column;

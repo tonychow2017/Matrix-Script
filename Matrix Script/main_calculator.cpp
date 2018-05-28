@@ -386,7 +386,9 @@ size_t get_function_argument_count(const std::string& name) {
 matrix evaluate_function(const std::string& name, const std::vector<token>& argv, bool& has_error, error& e) {
     token t1 = argv[0];
     matrix m1 = *(matrix*)(t1.get_content());
-    if (get_function_argument_count(name) >= 2) {
+    if (name == "inv") {
+        return matrix_inv(m1,has_error,e);
+    } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());
         if (name == "+") {
@@ -404,7 +406,7 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
     return m;
 }
 
-matrix evaluate(const expression& exp, bool has_error, error& e) {
+matrix evaluate(const expression& exp, bool& has_error, error& e) {
     std::cout << "eval expression: " << exp.get_string_representation()<< std::endl;
     std::vector<token> tokens = exp.get_tokens();
     std::stack<token> arg_stack;
@@ -452,7 +454,11 @@ matrix evaluate(const expression& exp, bool has_error, error& e) {
                             if (has_error) {
                                 return result;
                             }
-                            m->set(i,j,result);
+                            if ((result.row_count() == 1)&&(result.column_count() == 1)) {
+                                m->set(i,j,*dynamic_cast<number*>(result.get(0,0)));
+                            } else {
+                                m->set(i,j,result);
+                            }
                         }
                     }
                 }
@@ -463,6 +469,7 @@ matrix evaluate(const expression& exp, bool has_error, error& e) {
     }
     if (arg_stack.size() == 1) {
         token t = arg_stack.top();
+        has_error = false;
         if (t.get_type() == token::NUMBER) {
             return *(matrix*)(t.as_matrix_token().get_content());
         } else {
@@ -470,6 +477,7 @@ matrix evaluate(const expression& exp, bool has_error, error& e) {
         }
     } else {
         has_error = true;
+        e = error(error::ERROR_WRONG_ARG_COUNT,"");
         matrix m(0,0);
         return m;
     }

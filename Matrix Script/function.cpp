@@ -279,3 +279,146 @@ matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e
         return matrix(0,0);
     }
 }
+
+number inv(const number& n, bool& has_error, error& e) {
+    double d = n.get_value();
+    if (d == 0) {
+        has_error = true;
+        e = error(error::ERROR_DIV_BY_ZERO,"");
+        return number(0);
+    } else {
+        has_error = false;
+        return number(1.0/d);
+    }
+}
+#include <iostream>
+//Do Gaussian Elimination
+double gaussian_elimination(matrix& m) {
+    //ends when m becomes REF
+    //step: permute rows so that those starting with 0 are at the bottom
+    //if all rows start with 0, return 0
+    //else, divide so that the first row starts with -1
+    //for each non-zero starting row (except the first row), add the first row so that each becomes 0
+    //repeat the step until the matrix becomes REF
+    double det = 1;
+    //std::cout << dynamic_cast<matrix*>(m.get(0,0)) << "\n";
+    for (size_t first_row=0; first_row<m.row_count(); first_row++) {
+        //find one non-zero row, then move it to top
+        if ((dynamic_cast<number*>(m.get(first_row,first_row)))->get_value() == 0) {
+            size_t i;
+            for (i=first_row+1; i<m.row_count(); i++) {
+                if ((dynamic_cast<number*>(m.get(i,first_row)))->get_value() != 0) {
+                    //swap
+                    m.exchange_rows(first_row,i);
+                    std::cout << m.get_string_representation() << "\n";
+                    det *= -1;
+                    break;
+                }
+            }
+            if (i == m.row_count()) {
+                return 0;
+            }
+        }
+        //now the first row must start with non-zero entry
+        std::cout << m.get_string_representation() << "\n";
+        std::cout << m.get(first_row,first_row)->get_string_representation() << "\n";
+        number top_left = *dynamic_cast<number*>(m.get(first_row,first_row));
+        det /= top_left.get_value();
+        std::cout << top_left.get_string_representation() << "\n";
+        for (size_t i=first_row+1; i<m.column_count(); i++) {
+            number* entry = dynamic_cast<number*>(m.get(first_row,i));
+            bool has_error = false;
+            error e;
+            number div = mult(*entry,inv(top_left,has_error,e));
+            if (has_error) {
+                //internal error?
+            }
+            m.set(first_row,i,div);
+            std::cout << m.get_string_representation() << "\n";
+        }
+        number one(1);
+        m.set(first_row,first_row,one);
+        std::cout << m.get_string_representation() << "\n";
+        for (size_t i=first_row+1; i<m.row_count(); i++) {
+            if ((dynamic_cast<number*>(m.get(i,first_row)))->get_value() != 0) {
+                number* multiply = dynamic_cast<number*>(m.get(i,first_row));
+                for (size_t j=first_row+1; j<m.column_count(); j++) {
+                    m.set(i,j, subtract(*dynamic_cast<number*>(m.get(i,j)),mult(*multiply,*dynamic_cast<number*>(m.get(first_row,j)))));
+                }
+                m.set(i,first_row,number(0));
+            }
+        }
+        std::cout << m.get_string_representation() << "\n";
+        //first_row++;
+    }
+    //NOW make RREF
+    //for each non-zero row, subtract above rows from that row
+    //[1 2 3 4
+    // 0 1 2 3
+    // 0 0 1 2]
+    for (size_t i=1; i<m.row_count(); i++) {
+        size_t first_non_zero_col = 0;
+        size_t j;
+        for (j=1; j<m.column_count(); j++) {
+            if ((dynamic_cast<number*>(m.get(i,j)))->get_value() != 0) {
+                first_non_zero_col = j;
+                break;
+            }
+        }
+        if (j == m.column_count()) {
+            return det;
+        }
+        std::cout << det;
+        //subtract: previous rows
+        for (size_t k=0; k<i; k++) {
+            for (size_t l=first_non_zero_col+1; l<m.column_count(); l++) {
+                m.set(k,l, subtract(*dynamic_cast<number*>(m.get(k,l)), mult(*dynamic_cast<number*>(m.get(k,first_non_zero_col)), *dynamic_cast<number*>(m.get(i,l)))));
+                
+                std::cout << m.get_string_representation() << "\n";
+                
+            }
+            m.set(k,first_non_zero_col,number(0));
+            std::cout << m.get_string_representation() << "\n";
+        }
+    }
+    return det;
+}
+
+matrix matrix_inv(const matrix& m, bool& has_error, error& e) {
+    std::cout << "---inv---\n";
+    if (m.row_count() == m.column_count()) {
+        //generate identity matrix; then append
+        size_t size = m.row_count();
+        matrix new_mat(size,size*2);
+        for (size_t i=0; i<size; i++) {
+            for (size_t j=0; j<size; j++) {
+                if (i == j) {
+                    new_mat.set(i,j+size,number(1));
+                } else {
+                    new_mat.set(i,j+size,number(0));
+                }
+                new_mat.set(i,j,*(m.get(i,j)));
+            }
+        }
+        std::cout << "appended matrix\n";
+        std::cout << new_mat.get_string_representation() << "\n";
+        double det = gaussian_elimination(new_mat);
+        if (det == 0) {
+            has_error = true;
+            e = error(error::ERROR_SINGULAR_MATRIX,"");
+            return m;
+        } else {
+            matrix result(size,size);
+            for (size_t i=0; i<size; i++) {
+                for (size_t j=0; j<size; j++) {
+                    result.set(i,j,*(new_mat.get(i,j+size)));
+                }
+            }
+            return result;
+        }
+    } else {
+        has_error = true;
+        e = error(error::ERROR_NON_SQUARE_MATRIX,"");
+        return m;
+    }
+}

@@ -18,5 +18,6 @@
 matrix matrix_add(matrix m1, const matrix& m2, bool& has_error, error& e);
 matrix matrix_subtract(matrix m1, const matrix& m2, bool& has_error, error& e);
 matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e);
+matrix matrix_inv(const matrix& m, bool& has_error, error& e);
 
 #endif /* function_hpp */

@@ -19,5 +19,9 @@ int error::get_type() {
 }
 
 std::string error::get_message() {
-    return std::string("Error: ") + message;
+    if (message != std::string("")) {
+        return std::string("Error: ") + message;
+    } else {
+        return std::string("Error");
+    }
 }

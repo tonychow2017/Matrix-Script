@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "[3,4]*[1;2]";
+    std::string input = "inv([2,3,4;4,5,6;1,1,3])";
     std::cout << calculate(input) << std::endl;
 }
 

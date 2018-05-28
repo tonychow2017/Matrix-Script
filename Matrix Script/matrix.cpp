@@ -94,3 +94,19 @@ std::string matrix::get_string_representation() const {
         return oss.str();
     }
 }
+
+void matrix::exchange_rows(size_t row1, size_t row2, size_t starting_col) {
+    if (row1 != row2) {
+        entry** buffer = new entry*[column-starting_col];
+        for (size_t i=starting_col; i<column; i++) {
+            buffer[i-starting_col] = this->get(row1,i);
+        }
+        for (size_t i=starting_col; i<column; i++) {
+            this->set(row1,i,*(this->get(row2,i)));
+        }
+        for (size_t i=starting_col; i<column; i++) {
+            this->set(row2,i,*(buffer[i-starting_col]));
+        }
+        delete[] buffer;
+    }
+}
