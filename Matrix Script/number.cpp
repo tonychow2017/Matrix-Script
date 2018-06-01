@@ -38,3 +38,7 @@ matrix number::as_matrix() const {
 entry* number::clone() const {
     return new number(this->get_value());
 }
+
+bool number::is_zero() const {
+    return this->get_value() == 0;
+}

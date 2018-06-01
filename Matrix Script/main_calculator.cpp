@@ -6,8 +6,10 @@
 //  Copyright © 2018 Tony Chow. All rights reserved.
 //
 
+#include <string>
 #include <sstream>
 #include <algorithm>
+#include <regex>
 #include "main_calculator.hpp"
 #include <iostream>
 #include "expression.hpp"
@@ -71,7 +73,17 @@ std::string preprocess(std::string input, bool& has_error, error& e) {
         }
     }
     has_error = false;
-    return oss.str();
+    std::string result = oss.str();
+    result = std::regex_replace(result,std::regex("\\(-"),"(0-");
+    result = std::regex_replace(result,std::regex("\\[-"),"[0-");
+    result = std::regex_replace(result,std::regex("\\,-"),",0-");
+    result = std::regex_replace(result,std::regex(";-"),";0-");
+    result = std::regex_replace(result,std::regex("\\+-"),"-");
+    result = std::regex_replace(result,std::regex("-\\+"),"-");
+    result = std::regex_replace(result,std::regex("\\+\\+"),"(+");
+    result = std::regex_replace(result,std::regex("--"),"+");
+    std::cout << "preprocessed: " << result << "\n";
+    return result;
 }
 
 expression tokenize(std::string input, bool& has_error, error& e) {
@@ -320,6 +332,8 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                     } else {
                         operator_stack.pop();
                     }
+                } else if (next.get_string_representation() == ",") {
+                    //pass
                 } else {
                     while (((!operator_stack.empty()) && (get_precedence(operator_stack.top()) > get_precedence(next) || (get_precedence(operator_stack.top()) == get_precedence(next) && is_left_associative(operator_stack.top()))) && operator_stack.top().get_string_representation() != "(")) {
                         token top_token = operator_stack.top();
@@ -376,7 +390,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
 }
 
 size_t get_function_argument_count(const std::string& name) {
-    if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^") {
+    if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^" || name == "log") {
         return 2;
     } else {
         return 1;
@@ -392,6 +406,18 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
         return matrix_det(m1,has_error,e).as_matrix();
     } else if (name == "rref") {
         return matrix_rref(m1,has_error,e);
+    } else if (name == "abs") {
+        return matrix_func(m1,&number_abs);
+    } else if (name == "ceil") {
+        return matrix_func(m1,&number_ceil);
+    } else if (name == "floor") {
+        return matrix_func(m1,&number_floor);
+    } else if (name == "round") {
+        return matrix_func(m1,&number_round);
+    } else if (name == "exp") {
+        return matrix_func_error(m1,&number_exp,has_error,e);
+    } else if (name == "ln") {
+        return matrix_func_error(m1,&number_ln,has_error,e);
     } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());
@@ -401,6 +427,10 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_subtract(m1,m2,has_error,e);
         } else if (name == "*") {
             return matrix_mult(m1,m2,has_error,e);
+        } else if (name == "^") {
+            return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
+        } else if (name == "log") {
+            return matrix_func_error_numonly(m1,m2,&number_log,has_error,e);
         }
     }
     //still not returned

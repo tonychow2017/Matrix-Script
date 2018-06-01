@@ -21,6 +21,7 @@ public:
     matrix as_matrix() const;
     std::string get_string_representation() const override;
     entry* clone() const override;
+    bool is_zero() const;
     
 private:
     double value;

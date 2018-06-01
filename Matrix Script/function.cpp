@@ -12,6 +12,7 @@
 #include <cmath>
 #include <utility>
 #include <algorithm>
+#include <cerrno>
 #include <iostream>
 
 number add(const number& n1, const number& n2) {
@@ -508,4 +509,212 @@ matrix matrix_rref(matrix m, bool& has_error, error& e) {
     gaussian_elimination(m,false);
     has_error = false;
     return m;
+}
+
+number number_abs(const number& n) {
+    return number(std::abs(n.get_value()));
+}
+
+number number_sin(const number& n) {
+    return number(std::sin(n.get_value()));
+}
+
+number number_cos(const number& n) {
+    return number(std::cos(n.get_value()));
+}
+
+number number_tan(const number& n, bool& has_error, error& e) {
+    if (number_cos(n).is_zero()) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::tan(n.get_value()));
+    }
+}
+
+number number_csc(const number& n, bool& has_error, error& e) {
+    double s = std::sin(n.get_value());
+    if (s == 0) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(1.0/s);
+    }
+}
+
+number number_sec(const number& n, bool& has_error, error& e) {
+    double c = std::cos(n.get_value());
+    if (c == 0) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(1.0/c);
+    }
+}
+
+number number_cot(const number& n, bool& has_error, error& e) {
+    double s = std::sin(n.get_value());
+    if (s == 0) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::cos(n.get_value())/s);
+    }
+}
+
+number number_asin(const number& n, bool& has_error, error& e) {
+    double v = n.get_value();
+    if ((v > 1)||(v < -1)) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::asin(v));
+    }
+}
+
+number number_acos(const number& n, bool& has_error, error& e) {
+    double v = n.get_value();
+    if ((v > 1)||(v < -1)) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::acos(v));
+    }
+}
+
+number number_atan(const number& n) {
+    return std::atan(n.get_value());
+}
+
+number numbeR_acsc(const number& n, bool& has_error, error& e) {
+    double v = n.get_value();
+    if ((v < 1)||(v > -1)) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::asin(1.0/v));
+    }
+}
+
+number number_asec(const number& n, bool& has_error, error& e) {
+    double v = n.get_value();
+    if ((v < 1)||(v > -1)) {
+        has_error = true;
+        e = error(error::ERROR_TRIGO);
+        return n;
+    } else {
+        return number(std::acos(1.0/v));
+    }
+}
+
+number number_acot(const number& n) {
+    return std::atan(1.0/n.get_value());
+}
+
+number number_log(const number& n1, const number& n2, bool& has_error, error& e) {
+    if (n2.get_value() <= 1 || n2.get_value() <= 0) {
+        has_error = true;
+        e = error(error::ERROR_LOGARITHM);
+        return n1;
+    } else {
+        return number(std::log(n2.get_value())/std::log(n1.get_value()));
+    }
+}
+
+number number_ln(const number& n, bool& has_error, error& e) {
+    if (n.get_value() <= 0) {
+        has_error = true;
+        e = error(error::ERROR_LOGARITHM);
+        return n;
+    } else {
+        return number(std::log(n.get_value()));
+    }
+}
+
+number number_ceil(const number& n) {
+    return number(std::ceil(n.get_value()));
+}
+
+number number_floor(const number& n) {
+    return number(std::floor(n.get_value()));
+}
+
+number number_round(const number& n) {
+    return number(std::round(n.get_value()));
+}
+
+number number_pow(const number& n1, const number& n2, bool& has_error, error& e) {
+    errno = 0;
+    double result = std::pow(n1.get_value(),n2.get_value());
+    if (errno != 0) {
+        has_error = true;
+        e = error(error::ERROR_POWER);
+        return n1;
+    } else {
+        return number(result);
+    }
+}
+
+number number_exp(const number& n, bool& has_error, error& e) {
+    errno = 0;
+    double v = std::exp(n.get_value());
+    if (errno != 0) {
+        has_error = true;
+        e = error(error::ERROR_POWER);
+        return n;
+    } else {
+        return number(v);
+    }
+}
+
+matrix matrix_func(matrix m, number (*ptr)(const number&)) {
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            m.set(i,j,ptr(*dynamic_cast<number*>(m.get(i,j))));
+        }
+    }
+    return m;
+}
+
+
+matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e) {
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            m.set(i,j,ptr(*dynamic_cast<number*>(m.get(i,j)),has_error,e));
+            if (has_error) {
+                return m;
+            }
+        }
+    }
+    return m;
+}
+
+number number_div(const number& n1, const number& n2, bool& has_error, error& e) {
+    if (n2.is_zero()) {
+        has_error = true;
+        e = error(error::ERROR_DIV_BY_ZERO);
+        return n1;
+    } else {
+        return number(n1.get_value() / n2.get_value());
+    }
+}
+
+matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*ptr)(const number&, const number&, bool&, error&), bool& has_error, error& e) {
+    if (m1.row_count() == 1 && m1.column_count() == 1 && m2.row_count() == 1 && m2.column_count() == 1) {
+        number result = ptr(*dynamic_cast<number*>(m1.get(0,0)), *dynamic_cast<number*>(m2.get(0,0)), has_error, e);
+        return result.as_matrix();
+    } else if ((m1.row_count() == 0 || m1.column_count() == 0) && (m2.row_count() == 0 || m2.column_count() == 0)) {
+        return m1;
+    } else {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return m1;
+    }
 }

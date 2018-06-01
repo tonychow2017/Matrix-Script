@@ -29,6 +29,10 @@ public:
     static const int ERROR_NON_SQUARE_MATRIX = 9;
     static const int ERROR_SINGULAR_MATRIX = 10;
     static const int ERROR_ENTRY_NOT_ALL_NUMBER = 12;
+    static const int ERROR_TRIGO = 13;
+    static const int ERROR_LOGARITHM = 14;
+    static const int ERROR_POWER = 15;
+    static const int ERROR_NOT_NUMBER = 16;
     static const int ERROR_INTERNAL = 500;
     static const int ERROR_UNKNOWN_FUNC = 11;
     error();

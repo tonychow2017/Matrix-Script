@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "det([1,2,3;2,1,4;3,5,7])";
+    std::string input = "log(3,81)";
     std::cout << calculate(input) << std::endl;
 }
 
