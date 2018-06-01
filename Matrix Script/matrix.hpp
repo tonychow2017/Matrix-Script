@@ -26,6 +26,7 @@ public:
     std::string get_string_representation() const override;
     entry* clone() const override;
     void exchange_rows(size_t i, size_t j, size_t starting_col = 0);
+    bool is_row_zero(size_t r);
     
 private:
     size_t row, column;

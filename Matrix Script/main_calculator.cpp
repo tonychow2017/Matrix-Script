@@ -388,6 +388,10 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
     matrix m1 = *(matrix*)(t1.get_content());
     if (name == "inv") {
         return matrix_inv(m1,has_error,e);
+    } else if (name == "det") {
+        return matrix_det(m1,has_error,e).as_matrix();
+    } else if (name == "rref") {
+        return matrix_rref(m1,has_error,e);
     } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());

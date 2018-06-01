@@ -29,6 +29,12 @@ std::string number::get_string_representation() const {
     return oss.str();
 }
 
+matrix number::as_matrix() const {
+    matrix m(1,1);
+    m.set(0,0,*this);
+    return m;
+}
+
 entry* number::clone() const {
     return new number(this->get_value());
 }

@@ -28,9 +28,11 @@ public:
     static const int ERROR_DIV_BY_ZERO = 8;
     static const int ERROR_NON_SQUARE_MATRIX = 9;
     static const int ERROR_SINGULAR_MATRIX = 10;
+    static const int ERROR_ENTRY_NOT_ALL_NUMBER = 12;
     static const int ERROR_INTERNAL = 500;
-    static const int ERROR_UNKNOWN_FUNC = 10;
+    static const int ERROR_UNKNOWN_FUNC = 11;
     error();
+    error(int);
     error(int,std::string);
     int get_type();
     std::string get_message();

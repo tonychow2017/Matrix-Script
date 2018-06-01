@@ -14,6 +14,9 @@ error::error(): type(error::NO_ERROR), message("") {
 error::error(int t, std::string mess): type(t), message(mess) {
 }
 
+error::error(int t): type(t), message("") {
+}
+
 int error::get_type() {
     return type;
 }

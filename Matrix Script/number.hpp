@@ -10,6 +10,7 @@
 #define number_hpp
 
 #include "entry.hpp"
+#include "matrix.hpp"
 
 class number: public entry {
 public:
@@ -17,6 +18,7 @@ public:
     number(const number& n);
     ~number();
     double get_value() const;
+    matrix as_matrix() const;
     std::string get_string_representation() const override;
     entry* clone() const override;
     

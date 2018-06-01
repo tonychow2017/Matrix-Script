@@ -110,3 +110,12 @@ void matrix::exchange_rows(size_t row1, size_t row2, size_t starting_col) {
         delete[] buffer;
     }
 }
+
+bool matrix::is_row_zero(size_t r) {
+    for (size_t i=0; i<this->column_count(); i++) {
+        if (dynamic_cast<number*>(this->get(r,i))->get_value() != 0) {
+            return false;
+        }
+    }
+    return true;
+}
