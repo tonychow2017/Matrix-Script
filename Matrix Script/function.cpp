@@ -77,23 +77,34 @@ std::unique_ptr<entry> generic_add(entry* ent1, entry* ent2, bool& has_error, er
     return std::unique_ptr<entry>(result);
 }
 
-matrix matrix_add(matrix m1, const matrix& m2, bool& has_error, error& e) {
-    if (m1.row_count() == m2.row_count()) {
-        if (m1.column_count() == m2.column_count()) {
-            for (size_t i=0; i<m1.row_count(); i++) {
-                for (size_t j=0; j<m1.column_count(); j++) {
-                    entry* ent1 = m1.get(i,j);
-                    entry* ent2 = m2.get(i,j);
-                    m1.set(i,j,*generic_add(ent1,ent2,has_error,e));
-                    if (has_error) {
-                        return m1;
-                    }
+matrix matrix_add(matrix m1, matrix& m2, bool& has_error, error& e) {
+    if (m1.row_count() == m2.row_count() && m1.column_count() == m2.column_count()) {
+        for (size_t i=0; i<m1.row_count(); i++) {
+            for (size_t j=0; j<m1.column_count(); j++) {
+                entry* ent1 = m1.get(i,j);
+                entry* ent2 = m2.get(i,j);
+                m1.set(i,j,*generic_add(ent1,ent2,has_error,e));
+                if (has_error) {
+                    return m1;
                 }
             }
-            has_error = false;
+        }
+        has_error = false;
+    } else if (m1.is_singleton()) {
+        number* n1 = dynamic_cast<number*>(m1.get(0,0));
+        if (n1 != nullptr) {
+            return add(*n1,m2);
         } else {
             has_error = true;
-            e = error(error::ERROR_DIM_MISMATCH);
+            return m1;
+        }
+    } else if (m2.is_singleton()) {
+        number* n2 = dynamic_cast<number*>(m2.get(0,0));
+        if (n2 != nullptr) {
+            return add(*n2,m1);
+        } else {
+            has_error = true;
+            return m1;
         }
     } else {
         has_error = true;
@@ -141,7 +152,6 @@ matrix subtract(matrix m, const number& n) {
                 matrix* mat;
                 if ((mat = dynamic_cast<matrix*>(ent)) != nullptr) {
                     matrix new_entry = subtract(*mat,n);
-                    m.set(i,j,new_entry);
                 }
             }
         }
@@ -149,40 +159,69 @@ matrix subtract(matrix m, const number& n) {
     return m;
 }
 
-matrix matrix_subtract(matrix m1, const matrix& m2, bool& has_error, error& e) {
-    if (m1.row_count() == m2.row_count()) {
-        if (m1.column_count() == m2.column_count()) {
-            for (size_t i=0; i<m1.row_count(); i++) {
-                for (size_t j=0; j<m1.column_count(); j++) {
-                    entry* ent1 = m1.get(i,j);
-                    entry* ent2 = m2.get(i,j);
-                    number* num1, *num2;
-                    matrix* mat1, *mat2;
-                    if ((num1 = dynamic_cast<number*>(ent1)) != nullptr) {
-                        if ((num2 = dynamic_cast<number*>(ent2)) != nullptr) {
-                            m1.set(i,j,subtract(*num1,*num2));
-                        } else if ((mat2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
-                            m1.set(i,j,subtract(*num1,*mat2));
-                        } else {
-                            has_error = true;
-                            e = error(error::ERROR_INTERNAL);
-                        }
-                    } else if ((mat1 = dynamic_cast<matrix*>(ent1)) != nullptr) {
-                        if ((num2 = dynamic_cast<number*>(ent2)) != nullptr) {
-                            m1.set(i,j,subtract(*mat1,*num2));
-                        } else if ((mat2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
-                            m1.set(i,j,matrix_subtract(*mat1,*mat2,has_error,e));
-                            if (has_error) {
-                                return m1;
-                            }
-                        }
-                    }
-                }
-            }
-            has_error = false;
+std::unique_ptr<entry> generic_subtract(entry* ent1, entry* ent2, bool& has_error, error& e) {
+    number* num1, *num2;
+    matrix* mat1, *mat2;
+    entry* result;
+    if ((num1 = dynamic_cast<number*>(ent1)) != nullptr) {
+        if ((num2 = dynamic_cast<number*>(ent2)) != nullptr) {
+            result = new number(subtract(*num1,*num2));
+        } else if ((mat2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
+            result = new matrix(subtract(*num1,*mat2));
         } else {
             has_error = true;
-            e = error(error::ERROR_DIM_MISMATCH);
+            e = error(error::ERROR_INTERNAL);
+            return nullptr;
+        }
+    } else if ((mat1 = dynamic_cast<matrix*>(ent1)) != nullptr) {
+        if ((num2 = dynamic_cast<number*>(ent2)) != nullptr) {
+            result = new matrix(subtract(*mat1,*num2));
+        } else if ((mat2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
+            result = new matrix(matrix_subtract(*mat1,*mat2,has_error,e));
+            if (has_error) {
+                return nullptr;
+            }
+        } else {
+            has_error = true;
+            e = error(error::ERROR_INTERNAL);
+            return nullptr;
+        }
+    } else {
+        has_error = true;
+        e = error(error::ERROR_INTERNAL);
+        return nullptr;
+    }
+    return std::unique_ptr<entry>(result);
+}
+
+matrix matrix_subtract(matrix m1, matrix& m2, bool& has_error, error& e) {
+    if (m1.row_count() == m2.row_count() && m1.column_count() == m2.column_count()) {
+        for (size_t i=0; i<m1.row_count(); i++) {
+            for (size_t j=0; j<m1.column_count(); j++) {
+                entry* ent1 = m1.get(i,j);
+                entry* ent2 = m2.get(i,j);
+                m1.set(i,j,*generic_subtract(ent1,ent2,has_error,e));
+                if (has_error) {
+                    return m1;
+                }
+            }
+        }
+        has_error = false;
+    } else if (m1.is_singleton()) {
+        number* n1 = dynamic_cast<number*>(m1.get(0,0));
+        if (n1 != nullptr) {
+            return subtract(*n1,m2);
+        } else {
+            has_error = true;
+            return m1;
+        }
+    } else if (m2.is_singleton()) {
+        number* n2 = dynamic_cast<number*>(m2.get(0,0));
+        if (n2 != nullptr) {
+            return subtract(m1,*n2);
+        } else {
+            has_error = true;
+            return m1;
         }
     } else {
         has_error = true;
@@ -253,7 +292,7 @@ std::unique_ptr<entry> generic_mult(entry* ent1, entry* ent2, bool& has_error, e
     return std::unique_ptr<entry>(result);
 }
 
-matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+matrix matrix_mult(matrix& m1, matrix& m2, bool& has_error, error& e) {
     if (m1.column_count() == m2.row_count()) {
         size_t sum_limit = m1.column_count();
         matrix resulting_mat(m1.row_count(),m2.column_count());
@@ -279,6 +318,22 @@ matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e
         }
         has_error = false;
         return resulting_mat;
+    } else if (m1.is_singleton()) {
+        number* n1 = dynamic_cast<number*>(m1.get(0,0));
+        if (n1 != nullptr) {
+            return mult(*n1,m2);
+        } else {
+            has_error = true;
+            return m1;
+        }
+    } else if (m2.is_singleton()) {
+        number* n2 = dynamic_cast<number*>(m2.get(0,0));
+        if (n2 != nullptr) {
+            return mult(*n2,m1);
+        } else {
+            has_error = true;
+            return m1;
+        }
     } else {
         has_error = true;
         e = error(error::ERROR_DIM_MISMATCH);
@@ -707,10 +762,37 @@ number number_div(const number& n1, const number& n2, bool& has_error, error& e)
 }
 
 matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*ptr)(const number&, const number&, bool&, error&), bool& has_error, error& e) {
-    if (m1.row_count() == 1 && m1.column_count() == 1 && m2.row_count() == 1 && m2.column_count() == 1) {
+    if ((!check_if_all_number(m1)) || (!check_if_all_number(m2))) {
+        has_error = true;
+        e = error(error::ERROR_ENTRY_NOT_ALL_NUMBER);
+        return m1;
+    } else if (m1.is_singleton() && m2.is_singleton()) {
         number result = ptr(*dynamic_cast<number*>(m1.get(0,0)), *dynamic_cast<number*>(m2.get(0,0)), has_error, e);
         return result.as_matrix();
-    } else if ((m1.row_count() == 0 || m1.column_count() == 0) && (m2.row_count() == 0 || m2.column_count() == 0)) {
+    } else if (m1.is_singleton()) {
+        //m2 is not singleton
+        matrix result(m2.row_count(),m2.column_count());
+        number n1 = *dynamic_cast<number*>(m1.get(0,0));
+        for (size_t i=0; i<m2.row_count(); i++) {
+            for (size_t j=0; j<m2.column_count(); j++) {
+                result.set(i,j,ptr(n1, *dynamic_cast<number*>(m2.get(i,j)), has_error, e));
+                if (has_error) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    } else if (m2.is_singleton()) {
+        //m1 is not singleton
+        matrix result(m1.row_count(),m1.column_count());
+        number n2 = *dynamic_cast<number*>(m2.get(0,0));
+        for (size_t i=0; i<m1.row_count(); i++) {
+            for (size_t j=0; j<m1.column_count(); j++) {
+                result.set(i,j,ptr(*dynamic_cast<number*>(m1.get(i,j)), n2, has_error, e));
+            }
+        }
+        return result;
+    } else if (m1.is_empty() && m2.is_empty()) {
         return m1;
     } else {
         has_error = true;

@@ -82,6 +82,11 @@ std::string preprocess(std::string input, bool& has_error, error& e) {
     result = std::regex_replace(result,std::regex("-\\+"),"-");
     result = std::regex_replace(result,std::regex("\\+\\+"),"(+");
     result = std::regex_replace(result,std::regex("--"),"+");
+    if (result[0] == '-') {
+        std::ostringstream oss;
+        oss << "0" << result;
+        result = oss.str();
+    }
     std::cout << "preprocessed: " << result << "\n";
     return result;
 }
@@ -196,8 +201,8 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
     }
     std::cout << "creating matrix of size " << rows.size() << " " << max_col << std::endl;
     matrix m(rows.size(),max_col);
-    for (auto i=0; i<rows.size(); i++) {
-        for (auto j=0; j<rows[i].size(); j++) {
+    for (size_t i=0; i<rows.size(); i++) {
+        for (size_t j=0; j<rows[i].size(); j++) {
             expression matrix_exp = merge_matrix(rows[i][j],has_error,e);
             if (has_error) {
                 return m;
@@ -205,7 +210,7 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
             m.set(i,j,matrix_exp);
         }
         if (rows[i].size() != max_col) {
-            for (auto k=rows[i].size(); k<max_col; k++) {
+            for (size_t k=rows[i].size(); k<max_col; k++) {
                 number n(0);
                 token t(n);
                 std::vector<token> tokens;
@@ -418,6 +423,18 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
         return matrix_func_error(m1,&number_exp,has_error,e);
     } else if (name == "ln") {
         return matrix_func_error(m1,&number_ln,has_error,e);
+    } else if (name == "sin") {
+        return matrix_func(m1,&number_sin);
+    } else if (name == "cos") {
+        return matrix_func(m1,&number_cos);
+    } else if (name == "tan") {
+        return matrix_func_error(m1,&number_tan,has_error,e);
+    } else if (name == "asin") {
+        return matrix_func_error(m1,&number_asin,has_error,e);
+    } else if (name == "acos") {
+        return matrix_func_error(m1,&number_acos,has_error,e);
+    } else if (name == "atan") {
+        return matrix_func(m1,&number_atan);
     } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());
@@ -550,5 +567,4 @@ std::string calculate(std::string input) {
         }
     }
 }
-
 

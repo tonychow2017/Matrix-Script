@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "log(3,81)";
+    std::string input = "-[2,4]-6";
     std::cout << calculate(input) << std::endl;
 }
 

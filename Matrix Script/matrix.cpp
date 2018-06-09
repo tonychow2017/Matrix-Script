@@ -111,7 +111,7 @@ void matrix::exchange_rows(size_t row1, size_t row2, size_t starting_col) {
     }
 }
 
-bool matrix::is_row_zero(size_t r) {
+bool matrix::is_row_zero(size_t r) const {
     for (size_t i=0; i<this->column_count(); i++) {
         if (dynamic_cast<number*>(this->get(r,i))->get_value() != 0) {
             return false;
@@ -119,3 +119,12 @@ bool matrix::is_row_zero(size_t r) {
     }
     return true;
 }
+
+bool matrix::is_singleton() const {
+    return (row == 1) && (column == 1);
+}
+
+bool matrix::is_empty() const {
+    return (row == 0) || (column == 0);
+}
+
