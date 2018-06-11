@@ -9,16 +9,26 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Matrix Script Java.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>Matrix Script.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>EA0204D720CBC81F003A7BCB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>EA958B45200B56E800696366</key>
 		<dict>
 			<key>primary</key>

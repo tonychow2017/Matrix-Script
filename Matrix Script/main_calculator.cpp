@@ -562,6 +562,7 @@ std::string calculate(std::string input) {
                 if (has_error) {
                     return e.get_message();
                 }
+                std::cout << "done: \n";
                 return m.get_string_representation();
             }
         }

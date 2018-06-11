@@ -48,6 +48,8 @@
 /* Begin PBXFileReference section */
 		EA01459720886A9300675B14 /* error.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = error.cpp; sourceTree = "<group>"; };
 		EA01459820886A9300675B14 /* error.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = error.hpp; sourceTree = "<group>"; };
+		EA0204E820CBCB55003A7BCB /* MainFrame.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = MainFrame.java; sourceTree = "<group>"; };
+		EA0204F020CBCBFC003A7BCB /* MatrixScript.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = MatrixScript.java; sourceTree = "<group>"; };
 		EA408344201C63D8001EAB93 /* main_calculator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_calculator.cpp; sourceTree = "<group>"; };
 		EA408345201C63D8001EAB93 /* main_calculator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_calculator.hpp; sourceTree = "<group>"; };
 		EA40834A201C6693001EAB93 /* matrix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = matrix.cpp; sourceTree = "<group>"; };
@@ -72,6 +74,9 @@
 		EA958B50200B56E900696366 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA958B53200B56E900696366 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA958B55200B56E900696366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA9B9D9520CE709000E51E3B /* MatrixScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixScript.h; sourceTree = "<group>"; };
+		EA9B9D9620CE709000E51E3B /* MatrixScript.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixScript.cpp; sourceTree = "<group>"; };
+		EA9B9D9720CE709100E51E3B /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Matrix Script CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAAAD8C20233CE0007CA3DA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,12 +99,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA0204E620CBCB25003A7BCB /* Matrix Script Java */ = {
+			isa = PBXGroup;
+			children = (
+				EA9B9D9620CE709000E51E3B /* MatrixScript.cpp */,
+				EA9B9D9520CE709000E51E3B /* MatrixScript.h */,
+				EA0204E820CBCB55003A7BCB /* MainFrame.java */,
+				EA0204F020CBCBFC003A7BCB /* MatrixScript.java */,
+			);
+			path = "Matrix Script Java";
+			sourceTree = "<group>";
+		};
 		EA958B3D200B56E800696366 = {
 			isa = PBXGroup;
 			children = (
 				EA958B48200B56E900696366 /* Matrix Script */,
 				EAAAAD7F20233C8F007CA3DA /* Matrix Script CLI */,
+				EA0204E620CBCB25003A7BCB /* Matrix Script Java */,
 				EA958B47200B56E900696366 /* Products */,
+				EA9B9D9720CE709100E51E3B /* CMakeLists.txt */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,6 +172,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		EA0204DF20CBC95A003A7BCB /* Matrix Script Java */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "";
+			buildConfigurationList = EA0204E020CBC95A003A7BCB /* Build configuration list for PBXLegacyTarget "Matrix Script Java" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/local/bin/cmake;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = "Matrix Script Java";
+			passBuildSettingsInEnvironment = 1;
+			productName = "Matrix Script Java";
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		EA958B45200B56E800696366 /* Matrix Script */ = {
 			isa = PBXNativeTarget;
@@ -199,6 +234,10 @@
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Tony Chow";
 				TargetAttributes = {
+					EA0204DF20CBC95A003A7BCB = {
+						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+					};
 					EA958B45200B56E800696366 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
@@ -225,6 +264,7 @@
 			targets = (
 				EA958B45200B56E800696366 /* Matrix Script */,
 				EAAAAD7D20233C8F007CA3DA /* Matrix Script CLI */,
+				EA0204DF20CBC95A003A7BCB /* Matrix Script Java */,
 			);
 		};
 /* End PBXProject section */
@@ -300,6 +340,33 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		EA0204E120CBC95A003A7BCB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		EA0204E220CBC95A003A7BCB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		EA958B56200B56E900696366 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -471,6 +538,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EA0204E020CBC95A003A7BCB /* Build configuration list for PBXLegacyTarget "Matrix Script Java" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA0204E120CBC95A003A7BCB /* Debug */,
+				EA0204E220CBC95A003A7BCB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EA958B41200B56E800696366 /* Build configuration list for PBXProject "Matrix Script" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
