@@ -444,6 +444,8 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_subtract(m1,m2,has_error,e);
         } else if (name == "*") {
             return matrix_mult(m1,m2,has_error,e);
+        } else if (name == "/") {
+            return matrix_div(m1,m2,has_error,e);
         } else if (name == "^") {
             return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
         } else if (name == "log") {

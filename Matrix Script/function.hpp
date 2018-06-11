@@ -17,11 +17,12 @@
 
 matrix matrix_add(matrix m1, matrix& m2, bool& has_error, error& e);
 matrix matrix_subtract(matrix m1, matrix& m2, bool& has_error, error& e);
-matrix matrix_mult(matrix& m1, matrix& m2, bool& has_error, error& e);
+matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e);
 matrix matrix_inv(const matrix& m, bool& has_error, error& e);
 number matrix_det(matrix m, bool& has_error, error& e);
 matrix matrix_rref(matrix m, bool& has_error, error& e);
 number number_div(const number& n1, const number& n2, bool& has_error, error& e);
+matrix matrix_div(const matrix& m1, const matrix& m2, bool& has_error, error& e);
 number number_abs(const number& n);
 number number_sin(const number& n);
 number number_cos(const number& n);

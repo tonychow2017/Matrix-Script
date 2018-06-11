@@ -175,7 +175,7 @@
 /* Begin PBXLegacyTarget section */
 		EA0204DF20CBC95A003A7BCB /* Matrix Script Java */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "";
+			buildArgumentsString = .;
 			buildConfigurationList = EA0204E020CBC95A003A7BCB /* Build configuration list for PBXLegacyTarget "Matrix Script Java" */;
 			buildPhases = (
 			);
@@ -184,7 +184,7 @@
 			dependencies = (
 			);
 			name = "Matrix Script Java";
-			passBuildSettingsInEnvironment = 1;
+			passBuildSettingsInEnvironment = 0;
 			productName = "Matrix Script Java";
 		};
 /* End PBXLegacyTarget section */

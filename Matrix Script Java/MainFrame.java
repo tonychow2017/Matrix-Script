@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
     }
     
     static class MainPanel extends JPanel {
-        private JTextArea textArea = new JTextArea(8,15);
+        private JTextArea textArea = new JTextArea(8,30);
         private JLabel answer = new JLabel("N/A", SwingConstants.CENTER);
         MainPanel() {
             super(new BorderLayout());

@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "1";
+    std::string input = "2/3";
     std::cout << calculate(input) << std::endl;
 }
 

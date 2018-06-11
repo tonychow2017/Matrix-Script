@@ -292,7 +292,7 @@ std::unique_ptr<entry> generic_mult(entry* ent1, entry* ent2, bool& has_error, e
     return std::unique_ptr<entry>(result);
 }
 
-matrix matrix_mult(matrix& m1, matrix& m2, bool& has_error, error& e) {
+matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
     if (m1.column_count() == m2.row_count()) {
         size_t sum_limit = m1.column_count();
         matrix resulting_mat(m1.row_count(),m2.column_count());
@@ -647,7 +647,7 @@ number number_atan(const number& n) {
     return std::atan(n.get_value());
 }
 
-number numbeR_acsc(const number& n, bool& has_error, error& e) {
+number number_acsc(const number& n, bool& has_error, error& e) {
     double v = n.get_value();
     if ((v < 1)||(v > -1)) {
         has_error = true;
@@ -758,6 +758,22 @@ number number_div(const number& n1, const number& n2, bool& has_error, error& e)
         return n1;
     } else {
         return number(n1.get_value() / n2.get_value());
+    }
+}
+
+matrix matrix_div(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+    if (m1.is_singleton() && m2.is_singleton()) {
+        if (check_if_all_number(m1) && check_if_all_number(m2)) {
+            number result = number_div(*dynamic_cast<number*>(m1.get(0,0)),*dynamic_cast<number*>(m2.get(0,0)),has_error,e);
+            return result.as_matrix();
+        }
+    }
+    matrix inverted = matrix_inv(m2,has_error,e);
+    if (has_error) {
+        return m1;
+    } else {
+        matrix result = matrix_mult(m1,inverted,has_error,e);
+        return result;
     }
 }
 
