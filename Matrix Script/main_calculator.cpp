@@ -317,8 +317,11 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
         switch (next.get_type()) {
             case token::NUMBER:
                 resulting_token.push_back(next);
+                std::cout << "insert " << next.get_string_representation() << " to result\n";
                 break;
             case token::FUNCTION:
+                operator_stack.push(next);
+                break;
             case token::SYMBOL:
                 if (next.get_string_representation() == "(") {
                     operator_stack.push(next);
@@ -327,6 +330,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                         token t = operator_stack.top();
                         operator_stack.pop();
                         resulting_token.push_back(t);
+                        std::cout << "insert " << t.get_string_representation() << " to result\n";
                     }
                     if (operator_stack.empty()) {
                         //mismatched bracket?
@@ -340,10 +344,11 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                 } else if (next.get_string_representation() == ",") {
                     //pass
                 } else {
-                    while (((!operator_stack.empty()) && (get_precedence(operator_stack.top()) > get_precedence(next) || (get_precedence(operator_stack.top()) == get_precedence(next) && is_left_associative(operator_stack.top()))) && operator_stack.top().get_string_representation() != "(")) {
+                    while ((!operator_stack.empty()) && ((operator_stack.top().get_type() == token::FUNCTION) || (get_precedence(operator_stack.top()) > get_precedence(next)) || (get_precedence(operator_stack.top()) == get_precedence(next) && is_left_associative(operator_stack.top()))) && (operator_stack.top().get_string_representation() != "(")) {
                         token top_token = operator_stack.top();
                         operator_stack.pop();
                         resulting_token.push_back(top_token);
+                        std::cout << "insert " << top_token.get_string_representation() << " to result\n";
                     }
                     operator_stack.push(next);
                 }
@@ -381,6 +386,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
         token t = operator_stack.top();
         std::string t_str = t.get_string_representation();
         if (t_str == "(" || t_str == ")") {
+            has_error = true;
             e = error(error::ERROR_MISMATCHED_BRACKET,"");
             expression exp(resulting_token);
             return exp;
@@ -397,12 +403,17 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
 size_t get_function_argument_count(const std::string& name) {
     if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^" || name == "log") {
         return 2;
+    } else if (name == "pi") {
+        return 0;
     } else {
         return 1;
     }
 }
 
 matrix evaluate_function(const std::string& name, const std::vector<token>& argv, bool& has_error, error& e) {
+    if (name == "pi") {
+        return pi().as_matrix();
+    }
     token t1 = argv[0];
     matrix m1 = *(matrix*)(t1.get_content());
     if (name == "inv") {

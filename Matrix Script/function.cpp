@@ -729,6 +729,10 @@ number number_exp(const number& n, bool& has_error, error& e) {
     }
 }
 
+number pi() {
+    return number(std::atan(1)*4);
+}
+
 matrix matrix_func(matrix m, number (*ptr)(const number&)) {
     for (size_t i=0; i<m.row_count(); i++) {
         for (size_t j=0; j<m.column_count(); j++) {
@@ -737,7 +741,6 @@ matrix matrix_func(matrix m, number (*ptr)(const number&)) {
     }
     return m;
 }
-
 
 matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e) {
     for (size_t i=0; i<m.row_count(); i++) {

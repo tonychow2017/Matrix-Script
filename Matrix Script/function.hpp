@@ -46,5 +46,6 @@ number number_exp(const number& n, bool& has_error, error& e);
 matrix matrix_func(matrix m, number (*ptr)(const number&));
 matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e);
 matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*ptr)(const number&, const number&, bool&, error&), bool& has_error, error& e);
+number pi();
 
 #endif /* function_hpp */
