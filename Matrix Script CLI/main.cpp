@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "a=1+2+3\n$a+1";
+    std::string input = "a=1\na=2\n$a";
     std::cout << calculate(input) << std::endl;
 }
 

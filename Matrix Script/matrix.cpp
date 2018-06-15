@@ -22,6 +22,9 @@ matrix::matrix(size_t r, size_t c): row(r), column(c) {
     }
 }
 
+matrix::matrix(): matrix(0,0) {
+}
+
 matrix::matrix(const matrix& mat): matrix(mat.row, mat.column) {
     for (size_t i=0; i<row; i++) {
         for (size_t j=0; j<column; j++) {

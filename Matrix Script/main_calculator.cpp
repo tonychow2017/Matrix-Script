@@ -22,7 +22,7 @@
 std::unordered_map<std::string,matrix> variables;
 
 void set_variable(std::string name, matrix& ent) {
-    variables.insert(std::make_pair(name,ent));
+    variables[name] = ent;
 }
 
 matrix* get_variable(std::string name) {
@@ -95,7 +95,7 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
         //error e;
         get_answer(line,result,has_error,e);
         if (!has_error) {
-            variables.insert(std::make_pair(var_name,result));
+            set_variable(var_name,result);
         } else {
             return;
         }
@@ -572,7 +572,7 @@ matrix evaluate(const expression& exp, bool& has_error, error& e) {
                 for (size_t i=0; i<arg_count; i++) {
                     if (arg_stack.empty()) {
                         has_error = true;
-                        e = error(error::ERROR_WRONG_ARG_COUNT); //unknown function?
+                        e = error(error::ERROR_WRONG_ARG_COUNT,tok.get_string_representation());
                         matrix m(0,0);
                         return m;
                     } else {

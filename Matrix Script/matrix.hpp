@@ -14,6 +14,7 @@
 
 class matrix: public entry {
 public:
+    matrix();
     matrix(size_t row, size_t column);
     matrix(const matrix& mat);
     matrix(matrix&& mat);
