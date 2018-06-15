@@ -29,6 +29,7 @@ public:
     bool is_row_zero(size_t r) const;
     bool is_singleton() const;
     bool is_empty() const;
+    std::string get_size_string() const;
     
 private:
     size_t row, column;

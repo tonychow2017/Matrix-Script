@@ -446,6 +446,24 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
         return matrix_func_error(m1,&number_acos,has_error,e);
     } else if (name == "atan") {
         return matrix_func(m1,&number_atan);
+    } else if (name == "csc") {
+        return matrix_func_error(m1,&number_csc,has_error,e);
+    } else if (name == "sec") {
+        return matrix_func_error(m1,&number_sec,has_error,e);
+    } else if (name == "cot") {
+        return matrix_func_error(m1,&number_cot,has_error,e);
+    } else if (name == "size") {
+        return matrix_size(m1);
+    } else if (name == "row") {
+        return matrix_row(m1).as_matrix();
+    } else if (name == "col" || name == "column") {
+        return matrix_col(m1).as_matrix();
+    } else if (name == "fact" || name == "factorial") {
+        return matrix_func_error(m1,&number_factorial,has_error,e);
+    } else if (name == "sum") {
+        return matrix_sum(m1,has_error,e);
+    } else if (name == "prod" || name == "product") {
+        return matrix_product(m1,has_error,e);
     } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());
@@ -549,7 +567,7 @@ matrix evaluate(const expression& exp, bool& has_error, error& e) {
 
 std::string calculate(std::string input) {
     if (input.empty()) {
-        return "";
+        return "N/A";
     } else {
         std::ostringstream oss;
         bool has_error = false;

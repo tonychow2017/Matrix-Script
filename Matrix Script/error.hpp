@@ -17,29 +17,31 @@ private:
     std::string message;
     
 public:
-    static const int NO_ERROR = 0;
-    static const int ERROR_UNKNOWN_CHAR = 1;
-    static const int ERROR_EXTRA_DOTS = 2;
-    static const int ERROR_ENDS_WITH_DOTS = 3;
-    static const int ERROR_UNCLOSED_MATRIX = 4;
-    static const int ERROR_MISMATCHED_BRACKET = 5;
-    static const int ERROR_WRONG_ARG_COUNT = 6;
-    static const int ERROR_DIM_MISMATCH = 7;
-    static const int ERROR_DIV_BY_ZERO = 8;
-    static const int ERROR_NON_SQUARE_MATRIX = 9;
-    static const int ERROR_SINGULAR_MATRIX = 10;
-    static const int ERROR_ENTRY_NOT_ALL_NUMBER = 12;
-    static const int ERROR_TRIGO = 13;
-    static const int ERROR_LOGARITHM = 14;
-    static const int ERROR_POWER = 15;
-    static const int ERROR_NOT_NUMBER = 16;
-    static const int ERROR_INTERNAL = 500;
-    static const int ERROR_UNKNOWN_FUNC = 11;
+    static const int NO_ERROR;
+    static const int ERROR_UNKNOWN_CHAR;
+    static const int ERROR_EXTRA_DOTS;
+    static const int ERROR_ENDS_WITH_DOTS;
+    static const int ERROR_UNCLOSED_MATRIX;
+    static const int ERROR_MISMATCHED_BRACKET;
+    static const int ERROR_WRONG_ARG_COUNT;
+    static const int ERROR_DIM_MISMATCH;
+    static const int ERROR_DIV_BY_ZERO;
+    static const int ERROR_NON_SQUARE_MATRIX;
+    static const int ERROR_SINGULAR_MATRIX;
+    static const int ERROR_ENTRY_NOT_ALL_NUMBER;
+    static const int ERROR_TRIGO;
+    static const int ERROR_LOGARITHM;
+    static const int ERROR_POWER;
+    static const int ERROR_NOT_NUMBER;
+    static const int ERROR_NOT_NATURAL_NUMBER;
+    static const int ERROR_INTERNAL;
+    static const int ERROR_UNKNOWN_FUNC;
     error();
     error(int);
     error(int,std::string);
     int get_type();
     std::string get_message();
+    static std::string get_error_meaning(int);
 };
 
 #endif /* error_hpp */

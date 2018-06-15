@@ -128,3 +128,10 @@ bool matrix::is_empty() const {
     return (row == 0) || (column == 0);
 }
 
+std::string matrix::get_size_string() const {
+    std::ostringstream oss;
+    oss << "(" << row << ", " << column << ")";
+    return oss.str();
+}
+
+

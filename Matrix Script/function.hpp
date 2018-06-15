@@ -47,5 +47,11 @@ matrix matrix_func(matrix m, number (*ptr)(const number&));
 matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e);
 matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*ptr)(const number&, const number&, bool&, error&), bool& has_error, error& e);
 number pi();
+number matrix_row(const matrix&);
+number matrix_col(const matrix&);
+matrix matrix_size(const matrix&);
+matrix matrix_sum(const matrix&, bool&, error&);
+matrix matrix_product(const matrix&, bool&, error&);
+number number_factorial(const number&, bool&, error&);
 
 #endif /* function_hpp */

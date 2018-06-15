@@ -13,7 +13,20 @@
 #include <utility>
 #include <algorithm>
 #include <cerrno>
+#include <sstream>
 #include <iostream>
+
+std::string num2str(int i) {
+    std::ostringstream oss;
+    oss << i;
+    return oss.str();
+}
+
+std::string num2str(double i) {
+    std::ostringstream oss;
+    oss << i;
+    return oss.str();
+}
 
 number add(const number& n1, const number& n2) {
     double v1 = n1.get_value();
@@ -108,7 +121,7 @@ matrix matrix_add(matrix m1, matrix& m2, bool& has_error, error& e) {
         }
     } else {
         has_error = true;
-        e = error(error::ERROR_DIM_MISMATCH);
+        e = error(error::ERROR_DIM_MISMATCH,std::string("Addition: ") + m1.get_size_string() + " and " + m2.get_size_string());
     }
     return m1;
 }
@@ -225,7 +238,7 @@ matrix matrix_subtract(matrix m1, matrix& m2, bool& has_error, error& e) {
         }
     } else {
         has_error = true;
-        e = error(error::ERROR_DIM_MISMATCH);
+        e = error(error::ERROR_DIM_MISMATCH,std::string("Subtraction: ") + m1.get_size_string() + " and " + m2.get_size_string());
     }
     return m1;
 }
@@ -336,7 +349,7 @@ matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e
         }
     } else {
         has_error = true;
-        e = error(error::ERROR_DIM_MISMATCH);
+        e = error(error::ERROR_DIM_MISMATCH,std::string("Multiplication: ") + m1.get_size_string() + " and " + m2.get_size_string());
         return matrix(0,0);
     }
 }
@@ -541,7 +554,7 @@ matrix matrix_inv(const matrix& m, bool& has_error, error& e) {
         }
     } else {
         has_error = true;
-        e = error(error::ERROR_NON_SQUARE_MATRIX);
+        e = error(error::ERROR_NON_SQUARE_MATRIX,std::string("Dimension: ") + m.get_size_string());
         return m;
     }
 }
@@ -581,7 +594,7 @@ number number_cos(const number& n) {
 number number_tan(const number& n, bool& has_error, error& e) {
     if (number_cos(n).is_zero()) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("tan function evaluates to infinity"));
         return n;
     } else {
         return number(std::tan(n.get_value()));
@@ -592,7 +605,7 @@ number number_csc(const number& n, bool& has_error, error& e) {
     double s = std::sin(n.get_value());
     if (s == 0) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("csc function evaluates to infinity"));
         return n;
     } else {
         return number(1.0/s);
@@ -603,7 +616,7 @@ number number_sec(const number& n, bool& has_error, error& e) {
     double c = std::cos(n.get_value());
     if (c == 0) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("sec function evaluates to infinity"));
         return n;
     } else {
         return number(1.0/c);
@@ -614,7 +627,7 @@ number number_cot(const number& n, bool& has_error, error& e) {
     double s = std::sin(n.get_value());
     if (s == 0) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("cot function evaluates to infinity"));
         return n;
     } else {
         return number(std::cos(n.get_value())/s);
@@ -625,7 +638,7 @@ number number_asin(const number& n, bool& has_error, error& e) {
     double v = n.get_value();
     if ((v > 1)||(v < -1)) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("asin expects argument in [-1,1] but received ") + num2str(v));
         return n;
     } else {
         return number(std::asin(v));
@@ -636,7 +649,7 @@ number number_acos(const number& n, bool& has_error, error& e) {
     double v = n.get_value();
     if ((v > 1)||(v < -1)) {
         has_error = true;
-        e = error(error::ERROR_TRIGO);
+        e = error(error::ERROR_TRIGO,std::string("acos expects argument in [-1,1] but received ") + num2str(v));
         return n;
     } else {
         return number(std::acos(v));
@@ -674,9 +687,13 @@ number number_acot(const number& n) {
 }
 
 number number_log(const number& n1, const number& n2, bool& has_error, error& e) {
-    if (n2.get_value() <= 1 || n2.get_value() <= 0) {
+    if (n1.get_value() <= 1) {
         has_error = true;
-        e = error(error::ERROR_LOGARITHM);
+        e = error(error::ERROR_LOGARITHM,std::string("log expects base argument greater than 1 but received ") + num2str(n1.get_value()));
+        return n1;
+    } else if (n2.get_value() <= 0) {
+        has_error = true;
+        e = error(error::ERROR_LOGARITHM,std::string("log expects a positive argument but received ") + num2str(n2.get_value()));
         return n1;
     } else {
         return number(std::log(n2.get_value())/std::log(n1.get_value()));
@@ -686,7 +703,7 @@ number number_log(const number& n1, const number& n2, bool& has_error, error& e)
 number number_ln(const number& n, bool& has_error, error& e) {
     if (n.get_value() <= 0) {
         has_error = true;
-        e = error(error::ERROR_LOGARITHM);
+        e = error(error::ERROR_LOGARITHM,"ln expects a positive argument but received " + num2str(n.get_value()));
         return n;
     } else {
         return number(std::log(n.get_value()));
@@ -819,3 +836,71 @@ matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*pt
         return m1;
     }
 }
+
+number matrix_row(const matrix& m) {
+    return number(m.row_count());
+}
+
+number matrix_col(const matrix& m) {
+    return number(m.column_count());
+}
+
+matrix matrix_size(const matrix& m) {
+    matrix result(1,2);
+    result.set(0,0,number(m.row_count()));
+    result.set(0,1,number(m.column_count()));
+    return result;
+}
+
+matrix matrix_sum(const matrix& m, bool& has_error, error& e) {
+    matrix* id = new matrix(1,1);
+    id->set(0,0,number(0.0));
+    std::unique_ptr<entry> ent(id);
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            ent = generic_add(ent.get(),m.get(i,j),has_error,e);
+            if (has_error) {
+                return *id;
+            }
+        }
+    }
+    if (dynamic_cast<number*>(ent.get()) != nullptr) {
+        return dynamic_cast<number*>(ent.get())->as_matrix();
+    } else {
+        return *dynamic_cast<matrix*>(ent.get());
+    }
+}
+
+matrix matrix_product(const matrix& m, bool& has_error, error& e) {
+    matrix* id = new matrix(1,1);
+    id->set(0,0,number(1.0));
+    std::unique_ptr<entry> ent(id);
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            ent = generic_mult(ent.get(),m.get(i,j),has_error,e);
+            if (has_error) {
+                return *id;
+            }
+        }
+    }
+    if (dynamic_cast<number*>(ent.get()) != nullptr) {
+        return dynamic_cast<number*>(ent.get())->as_matrix();
+    } else {
+        return *dynamic_cast<matrix*>(ent.get());
+    }
+}
+
+number number_factorial(const number& n, bool& has_error, error& e) {
+    if ((n.get_value() != std::round(n.get_value())) || (n.get_value() < 0)) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NATURAL_NUMBER,n.get_string_representation());
+        return n;
+    } else {
+        double prod = 1;
+        for (size_t i=2; i<=std::round(n.get_value()); i++) {
+            prod *= i;
+        }
+        return number(prod);
+    }
+}
+
