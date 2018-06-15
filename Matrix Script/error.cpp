@@ -28,6 +28,7 @@ const int error::ERROR_LOGARITHM = 14;
 const int error::ERROR_POWER = 15;
 const int error::ERROR_NOT_NUMBER = 16;
 const int error::ERROR_NOT_NATURAL_NUMBER = 17;
+const int error::ERROR_UNKNOWN_VAR = 18;
 const int error::ERROR_INTERNAL = 500;
 const int error::ERROR_UNKNOWN_FUNC = 11;
 
@@ -76,6 +77,7 @@ std::string error::get_error_meaning(int e) {
     meaning.insert(std::make_pair(ERROR_NOT_NATURAL_NUMBER, "Not a natural number"));
     //const int error::ERROR_INTERNAL = 500;
     meaning.insert(std::make_pair(ERROR_UNKNOWN_FUNC,"Unknown function"));
+    meaning.insert(std::make_pair(ERROR_UNKNOWN_VAR,"Unknown var"));
     try {
         std::string result = meaning.at(e);
         return result;

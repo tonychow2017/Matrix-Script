@@ -36,6 +36,7 @@ public:
     static const int ERROR_NOT_NATURAL_NUMBER;
     static const int ERROR_INTERNAL;
     static const int ERROR_UNKNOWN_FUNC;
+    static const int ERROR_UNKNOWN_VAR;
     error();
     error(int);
     error(int,std::string);

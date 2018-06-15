@@ -9,12 +9,30 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <utility>
 #include <regex>
+#include <stdexcept>
 #include "main_calculator.hpp"
 #include <iostream>
+#include "entry.hpp"
 #include "expression.hpp"
 #include "function.hpp"
 #include "error.hpp"
+
+std::unordered_map<std::string,matrix> variables;
+
+void set_variable(std::string name, matrix& ent) {
+    variables.insert(std::make_pair(name,ent));
+}
+
+matrix* get_variable(std::string name) {
+    try {
+        matrix& result = variables.at(name);
+        return &result;
+    } catch (const std::out_of_range& e) {
+        return nullptr;
+    }
+}
 
 bool is_digit(char c) {
     return ('0' <= c) && (c <= '9');
@@ -52,11 +70,36 @@ bool is_valid_function_identifier(char c) {
 }
 
 bool is_valid_symbol(char c) {
-    return std::string("+-*/^()[].,;").find(c) != std::string::npos;
+    return std::string("+-*/^()[].,;$=\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
     return std::string("[],;").find(c) != std::string::npos;
+}
+
+void process_line(std::string input, matrix& result, bool& has_error, error& e) {
+    std::istringstream iss(input);
+    std::string line;
+    while (std::getline(iss,line)) {
+        size_t pos = line.find("=");
+        std::string var_name;
+        if (std::string::npos != pos) {
+            //found
+            var_name = line.substr(0,pos);
+            line = line.substr(pos+1,line.size()-pos-1);
+        } else {
+            var_name = "answer";
+        }
+        //matrix result(0,0);
+        //bool has_error;
+        //error e;
+        get_answer(line,result,has_error,e);
+        if (!has_error) {
+            variables.insert(std::make_pair(var_name,result));
+        } else {
+            return;
+        }
+    }
 }
 
 std::string preprocess(std::string input, bool& has_error, error& e) {
@@ -97,9 +140,22 @@ expression tokenize(std::string input, bool& has_error, error& e) {
     for (size_t i=0; i<input_size; i++) {
         char c = input[i];
         std::cout << "current char " << i << "/" << input_size << ": " << c << std::endl;
-        if (is_letter(c)) {
+        if (c == '$') {
+            size_t index = i+1;
+            while (is_valid_function_identifier(input[index])) {
+                index++;
+                if (index == input_size) {
+                    break;
+                }
+            }
+            std::string var_name = input.substr(i,index-i);
+            token t(var_name);
+            tokens.push_back(t);
+            i = index-1;
+            continue;
+        } else if (is_letter(c)) {
             //find until function ends
-            size_t index = i;
+            size_t index = i+1;
             while (is_valid_function_identifier(input[index])) {
                 index++;
                 if (index == input_size) {
@@ -403,7 +459,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
 size_t get_function_argument_count(const std::string& name) {
     if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^" || name == "log") {
         return 2;
-    } else if (name == "pi") {
+    } else if ((!name.empty()) && (name.at(0) == '$' || name == "pi")) {
         return 0;
     } else {
         return 1;
@@ -411,78 +467,88 @@ size_t get_function_argument_count(const std::string& name) {
 }
 
 matrix evaluate_function(const std::string& name, const std::vector<token>& argv, bool& has_error, error& e) {
-    if (name == "pi") {
+    if ((!name.empty()) && (name.at(0) == '$')) {
+        matrix* got = get_variable(name.substr(1,name.size()-1));
+        if (got != nullptr) {
+            return *got;
+        } else {
+            has_error = true;
+            e = error(error::ERROR_UNKNOWN_VAR);
+            return matrix(0,0);
+        }
+    } else if (name == "pi") {
         return pi().as_matrix();
-    }
-    token t1 = argv[0];
-    matrix m1 = *(matrix*)(t1.get_content());
-    if (name == "inv") {
-        return matrix_inv(m1,has_error,e);
-    } else if (name == "det") {
-        return matrix_det(m1,has_error,e).as_matrix();
-    } else if (name == "rref") {
-        return matrix_rref(m1,has_error,e);
-    } else if (name == "abs") {
-        return matrix_func(m1,&number_abs);
-    } else if (name == "ceil") {
-        return matrix_func(m1,&number_ceil);
-    } else if (name == "floor") {
-        return matrix_func(m1,&number_floor);
-    } else if (name == "round") {
-        return matrix_func(m1,&number_round);
-    } else if (name == "exp") {
-        return matrix_func_error(m1,&number_exp,has_error,e);
-    } else if (name == "ln") {
-        return matrix_func_error(m1,&number_ln,has_error,e);
-    } else if (name == "sin") {
-        return matrix_func(m1,&number_sin);
-    } else if (name == "cos") {
-        return matrix_func(m1,&number_cos);
-    } else if (name == "tan") {
-        return matrix_func_error(m1,&number_tan,has_error,e);
-    } else if (name == "asin") {
-        return matrix_func_error(m1,&number_asin,has_error,e);
-    } else if (name == "acos") {
-        return matrix_func_error(m1,&number_acos,has_error,e);
-    } else if (name == "atan") {
-        return matrix_func(m1,&number_atan);
-    } else if (name == "csc") {
-        return matrix_func_error(m1,&number_csc,has_error,e);
-    } else if (name == "sec") {
-        return matrix_func_error(m1,&number_sec,has_error,e);
-    } else if (name == "cot") {
-        return matrix_func_error(m1,&number_cot,has_error,e);
-    } else if (name == "size") {
-        return matrix_size(m1);
-    } else if (name == "row") {
-        return matrix_row(m1).as_matrix();
-    } else if (name == "col" || name == "column") {
-        return matrix_col(m1).as_matrix();
-    } else if (name == "fact" || name == "factorial") {
-        return matrix_func_error(m1,&number_factorial,has_error,e);
-    } else if (name == "sum") {
-        return matrix_sum(m1,has_error,e);
-    } else if (name == "prod" || name == "product") {
-        return matrix_product(m1,has_error,e);
-    } else if (name == "flatten") {
-        return matrix_flatten(m1);
-    } else if (name == "transpose" || name == "t") {
-        return matrix_transpose(m1);
-    } else if (get_function_argument_count(name) >= 2) {
-        token t2 = argv[1];
-        matrix m2 = *(matrix*)(t2.get_content());
-        if (name == "+") {
-            return matrix_add(m1,m2,has_error,e);
-        } else if (name == "-") {
-            return matrix_subtract(m1,m2,has_error,e);
-        } else if (name == "*") {
-            return matrix_mult(m1,m2,has_error,e);
-        } else if (name == "/") {
-            return matrix_div(m1,m2,has_error,e);
-        } else if (name == "^") {
-            return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
-        } else if (name == "log") {
-            return matrix_func_error_numonly(m1,m2,&number_log,has_error,e);
+    } else if (get_function_argument_count(name) >= 1) {
+        token t1 = argv[0];
+        matrix m1 = *(matrix*)(t1.get_content());
+        if (name == "inv") {
+            return matrix_inv(m1,has_error,e);
+        } else if (name == "det") {
+            return matrix_det(m1,has_error,e).as_matrix();
+        } else if (name == "rref") {
+            return matrix_rref(m1,has_error,e);
+        } else if (name == "abs") {
+            return matrix_func(m1,&number_abs);
+        } else if (name == "ceil") {
+            return matrix_func(m1,&number_ceil);
+        } else if (name == "floor") {
+            return matrix_func(m1,&number_floor);
+        } else if (name == "round") {
+            return matrix_func(m1,&number_round);
+        } else if (name == "exp") {
+            return matrix_func_error(m1,&number_exp,has_error,e);
+        } else if (name == "ln") {
+            return matrix_func_error(m1,&number_ln,has_error,e);
+        } else if (name == "sin") {
+            return matrix_func(m1,&number_sin);
+        } else if (name == "cos") {
+            return matrix_func(m1,&number_cos);
+        } else if (name == "tan") {
+            return matrix_func_error(m1,&number_tan,has_error,e);
+        } else if (name == "asin") {
+            return matrix_func_error(m1,&number_asin,has_error,e);
+        } else if (name == "acos") {
+            return matrix_func_error(m1,&number_acos,has_error,e);
+        } else if (name == "atan") {
+            return matrix_func(m1,&number_atan);
+        } else if (name == "csc") {
+            return matrix_func_error(m1,&number_csc,has_error,e);
+        } else if (name == "sec") {
+            return matrix_func_error(m1,&number_sec,has_error,e);
+        } else if (name == "cot") {
+            return matrix_func_error(m1,&number_cot,has_error,e);
+        } else if (name == "size") {
+            return matrix_size(m1);
+        } else if (name == "row") {
+            return matrix_row(m1).as_matrix();
+        } else if (name == "col" || name == "column") {
+            return matrix_col(m1).as_matrix();
+        } else if (name == "fact" || name == "factorial") {
+            return matrix_func_error(m1,&number_factorial,has_error,e);
+        } else if (name == "sum") {
+            return matrix_sum(m1,has_error,e);
+        } else if (name == "prod" || name == "product") {
+            return matrix_product(m1,has_error,e);
+        } else if (name == "flatten") {
+            return matrix_flatten(m1);
+        } else if (name == "transpose" || name == "t") {
+            return matrix_transpose(m1);
+        } else if (get_function_argument_count(name) >= 2) {
+            token t2 = argv[1];
+            matrix m2 = *(matrix*)(t2.get_content());
+            if (name == "+") {
+                return matrix_add(m1,m2,has_error,e);
+            } else if (name == "-") {
+                return matrix_subtract(m1,m2,has_error,e);
+            } else if (name == "*") {
+                return matrix_mult(m1,m2,has_error,e);
+            } else if (name == "/") {
+                return matrix_div(m1,m2,has_error,e);
+            } else if (name == "^") {
+                return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
+            } else if (name == "log") {
+                return matrix_func_error_numonly(m1,m2,&number_log,has_error,e);
+            }
         }
     }
     //still not returned
@@ -506,7 +572,7 @@ matrix evaluate(const expression& exp, bool& has_error, error& e) {
                 for (size_t i=0; i<arg_count; i++) {
                     if (arg_stack.empty()) {
                         has_error = true;
-                        e = error(error::ERROR_WRONG_ARG_COUNT,"Expected more argument(s)");
+                        e = error(error::ERROR_WRONG_ARG_COUNT); //unknown function?
                         matrix m(0,0);
                         return m;
                     } else {
@@ -569,38 +635,47 @@ matrix evaluate(const expression& exp, bool& has_error, error& e) {
     }
 }
 
-std::string calculate(std::string input) {
+void get_answer(std::string input, matrix& result, bool& has_error, error& e) {
     if (input.empty()) {
-        return "N/A";
+        has_error = true;
     } else {
-        std::ostringstream oss;
-        bool has_error = false;
-        error e(error::NO_ERROR,"");
         input = preprocess(input,has_error,e);
         if (has_error) {
-            return e.get_message();
+            return;
         }
         expression tokenized_exp = tokenize(input,has_error,e);
         if (has_error) {
-            return e.get_message();
+            return;
         } else {
             std::cout << "trying to merge matrix\n";
             tokenized_exp = merge_matrix(tokenized_exp,has_error,e);
             if (has_error) {
-                return e.get_message();
+                return;
             }
             tokenized_exp = shunting_yard(tokenized_exp, has_error,e);
             if (has_error) {
-                return e.get_message();
+                return;
             } else {
                 matrix m = evaluate(tokenized_exp,has_error,e);
                 if (has_error) {
-                    return e.get_message();
+                    return;
+                } else {
+                    result = m;
                 }
-                std::cout << "done: \n";
-                return m.get_string_representation();
             }
         }
+    }
+}
+
+std::string calculate(std::string input) {
+    matrix m(0,0);
+    bool has_error = false;
+    error e;
+    process_line(input,m,has_error,e);
+    if (has_error) {
+        return e.get_message();
+    } else {
+        return m.get_string_representation();
     }
 }
 
