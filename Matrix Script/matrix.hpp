@@ -30,6 +30,7 @@ public:
     bool is_singleton() const;
     bool is_empty() const;
     std::string get_size_string() const;
+    void transpose();
     
 private:
     size_t row, column;

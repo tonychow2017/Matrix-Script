@@ -53,5 +53,8 @@ matrix matrix_size(const matrix&);
 matrix matrix_sum(const matrix&, bool&, error&);
 matrix matrix_product(const matrix&, bool&, error&);
 number number_factorial(const number&, bool&, error&);
+matrix matrix_flatten(const matrix&);
+matrix matrix_transpose(matrix);
+//matrix matrix_sort(const matrix&);
 
 #endif /* function_hpp */

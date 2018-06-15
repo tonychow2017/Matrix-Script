@@ -904,3 +904,18 @@ number number_factorial(const number& n, bool& has_error, error& e) {
     }
 }
 
+matrix matrix_flatten(const matrix& m) {
+    matrix flattened(1,m.row_count() * m.column_count());
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            flattened.set(0,i*m.row_count()+j,*(m.get(i,j)));
+        }
+    }
+    return flattened;
+}
+
+matrix matrix_transpose(matrix m) {
+    m.transpose();
+    return m;
+}
+

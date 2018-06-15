@@ -8,6 +8,7 @@
 
 #include <utility>
 #include <sstream>
+#include <algorithm>
 #include "matrix.hpp"
 #include "number.hpp"
 
@@ -134,4 +135,26 @@ std::string matrix::get_size_string() const {
     return oss.str();
 }
 
+void matrix::transpose() {
+    entry*** new_data = new entry**[column];
+    for (size_t i=0; i<column; i++) {
+        new_data[i] = new entry*[row];
+        for (size_t j=0; j<row; j++) {
+            new_data[i][j] = data[j][i];
+            data[j][i] = nullptr;
+        }
+    }
+    entry*** old_data = data;
+    data = new_data;
+    if (old_data != nullptr) {
+        for (size_t i=0; i<row; i++) {
+            for (size_t j=0; j<column; j++) {
+                delete old_data[i][j];
+            }
+            delete[] old_data[i];
+        }
+        delete[] old_data;
+    }
+    std::swap(row,column);
+}
 

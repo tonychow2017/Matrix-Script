@@ -464,6 +464,10 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
         return matrix_sum(m1,has_error,e);
     } else if (name == "prod" || name == "product") {
         return matrix_product(m1,has_error,e);
+    } else if (name == "flatten") {
+        return matrix_flatten(m1);
+    } else if (name == "transpose" || name == "t") {
+        return matrix_transpose(m1);
     } else if (get_function_argument_count(name) >= 2) {
         token t2 = argv[1];
         matrix m2 = *(matrix*)(t2.get_content());
