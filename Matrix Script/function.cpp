@@ -919,3 +919,75 @@ matrix matrix_transpose(matrix m) {
     return m;
 }
 
+number matrix_min(const matrix& m, bool& has_error, error& e) {
+    if (m.is_empty()) {
+        has_error = true;
+        e = error(error::ERROR_EMPTY_MATRIX);
+        return number(0);
+    } else if (!check_if_all_number(m)) {
+        has_error = true;
+        e = error(error::ERROR_ENTRY_NOT_ALL_NUMBER);
+        return number(0);
+    }
+    number* min = dynamic_cast<number*>(m.get(0,0));
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            number* current;
+            if (*(current = dynamic_cast<number*>(m.get(i,j))) < *min) {
+                min = current;
+            }
+        }
+    }
+    return *min;
+}
+
+number matrix_max(const matrix& m, bool& has_error, error& e) {
+    if (m.is_empty()) {
+        has_error = true;
+        e = error(error::ERROR_EMPTY_MATRIX);
+        return number(0);
+    } else if (!check_if_all_number(m)) {
+        has_error = true;
+        e = error(error::ERROR_ENTRY_NOT_ALL_NUMBER);
+        return number(0);
+    }
+    number* max = dynamic_cast<number*>(m.get(0,0));
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            number* current;
+            if (!(*(current = dynamic_cast<number*>(m.get(i,j))) < *max)) {
+                max = current;
+            }
+        }
+    }
+    return *max;
+}
+
+matrix matrix_maxmin(const matrix& m, bool& has_error, error& e) {
+    if (m.is_empty()) {
+        has_error = true;
+        e = error(error::ERROR_EMPTY_MATRIX);
+        return matrix(0,0);
+    } else if (!check_if_all_number(m)) {
+        has_error = true;
+        e = error(error::ERROR_ENTRY_NOT_ALL_NUMBER);
+        return matrix(0,0);
+    }
+    number* max = dynamic_cast<number*>(m.get(0,0));
+    number* min = max;
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            number* current;
+            if (!(*(current = dynamic_cast<number*>(m.get(i,j))) < *max)) {
+                max = current;
+            } else if (*current < *min) {
+                min = current;
+            }
+        }
+    }
+    matrix result(1,2);
+    result.set(0,0,*max);
+    result.set(0,1,*min);
+    return result;
+}
+

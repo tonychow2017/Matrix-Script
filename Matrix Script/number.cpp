@@ -19,6 +19,15 @@ number::number(const number& n): value(n.get_value()) {
 
 number::~number() = default;
 
+number& number::operator=(number n) {
+    this->value = n.get_value();
+    return *this;
+}
+
+bool number::operator<(const number& n) {
+    return this->value < n.get_value();
+}
+
 double number::get_value() const {
     return value;
 }

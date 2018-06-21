@@ -55,6 +55,11 @@ matrix matrix_product(const matrix&, bool&, error&);
 number number_factorial(const number&, bool&, error&);
 matrix matrix_flatten(const matrix&);
 matrix matrix_transpose(matrix);
+number matrix_max(const matrix&, bool&, error&);
+number matrix_min(const matrix&, bool&, error&);
+matrix matrix_maxmin(const matrix&, bool&, error&);
+/*matrix matrix_range(const number&, const number&);
+matrix matrix_range_ext(const number&, const number&);*/
 //matrix matrix_sort(const matrix&);
 
 #endif /* function_hpp */

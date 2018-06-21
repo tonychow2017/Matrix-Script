@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "a=1\na=2\n$a";
+    std::string input = "maxmin(abs([3,2;5,-6]))";
     std::cout << calculate(input) << std::endl;
 }
 

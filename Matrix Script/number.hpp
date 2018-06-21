@@ -17,6 +17,8 @@ public:
     number(double value);
     number(const number& n);
     ~number();
+    number& operator=(number n);
+    bool operator<(const number& n);
     double get_value() const;
     matrix as_matrix() const;
     std::string get_string_representation() const override;

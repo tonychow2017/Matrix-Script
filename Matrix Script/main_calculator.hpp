@@ -21,6 +21,7 @@
 
 //extern int ERROR_EXTRA_DOTS, ERROR_ENDS_WITH_DOTS, ERROR_UNKNOWN_CHAR;
 extern std::unordered_map<std::string,matrix> variables;
+extern std::unordered_map<std::string,size_t> argcount;
 
 bool is_matrix_relevant_symbol(char c);
 expression merge_matrix(expression exp, bool& has_error, error& e);

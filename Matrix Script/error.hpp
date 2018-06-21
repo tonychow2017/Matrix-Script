@@ -10,11 +10,13 @@
 #define error_hpp
 
 #include <string>
+#include <unordered_map>
 
 class error {
 private:
     int type;
     std::string message;
+    static std::unordered_map<int,std::string> meaning;
     
 public:
     static const int NO_ERROR;
@@ -37,6 +39,8 @@ public:
     static const int ERROR_INTERNAL;
     static const int ERROR_UNKNOWN_FUNC;
     static const int ERROR_UNKNOWN_VAR;
+    static const int ERROR_INVALID_VAR_NAME;
+    static const int ERROR_EMPTY_MATRIX;
     error();
     error(int);
     error(int,std::string);

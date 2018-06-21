@@ -20,6 +20,7 @@
 #include "error.hpp"
 
 std::unordered_map<std::string,matrix> variables;
+std::unordered_map<std::string,size_t> argcount;
 
 void set_variable(std::string name, matrix& ent) {
     variables[name] = ent;
@@ -86,7 +87,25 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
         if (std::string::npos != pos) {
             //found
             var_name = line.substr(0,pos);
+            if (var_name.empty()) {
+                has_error = true;
+                e = error(error::ERROR_INVALID_VAR_NAME,"Empty");
+                return;
+            } else if (var_name == "$") {
+                has_error = true;
+                e = error(error::ERROR_INVALID_VAR_NAME,"$");
+            } else if (var_name[0] == '$') {
+                var_name = var_name.substr(1,var_name.size()-1);
+            }
             line = line.substr(pos+1,line.size()-pos-1);
+            for (size_t i=0; i<var_name.size(); i++) {
+                if (!is_valid_function_identifier(var_name.at(i))) {
+                    has_error = true;
+                    e = error(error::ERROR_INVALID_VAR_NAME,std::string(1,var_name[i]));
+                    return;
+                }
+            }
+
         } else {
             var_name = "answer";
         }
@@ -125,6 +144,8 @@ std::string preprocess(std::string input, bool& has_error, error& e) {
     result = std::regex_replace(result,std::regex("-\\+"),"-");
     result = std::regex_replace(result,std::regex("\\+\\+"),"(+");
     result = std::regex_replace(result,std::regex("--"),"+");
+    result = std::regex_replace(result,std::regex("\\s"),"");
+    result = std::regex_replace(result,std::regex("\\t"),"");
     if (result[0] == '-') {
         std::ostringstream oss;
         oss << "0" << result;
@@ -457,13 +478,63 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
 }
 
 size_t get_function_argument_count(const std::string& name) {
-    if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^" || name == "log") {
+    if (argcount.empty()) {
+        argcount.emplace("+",2);
+        argcount.emplace("-",2);
+        argcount.emplace("*",2);
+        argcount.emplace("/",2);
+        argcount.emplace("^",2);
+        argcount.emplace("log",2);
+        argcount.emplace("inv",1);
+        argcount.emplace("det",1);
+        argcount.emplace("rref",1);
+        argcount.emplace("abs",1);
+        argcount.emplace("ceil",1);
+        argcount.emplace("floor",1);
+        argcount.emplace("round",1);
+        argcount.emplace("exp",1);
+        argcount.emplace("ln",1);
+        argcount.emplace("sin",1);
+        argcount.emplace("cos",1);
+        argcount.emplace("tan",1);
+        argcount.emplace("asin",1);
+        argcount.emplace("acos",1);
+        argcount.emplace("atan",1);
+        argcount.emplace("csc",1);
+        argcount.emplace("sec",1);
+        argcount.emplace("cot",1);
+        argcount.emplace("acsc",1);
+        argcount.emplace("asec",1);
+        argcount.emplace("acot",1);
+        argcount.emplace("size",1);
+        argcount.emplace("row",1);
+        argcount.emplace("col",1);
+        argcount.emplace("column",1);
+        argcount.emplace("fact",1);
+        argcount.emplace("factorial",1);
+        argcount.emplace("flatten",1);
+        argcount.emplace("sum",1);
+        argcount.emplace("prod",1);
+        argcount.emplace("product",1);
+        argcount.emplace("transpose",1);
+        argcount.emplace("t",1);
+        argcount.emplace("max",1);
+        argcount.emplace("min",1);
+        argcount.emplace("maxmin",1);
+    }
+    auto it = argcount.find(name);
+    if (it != argcount.end()) {
+        return argcount[name];
+    } else {
+        return 0;
+    }
+    /*if (name == "+" || name == "-" || name == "*" || name == "/" || name == "^" || name == "log") {
         return 2;
     } else if ((!name.empty()) && (name.at(0) == '$' || name == "pi")) {
         return 0;
     } else {
         return 1;
-    }
+    }*/
 }
 
 matrix evaluate_function(const std::string& name, const std::vector<token>& argv, bool& has_error, error& e) {
@@ -473,7 +544,7 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return *got;
         } else {
             has_error = true;
-            e = error(error::ERROR_UNKNOWN_VAR);
+            e = error(error::ERROR_UNKNOWN_VAR,name);
             return matrix(0,0);
         }
     } else if (name == "pi") {
@@ -533,6 +604,12 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_flatten(m1);
         } else if (name == "transpose" || name == "t") {
             return matrix_transpose(m1);
+        } else if (name == "max") {
+            return matrix_max(m1,has_error,e).as_matrix();
+        } else if (name == "min") {
+            return matrix_min(m1,has_error,e).as_matrix();
+        } else if (name == "maxmin") {
+            return matrix_maxmin(m1,has_error,e);
         } else if (get_function_argument_count(name) >= 2) {
             token t2 = argv[1];
             matrix m2 = *(matrix*)(t2.get_content());
@@ -554,7 +631,7 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
     //still not returned
     matrix m(0,0);
     has_error = true;
-    e = error(error::ERROR_UNKNOWN_FUNC,std::string("Unknwon function: ") + name);
+    e = error(error::ERROR_UNKNOWN_FUNC,name);
     return m;
 }
 
@@ -668,6 +745,9 @@ void get_answer(std::string input, matrix& result, bool& has_error, error& e) {
 }
 
 std::string calculate(std::string input) {
+    if (input.empty()) {
+        return "N/A";
+    }
     matrix m(0,0);
     bool has_error = false;
     error e;
