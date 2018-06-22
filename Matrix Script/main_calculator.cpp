@@ -71,7 +71,7 @@ bool is_valid_function_identifier(char c) {
 }
 
 bool is_valid_symbol(char c) {
-    return std::string("+-*/^()[].,;$=\n").find(c) != std::string::npos;
+    return std::string("+-*/^()[].,;$=#\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
@@ -232,6 +232,8 @@ expression tokenize(std::string input, bool& has_error, error& e) {
                 i = index-1;
                 continue;
             }
+        } else if (c == '#') {
+            return tokens;
         } else if (is_valid_symbol(c)) {
             std::cout << "symbol\n";
             token t(c);
@@ -418,8 +420,8 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                     } else {
                         operator_stack.pop();
                     }
-                } else if (next.get_string_representation() == ",") {
-                    //pass
+                //} else if (next.get_string_representation() == ",") {
+                    //part of expression ends
                 } else {
                     while ((!operator_stack.empty()) && ((operator_stack.top().get_type() == token::FUNCTION) || (get_precedence(operator_stack.top()) > get_precedence(next)) || (get_precedence(operator_stack.top()) == get_precedence(next) && is_left_associative(operator_stack.top()))) && (operator_stack.top().get_string_representation() != "(")) {
                         token top_token = operator_stack.top();
@@ -427,7 +429,9 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                         resulting_token.push_back(top_token);
                         std::cout << "insert " << top_token.get_string_representation() << " to result\n";
                     }
-                    operator_stack.push(next);
+                    if (next.get_string_representation() != ",") {
+                        operator_stack.push(next);
+                    }
                 }
                 break;
             case token::MATRIX:
@@ -521,6 +525,7 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("max",1);
         argcount.emplace("min",1);
         argcount.emplace("maxmin",1);
+        argcount.emplace("range",2);
     }
     auto it = argcount.find(name);
     if (it != argcount.end()) {
@@ -625,6 +630,9 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
                 return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
             } else if (name == "log") {
                 return matrix_func_error_numonly(m1,m2,&number_log,has_error,e);
+            } else if (name == "range") {
+                //return matrix_range(m1,m2,has_error,e);
+                return matrix_func_numonly(m1,m2,&matrix_range,has_error,e);
             }
         }
     }

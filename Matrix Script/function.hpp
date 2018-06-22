@@ -44,6 +44,7 @@ number number_round(const number& n);
 number number_pow(const number& n1, const number& n2, bool& has_error, error& e);
 number number_exp(const number& n, bool& has_error, error& e);
 matrix matrix_func(matrix m, number (*ptr)(const number&));
+matrix matrix_func_numonly(const matrix&, const matrix&, matrix (*ptr)(const number&, const number&), bool&, error&);
 matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e);
 matrix matrix_func_error_numonly(const matrix& m1, const matrix& m2, number (*ptr)(const number&, const number&, bool&, error&), bool& has_error, error& e);
 number pi();
@@ -58,8 +59,8 @@ matrix matrix_transpose(matrix);
 number matrix_max(const matrix&, bool&, error&);
 number matrix_min(const matrix&, bool&, error&);
 matrix matrix_maxmin(const matrix&, bool&, error&);
-/*matrix matrix_range(const number&, const number&);
-matrix matrix_range_ext(const number&, const number&);*/
+matrix matrix_range(const number&, const number&);
+//matrix matrix_range_ext(const number&, const number&);
 //matrix matrix_sort(const matrix&);
 
 #endif /* function_hpp */

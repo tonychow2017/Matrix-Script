@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "maxmin(abs([3,2;5,-6]))";
+    std::string input = "range(-3.1,4.1)";
     std::cout << calculate(input) << std::endl;
 }
 

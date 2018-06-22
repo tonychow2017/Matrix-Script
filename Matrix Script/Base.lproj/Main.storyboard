@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,21 +34,70 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nVX-XT-5DV">
+                                <rect key="frame" x="5" y="253" width="310" height="29"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <segments>
+                                    <segment title="General"/>
+                                    <segment title="Functions"/>
+                                    <segment title="Characters"/>
+                                </segments>
+                                <color key="tintColor" red="0.47976036269430056" green="0.2916790705230371" blue="0.087044189048476092" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </segmentedControl>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FS4-aZ-mKd">
+                                <rect key="frame" x="5" y="286" width="310" height="277"/>
+                                <subviews>
+                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Og1-MS-qNt">
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="277"/>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <sections/>
+                                    </tableView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Og1-MS-qNt" secondAttribute="bottom" id="aB7-hM-Wvv"/>
+                                    <constraint firstAttribute="trailing" secondItem="Og1-MS-qNt" secondAttribute="trailing" id="ctM-DM-LoJ"/>
+                                    <constraint firstItem="Og1-MS-qNt" firstAttribute="top" secondItem="FS4-aZ-mKd" secondAttribute="top" id="pyH-iV-QeU"/>
+                                    <constraint firstItem="Og1-MS-qNt" firstAttribute="leading" secondItem="FS4-aZ-mKd" secondAttribute="leading" id="zgM-S9-lT9"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uGh-hG-gmI">
+                                <rect key="frame" x="5" y="286" width="310" height="277"/>
+                            </view>
+                            <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baM-GW-2ni">
+                                <rect key="frame" x="5" y="286" width="310" height="277"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.13901165127754211" green="0.33194899559020996" blue="0.061707623302936554" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="nVX-XT-5DV" firstAttribute="top" secondItem="ywg-xi-YQA" secondAttribute="bottom" constant="5" id="1yS-Tf-b0i"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="5" id="3FM-Sc-fWk"/>
+                            <constraint firstItem="uGh-hG-gmI" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="7fr-vq-V5j"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="baM-GW-2ni" secondAttribute="bottom" constant="5" id="9Mh-8Z-fpd"/>
+                            <constraint firstItem="nVX-XT-5DV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="CEe-Ea-0HD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uGh-hG-gmI" secondAttribute="trailing" constant="5" id="Iqp-0i-Vo1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="baM-GW-2ni" secondAttribute="trailing" constant="5" id="KlX-69-tLW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uGh-hG-gmI" secondAttribute="bottom" constant="5" id="MlD-Gn-LH5"/>
+                            <constraint firstItem="FS4-aZ-mKd" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="N7Y-aT-VJ1"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="leading" secondItem="ywg-xi-YQA" secondAttribute="leading" id="Q8b-88-bdk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="FS4-aZ-mKd" secondAttribute="bottom" constant="5" id="UHQ-ZK-ZXG"/>
                             <constraint firstItem="ywg-xi-YQA" firstAttribute="top" secondItem="bcT-g9-rb4" secondAttribute="bottom" constant="5" id="WCP-FU-jyx"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XDC-Rx-Blg"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="trailing" secondItem="ywg-xi-YQA" secondAttribute="trailing" id="ceM-e1-E2C"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nVX-XT-5DV" secondAttribute="trailing" constant="5" id="hAf-FH-PIY"/>
+                            <constraint firstItem="FS4-aZ-mKd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="nv7-ca-q7M"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="nw4-IP-rFc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FS4-aZ-mKd" secondAttribute="trailing" constant="5" id="oOp-em-yd1"/>
+                            <constraint firstItem="baM-GW-2ni" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="vRB-I1-yfc"/>
+                            <constraint firstItem="baM-GW-2ni" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="vsI-zZ-kQM"/>
+                            <constraint firstItem="uGh-hG-gmI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="yUC-tW-Rja"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="answerLabel" destination="ywg-xi-YQA" id="Ghx-Pt-PzM"/>
+                        <outlet property="generalTable" destination="Og1-MS-qNt" id="WvL-gZ-1Zt"/>
                         <outlet property="mainTextView" destination="bcT-g9-rb4" id="9nZ-0y-OyJ"/>
+                        <outlet property="segmentedControl" destination="nVX-XT-5DV" id="lGg-eg-wFq"/>
                         <outlet property="view" destination="8bC-Xf-vdC" id="npm-kc-9wY"/>
                     </connections>
                 </viewController>

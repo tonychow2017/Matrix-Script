@@ -771,6 +771,46 @@ matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), 
     return m;
 }
 
+matrix matrix_func_numonly(const matrix& m1, const matrix& m2, matrix (*ptr)(const number&, const number&), bool& has_error, error& e) {
+    if ((!check_if_all_number(m1)) || (!check_if_all_number(m2))) {
+        has_error = true;
+        e = error(error::ERROR_ENTRY_NOT_ALL_NUMBER);
+        return m1;
+    } else if (m1.is_singleton() && m2.is_singleton()) {
+        return ptr(*dynamic_cast<number*>(m1.get(0,0)), *dynamic_cast<number*>(m2.get(0,0)));
+        //return result.as_matrix();
+    } else if (m1.is_singleton()) {
+        //m2 is not singleton
+        matrix result(m2.row_count(),m2.column_count());
+        number n1 = *dynamic_cast<number*>(m1.get(0,0));
+        for (size_t i=0; i<m2.row_count(); i++) {
+            for (size_t j=0; j<m2.column_count(); j++) {
+                result.set(i,j,ptr(n1, *dynamic_cast<number*>(m2.get(i,j))));
+                if (has_error) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    } else if (m2.is_singleton()) {
+        //m1 is not singleton
+        matrix result(m1.row_count(),m1.column_count());
+        number n2 = *dynamic_cast<number*>(m2.get(0,0));
+        for (size_t i=0; i<m1.row_count(); i++) {
+            for (size_t j=0; j<m1.column_count(); j++) {
+                result.set(i,j,ptr(*dynamic_cast<number*>(m1.get(i,j)), n2));
+            }
+        }
+        return result;
+    } else if (m1.is_empty() && m2.is_empty()) {
+        return m1;
+    } else {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return m1;
+    }
+}
+
 number number_div(const number& n1, const number& n2, bool& has_error, error& e) {
     if (n2.is_zero()) {
         has_error = true;
@@ -989,5 +1029,17 @@ matrix matrix_maxmin(const matrix& m, bool& has_error, error& e) {
     result.set(0,0,*max);
     result.set(0,1,*min);
     return result;
+}
+
+matrix matrix_range(const number& n1, const number& n2) {
+    const number& smaller = std::min(n1,n2);
+    const number& larger = std::max(n1,n2);
+    double smaller_ceil = std::ceil(smaller.get_value());
+    double larger_floor = std::floor(larger.get_value());
+    matrix range(1,larger_floor-smaller_ceil+1);
+    for (size_t i=0; i<(larger_floor-smaller_ceil+1); i++) {
+        range.set(0,i,number(i+smaller_ceil));
+    }
+    return range;
 }
 

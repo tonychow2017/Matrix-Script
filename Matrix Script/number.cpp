@@ -24,7 +24,7 @@ number& number::operator=(number n) {
     return *this;
 }
 
-bool number::operator<(const number& n) {
+bool number::operator<(const number& n) const {
     return this->value < n.get_value();
 }
 

@@ -16,6 +16,18 @@
 		EA408376201C6AE6001EAB93 /* entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408374201C6AE6001EAB93 /* entry.cpp */; };
 		EA408379201C6AF7001EAB93 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408377201C6AF7001EAB93 /* number.cpp */; };
 		EA408382201C9746001EAB93 /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
+		EA75708720DCCBC6006A0C17 /* Matrix_Script_Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75708620DCCBC6006A0C17 /* Matrix_Script_Test.swift */; };
+		EA75709620DCD1D3006A0C17 /* Matrix Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75709520DCD1D3006A0C17 /* Matrix Script.swift */; };
+		EA75709720DCD1D3006A0C17 /* Matrix Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75709520DCD1D3006A0C17 /* Matrix Script.swift */; };
+		EA7570A120DCD41B006A0C17 /* main_calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408344201C63D8001EAB93 /* main_calculator.cpp */; };
+		EA7570A220DCD41B006A0C17 /* entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408374201C6AE6001EAB93 /* entry.cpp */; };
+		EA7570A320DCD41B006A0C17 /* number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408377201C6AF7001EAB93 /* number.cpp */; };
+		EA7570A420DCD41B006A0C17 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40834A201C6693001EAB93 /* matrix.cpp */; };
+		EA7570A520DCD41B006A0C17 /* expression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40835C201C675D001EAB93 /* expression.cpp */; };
+		EA7570A620DCD41B006A0C17 /* token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40836E201C6834001EAB93 /* token.cpp */; };
+		EA7570A720DCD41B006A0C17 /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
+		EA7570A820DCD41B006A0C17 /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9096A6205A50F300D3903A /* function.cpp */; };
+		EA7570A920DCD41B006A0C17 /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA01459720886A9300675B14 /* error.cpp */; };
 		EA9096A8205A50F300D3903A /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9096A6205A50F300D3903A /* function.cpp */; };
 		EA9096AB205A5C4F00D3903A /* function.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9096A6205A50F300D3903A /* function.cpp */; };
 		EA958B4A200B56E900696366 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA958B49200B56E900696366 /* AppDelegate.swift */; };
@@ -65,6 +77,10 @@
 		EA40837C201C8EF3001EAB93 /* Matrix Script-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Matrix Script-Bridging-Header.h"; sourceTree = "<group>"; };
 		EA408380201C9746001EAB93 /* main_calculator_c.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_calculator_c.cpp; sourceTree = "<group>"; };
 		EA408381201C9746001EAB93 /* main_calculator_c.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_calculator_c.hpp; sourceTree = "<group>"; };
+		EA75708420DCCBC6006A0C17 /* Matrix Script Test.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Matrix Script Test.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA75708620DCCBC6006A0C17 /* Matrix_Script_Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix_Script_Test.swift; sourceTree = "<group>"; };
+		EA75708820DCCBC6006A0C17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA75709520DCD1D3006A0C17 /* Matrix Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Matrix Script.swift"; sourceTree = "<group>"; };
 		EA9096A6205A50F300D3903A /* function.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = function.cpp; sourceTree = "<group>"; };
 		EA9096A7205A50F300D3903A /* function.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = function.hpp; sourceTree = "<group>"; };
 		EA958B46200B56E900696366 /* Matrix Script.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Matrix Script.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +98,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EA75708120DCCBC6006A0C17 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA958B43200B56E800696366 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -110,12 +133,22 @@
 			path = "Matrix Script Java";
 			sourceTree = "<group>";
 		};
+		EA75708520DCCBC6006A0C17 /* Matrix Script Test */ = {
+			isa = PBXGroup;
+			children = (
+				EA75708620DCCBC6006A0C17 /* Matrix_Script_Test.swift */,
+				EA75708820DCCBC6006A0C17 /* Info.plist */,
+			);
+			path = "Matrix Script Test";
+			sourceTree = "<group>";
+		};
 		EA958B3D200B56E800696366 = {
 			isa = PBXGroup;
 			children = (
 				EA958B48200B56E900696366 /* Matrix Script */,
 				EAAAAD7F20233C8F007CA3DA /* Matrix Script CLI */,
 				EA0204E620CBCB25003A7BCB /* Matrix Script Java */,
+				EA75708520DCCBC6006A0C17 /* Matrix Script Test */,
 				EA958B47200B56E900696366 /* Products */,
 				EA9B9D9720CE709100E51E3B /* CMakeLists.txt */,
 			);
@@ -126,6 +159,7 @@
 			children = (
 				EA958B46200B56E900696366 /* Matrix Script.app */,
 				EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */,
+				EA75708420DCCBC6006A0C17 /* Matrix Script Test.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,6 +192,7 @@
 				EA9096A7205A50F300D3903A /* function.hpp */,
 				EA01459720886A9300675B14 /* error.cpp */,
 				EA01459820886A9300675B14 /* error.hpp */,
+				EA75709520DCD1D3006A0C17 /* Matrix Script.swift */,
 			);
 			path = "Matrix Script";
 			sourceTree = "<group>";
@@ -190,6 +225,23 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		EA75708320DCCBC6006A0C17 /* Matrix Script Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA75708B20DCCBC6006A0C17 /* Build configuration list for PBXNativeTarget "Matrix Script Test" */;
+			buildPhases = (
+				EA75708020DCCBC6006A0C17 /* Sources */,
+				EA75708120DCCBC6006A0C17 /* Frameworks */,
+				EA75708220DCCBC6006A0C17 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Matrix Script Test";
+			productName = "Matrix Script Test";
+			productReference = EA75708420DCCBC6006A0C17 /* Matrix Script Test.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		EA958B45200B56E800696366 /* Matrix Script */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA958B58200B56E900696366 /* Build configuration list for PBXNativeTarget "Matrix Script" */;
@@ -230,12 +282,16 @@
 		EA958B3E200B56E800696366 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Tony Chow";
 				TargetAttributes = {
 					EA0204DF20CBC95A003A7BCB = {
 						CreatedOnToolsVersion = 9.4;
+						ProvisioningStyle = Automatic;
+					};
+					EA75708320DCCBC6006A0C17 = {
+						CreatedOnToolsVersion = 9.4.1;
 						ProvisioningStyle = Automatic;
 					};
 					EA958B45200B56E800696366 = {
@@ -265,11 +321,19 @@
 				EA958B45200B56E800696366 /* Matrix Script */,
 				EAAAAD7D20233C8F007CA3DA /* Matrix Script CLI */,
 				EA0204DF20CBC95A003A7BCB /* Matrix Script Java */,
+				EA75708320DCCBC6006A0C17 /* Matrix Script Test */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EA75708220DCCBC6006A0C17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA958B44200B56E800696366 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -283,6 +347,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EA75708020DCCBC6006A0C17 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA7570A220DCD41B006A0C17 /* entry.cpp in Sources */,
+				EA7570A520DCD41B006A0C17 /* expression.cpp in Sources */,
+				EA75709720DCD1D3006A0C17 /* Matrix Script.swift in Sources */,
+				EA7570A820DCD41B006A0C17 /* function.cpp in Sources */,
+				EA7570A620DCD41B006A0C17 /* token.cpp in Sources */,
+				EA7570A420DCD41B006A0C17 /* matrix.cpp in Sources */,
+				EA75708720DCCBC6006A0C17 /* Matrix_Script_Test.swift in Sources */,
+				EA7570A320DCD41B006A0C17 /* number.cpp in Sources */,
+				EA7570A120DCD41B006A0C17 /* main_calculator.cpp in Sources */,
+				EA7570A720DCD41B006A0C17 /* main_calculator_c.cpp in Sources */,
+				EA7570A920DCD41B006A0C17 /* error.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA958B42200B56E800696366 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,6 +373,7 @@
 				EA958B4C200B56E900696366 /* ViewController.swift in Sources */,
 				EA408376201C6AE6001EAB93 /* entry.cpp in Sources */,
 				EA9096A8205A50F300D3903A /* function.cpp in Sources */,
+				EA75709620DCD1D3006A0C17 /* Matrix Script.swift in Sources */,
 				EA958B4A200B56E900696366 /* AppDelegate.swift in Sources */,
 				EA408379201C6AF7001EAB93 /* number.cpp in Sources */,
 				EA40835E201C675D001EAB93 /* expression.cpp in Sources */,
@@ -364,6 +447,42 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		EA75708920DCCBC6006A0C17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Matrix Script Test/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "tony.Matrix-Script-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.13;
+				SWIFT_OBJC_BRIDGING_HEADER = "Matrix Script/Matrix Script-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		EA75708A20DCCBC6006A0C17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Matrix Script Test/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = "tony.Matrix-Script-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.13;
+				SWIFT_OBJC_BRIDGING_HEADER = "Matrix Script/Matrix Script-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -543,6 +662,15 @@
 			buildConfigurations = (
 				EA0204E120CBC95A003A7BCB /* Debug */,
 				EA0204E220CBC95A003A7BCB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA75708B20DCCBC6006A0C17 /* Build configuration list for PBXNativeTarget "Matrix Script Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA75708920DCCBC6006A0C17 /* Debug */,
+				EA75708A20DCCBC6006A0C17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

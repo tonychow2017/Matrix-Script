@@ -12,6 +12,11 @@
 		<key>Matrix Script Java.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Matrix Script Test.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
 		<key>Matrix Script.xcscheme</key>
@@ -25,6 +30,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>EA0204D720CBC81F003A7BCB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EA75708320DCCBC6006A0C17</key>
 		<dict>
 			<key>primary</key>
 			<true/>
