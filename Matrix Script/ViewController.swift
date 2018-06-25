@@ -16,7 +16,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var generalTable: UITableView!
     
-    static var generalTableCells = ["+","-","*","/","^"]
+    static let generalTableCells = [["+","-","*","/","^","."],["(",")","[","]",",",";"]]
+    static let screenWidth = Int(UIScreen.main.bounds.width)
+    static let buttonColumnCount = generalTableCells[0].count
+    static let gap = 5
+    static let buttonWidth = Int(min(70,((ViewController.screenWidth-10)-ViewController.gap)/ViewController.buttonColumnCount-ViewController.gap))
+    static let firstIndent = ((ViewController.screenWidth-10)-(buttonWidth+gap)*buttonColumnCount+gap)/2
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ViewController.generalTableCells.count
@@ -25,7 +30,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = generalTable.dequeueReusableCell(withIdentifier: "generalTableCell", for: indexPath)
         //cell.textLabel!.text = ViewController.generalTableCells[indexPath.row]
-        cell.addSubview(createButton(ViewController.generalTableCells[indexPath.row]))
+        //cell.addSubview(createButton(ViewController.generalTableCells[indexPath.row]))
+        for button in createButtonSet(ViewController.generalTableCells[indexPath.row]) {
+            cell.addSubview(button)
+        }
         cell.backgroundColor = UIColor.clear
         //cell.textLabel!.backgroundColor = UIColor.clear
         //cell.selectedBackgroundView = cell.backgroundView//UIView()
@@ -43,9 +51,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
         //generalTable.register(UITableViewCell.self,"generalTableCell")
         generalTable.dataSource = self
         generalTable.separatorColor = UIColor.clear
-        generalTable.rowHeight = 60
+        generalTable.rowHeight = CGFloat(ViewController.gap+ViewController.buttonWidth)
         generalTable.allowsSelection = false
         segmentedControl.layer.cornerRadius = 5
+        for i in 0..<segmentedControl.numberOfSegments {
+            segmentedControl.setWidth(CGFloat((ViewController.screenWidth-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,7 +73,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
         button.setTitle(name, for: .normal);
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = UIColor.brown
-        button.layer.cornerRadius = 25
+        //button.layer.cornerRadius = 25
         //button.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
         button.addTarget(nil,action: #selector(buttonTouched(_:)), for: .touchDown)
         return button
@@ -71,10 +82,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
     func createButtonSet(_ names: [String]) -> [UIButton] {
         var buttonSet = [UIButton]()
         var count = 0
+        
+        //print(buttonWidth)
         for name in names {
             let button = createButton(name);
             buttonSet += [button]
-            button.frame = CGRect(x: 5+55*count, y: 5, width: 50, height: 50)
+            button.frame = CGRect(x: (ViewController.buttonWidth+ViewController.gap)*count+ViewController.firstIndent, y: ViewController.gap, width: ViewController.buttonWidth, height: ViewController.buttonWidth)
+            button.layer.cornerRadius = CGFloat(ViewController.buttonWidth/2)
             count += 1
         }
         return buttonSet
