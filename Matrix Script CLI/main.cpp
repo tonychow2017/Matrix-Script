@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "range(-3.1,4.1)";
+    std::string input = "[1,transpose(range(2,5));[3;4],4]";
     std::cout << calculate(input) << std::endl;
 }
 

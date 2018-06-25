@@ -35,7 +35,7 @@ matrix* get_variable(std::string name) {
     }
 }
 
-bool is_digit(char c) {
+inline bool is_digit(char c) {
     return ('0' <= c) && (c <= '9');
 }
 
@@ -62,20 +62,32 @@ bool is_number(std::string s) {
     }
 }
 
-bool is_letter(char c) {
+inline bool is_letter(char c) {
     return (('A' <= c) && (c <= 'Z')) || (('a' <= c) && (c <= 'z'));
 }
 
-bool is_valid_function_identifier(char c) {
+inline bool is_valid_function_identifier(char c) {
     return is_letter(c) || (c == '_');
 }
 
-bool is_valid_symbol(char c) {
+inline bool is_valid_symbol(char c) {
     return std::string("+-*/^()[].,;$=#\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
     return std::string("[],;").find(c) != std::string::npos;
+}
+
+inline bool is_bracket(char c) {
+    return std::string("[]()").find(c) != std::string::npos;
+}
+
+inline bool is_open_bracket(char c) {
+    return c == '[' || c == '(';
+}
+
+inline bool is_closed_bracket(char c) {
+    return c == ']' || c == ')';
 }
 
 void process_line(std::string input, matrix& result, bool& has_error, error& e) {
@@ -257,25 +269,64 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
     std::cout << "\n";
     std::vector<std::vector<expression>> rows;
     std::vector<expression> row;
-    int max_col = -1;
+    std::vector<token> exp;
+    int max_col = 0;
     for (auto i=0; i<tokens.size(); i++) {
-        std::vector<token> exp;
-        while (i != tokens.size() && tokens[i].get_string_representation() != "," && tokens[i].get_string_representation() != ";") {
+        //std::vector<token> exp;
+        while (i != tokens.size() && tokens[i].get_string_representation() != "," && tokens[i].get_string_representation() != ";" && tokens[i].get_string_representation() != "(" && tokens[i].get_string_representation() != "[") {
             exp.push_back(tokens[i]);
             i++;
         }
+        if (tokens[i].get_string_representation() == "(" || tokens[i].get_string_representation() == "[") {
+            //exp.push_back(tokens[i]);
+            std::stack<std::string> brackets;
+            //brackets.push(tokens[i].get_string_representation());
+            while (i != tokens.size()) {
+                //i++;
+                if (i == tokens.size()) {
+                    has_error = true;
+                    e = error(brackets.top() == "("?error::ERROR_MISMATCHED_BRACKET:error::ERROR_UNCLOSED_MATRIX);
+                    return matrix(0,0);
+                    //break;
+                } else {
+                    exp.push_back(tokens[i]);
+                    const std::string& rep = tokens[i].get_string_representation();
+                    std::cout << "build matrix: sub-matrix or exp: rep: " << rep << "; exp contains: " << exp.size() << std::endl;
+                    if (is_closed_bracket(rep[0])) {
+                        brackets.pop();
+                    } else if (is_open_bracket(rep[0])) {
+                        brackets.push(rep);
+                    }
+                    if (brackets.empty()) {
+                        std::cout << "empty\n";
+                        break;
+                    }
+                    i++;
+                }
+            }
+            /*if (i == tokens.size()) {
+                has_error = true;
+                e = error(brackets.top() == "("?error::ERROR_MISMATCHED_BRACKET:error::ERROR_UNCLOSED_MATRIX);
+                return matrix(0,0);
+            }*/
+            std::cout << "while-end: exp contains: " << exp.size() << "\n";
+        }
+        std::cout << "leaving if: exp size: " << exp.size() << "\n";
         if (i == tokens.size() || tokens[i].get_string_representation() == ";") {
             //end row
+            std::cout << "end row: exp contains: " << exp.size() << "\n";
             expression e(exp);
             row.push_back(e);
             max_col = std::max((int)(row.size()),max_col);
             rows.push_back(row);
             //reset row
-            row.clear();
-        } else {
+            row = std::vector<expression>(); //.clear();
+            exp = std::vector<token>(); //.clear();
+        } else if (tokens[i].get_string_representation() == ",") {
+            std::cout << ",\n";
             expression e(exp);
             row.push_back(e);
-            exp.clear();
+            exp = std::vector<token>(); //.clear();
         }
     }
     std::cout << "creating matrix of size " << rows.size() << " " << max_col << std::endl;

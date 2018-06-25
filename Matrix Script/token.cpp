@@ -122,8 +122,8 @@ token token::as_matrix_token() const {
 
 token token::operator=(token rhs) {
     std::swap(this->type,rhs.type);
-    void* tmp = rhs.content;
-    this->content = tmp;
+    //void* tmp = rhs.content;
+    this->content = rhs.content;
     rhs.content = nullptr; //cannot use swap?
     return *this;
 }

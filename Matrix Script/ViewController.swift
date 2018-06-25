@@ -63,9 +63,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = UIColor.brown
         button.layer.cornerRadius = 25
-        button.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
+        //button.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
         button.addTarget(nil,action: #selector(buttonTouched(_:)), for: .touchDown)
         return button
+    }
+    
+    func createButtonSet(_ names: [String]) -> [UIButton] {
+        var buttonSet = [UIButton]()
+        var count = 0
+        for name in names {
+            let button = createButton(name);
+            buttonSet += [button]
+            button.frame = CGRect(x: 5+55*count, y: 5, width: 50, height: 50)
+            count += 1
+        }
+        return buttonSet
     }
     
     @objc func buttonTouched(_ sender: UIButton) {
