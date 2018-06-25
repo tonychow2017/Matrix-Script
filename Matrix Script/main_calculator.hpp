@@ -23,6 +23,7 @@
 extern std::unordered_map<std::string,matrix> variables;
 extern std::unordered_map<std::string,size_t> argcount;
 
+std::string preprocess(std::string, bool&, error&);
 bool is_matrix_relevant_symbol(char c);
 expression merge_matrix(expression exp, bool& has_error, error& e);
 void get_answer(std::string input, matrix& result, bool& has_error, error& e);

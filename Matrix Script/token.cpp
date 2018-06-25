@@ -82,16 +82,16 @@ int token::get_type() const {
 std::string token::get_string_representation() const {
     switch (type) {
         case NUMBER:
-            return ((number*)content)->get_string_representation();
+            return static_cast<number*>(content)->get_string_representation();
         case FUNCTION:
-            return *(std::string*)content;
+            return *static_cast<std::string*>(content);
         case SYMBOL:
         {
-            std::string character(1,*(char*)content);
+            std::string character(1,*static_cast<char*>(content));
             return character;
         }
         case MATRIX:
-            return ((matrix*)content)->get_string_representation();
+            return static_cast<matrix*>(content)->get_string_representation();
         default:
             return "UNKNOWN";
     }

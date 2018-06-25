@@ -94,6 +94,10 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
     std::istringstream iss(input);
     std::string line;
     while (std::getline(iss,line)) {
+        line = preprocess(line,has_error,e);
+        if (has_error) {
+            return;
+        }
         size_t pos = line.find("=");
         std::string var_name;
         if (std::string::npos != pos) {
@@ -110,6 +114,11 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
                 var_name = var_name.substr(1,var_name.size()-1);
             }
             line = line.substr(pos+1,line.size()-pos-1);
+            if (line.empty()) {
+                has_error = true;
+                e = error(error::ERROR_NOTHING_ON_RHS);
+                return;
+            }
             for (size_t i=0; i<var_name.size(); i++) {
                 if (!is_valid_function_identifier(var_name.at(i))) {
                     has_error = true;
@@ -118,15 +127,18 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
                 }
             }
 
-        } else {
+        } /*else {
             var_name = "answer";
-        }
+        }*/
         //matrix result(0,0);
         //bool has_error;
         //error e;
         get_answer(line,result,has_error,e);
         if (!has_error) {
-            set_variable(var_name,result);
+            set_variable("answer",result);
+            if (var_name != "answer") {
+                set_variable(var_name,result);
+            }
         } else {
             return;
         }
@@ -273,11 +285,12 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
     int max_col = 0;
     for (auto i=0; i<tokens.size(); i++) {
         //std::vector<token> exp;
+        std::cout << "current token is: " << tokens[i].get_string_representation() << "\n";
         while (i != tokens.size() && tokens[i].get_string_representation() != "," && tokens[i].get_string_representation() != ";" && tokens[i].get_string_representation() != "(" && tokens[i].get_string_representation() != "[") {
             exp.push_back(tokens[i]);
             i++;
         }
-        if (tokens[i].get_string_representation() == "(" || tokens[i].get_string_representation() == "[") {
+        if (i != tokens.size() && (tokens[i].get_string_representation() == "(" || tokens[i].get_string_representation() == "[")) {
             //exp.push_back(tokens[i]);
             std::stack<std::string> brackets;
             //brackets.push(tokens[i].get_string_representation());
@@ -328,6 +341,7 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
             row.push_back(e);
             exp = std::vector<token>(); //.clear();
         }
+        std::cout << "end of for loop body: i: " << i << ", size: " << tokens.size() << "\n";
     }
     std::cout << "creating matrix of size " << rows.size() << " " << max_col << std::endl;
     matrix m(rows.size(),max_col);
@@ -775,10 +789,10 @@ void get_answer(std::string input, matrix& result, bool& has_error, error& e) {
     if (input.empty()) {
         has_error = true;
     } else {
-        input = preprocess(input,has_error,e);
+        /*input = preprocess(input,has_error,e);
         if (has_error) {
             return;
-        }
+        }*/
         expression tokenized_exp = tokenize(input,has_error,e);
         if (has_error) {
             return;

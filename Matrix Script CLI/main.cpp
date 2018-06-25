@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "[1,transpose(range(2,5));[3;4],4]";
+    std::string input = "$a=1\n$matrix=[$a,2;3,4]\n";
     std::cout << calculate(input) << std::endl;
 }
 

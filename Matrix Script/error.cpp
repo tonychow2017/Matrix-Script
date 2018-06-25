@@ -31,6 +31,7 @@ const int error::ERROR_NOT_NATURAL_NUMBER = 17;
 const int error::ERROR_UNKNOWN_VAR = 18;
 const int error::ERROR_INVALID_VAR_NAME = 19;
 const int error::ERROR_EMPTY_MATRIX = 20;
+const int error::ERROR_NOTHING_ON_RHS = 21;
 const int error::ERROR_INTERNAL = 500;
 const int error::ERROR_UNKNOWN_FUNC = 11;
 std::unordered_map<int,std::string> error::meaning;
@@ -84,6 +85,7 @@ std::string error::get_error_meaning(int e) {
         meaning.insert(std::make_pair(ERROR_UNKNOWN_VAR,"Unknown variable"));
         meaning.insert(std::make_pair(ERROR_INVALID_VAR_NAME,"Invalid variable name"));
         meaning.insert(std::make_pair(ERROR_EMPTY_MATRIX,"Empty matrix"));
+        meaning.insert(std::make_pair(ERROR_NOTHING_ON_RHS,"Assign nothing to variable"));
     }
     try {
         std::string result = meaning.at(e);

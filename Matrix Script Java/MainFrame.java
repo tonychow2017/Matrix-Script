@@ -1,9 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
 public class MainFrame extends JFrame {
+    private static final Color BACKGROUND_GREEN = Color.GREEN.darker().darker();
     public static void createAndShowGUI() {
         new MainFrame().setVisible(true);
     }
@@ -22,10 +24,11 @@ public class MainFrame extends JFrame {
         private JLabel answer = new JLabel("N/A", SwingConstants.CENTER);
         MainPanel() {
             super(new BorderLayout());
-            this.setBackground(Color.GREEN.darker().darker());
+            this.setBackground(BACKGROUND_GREEN);
             textArea.setFont(textArea.getFont().deriveFont(25f));
             textArea.setBackground(Color.YELLOW);
             textArea.setForeground(Color.ORANGE.darker().darker());
+            textArea.setBorder(new LineBorder(BACKGROUND_GREEN,5));
             answer.setFont(answer.getFont().deriveFont(25f));
             answer.setForeground(Color.WHITE);
             answer.setOpaque(false);
