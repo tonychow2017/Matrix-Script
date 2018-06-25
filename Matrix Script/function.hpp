@@ -61,6 +61,6 @@ number matrix_min(const matrix&, bool&, error&);
 matrix matrix_maxmin(const matrix&, bool&, error&);
 matrix matrix_range(const number&, const number&);
 //matrix matrix_range_ext(const number&, const number&);
-//matrix matrix_sort(const matrix&);
+matrix matrix_sort(const matrix&, bool&, error&);
 
 #endif /* function_hpp */

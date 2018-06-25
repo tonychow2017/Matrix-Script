@@ -46,6 +46,59 @@ matrix& matrix::operator=(matrix m) {
     return *this;
 }
 
+bool matrix::operator<(const matrix& rhs) const {
+    if (this->row_count()*this->column_count() < rhs.row_count()*rhs.column_count()) {
+        return true;
+    } else if (this->row_count()*this->column_count() > rhs.row_count()*rhs.column_count()) {
+        return false;
+    } else {
+        if (this->row_count() < rhs.row_count()) {
+            return true;
+        } else if (this->row_count() > rhs.row_count()) {
+            return false;
+        } else {
+            for (size_t i=0; i<this->row_count(); i++) {
+                for (size_t j=0; j<this->column_count(); j++) {
+                    number* n1, *n2;
+                    matrix* m1, *m2;
+                    if ((n1 = dynamic_cast<number*>(this->get(i,j))) != nullptr) {
+                        if ((n2 = dynamic_cast<number*>(rhs.get(i,j))) != nullptr) {
+                            bool is_smaller = n1 < n2;
+                            if (is_smaller) {
+                                return true;
+                            } else if (n1 > n2) {
+                                return false;
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else if ((m1 = dynamic_cast<matrix*>(this->get(i,j))) != nullptr) {
+                        if ((n2 = dynamic_cast<number*>(rhs.get(i,j))) != nullptr) {
+                            return false;
+                        } else if ((m2 = dynamic_cast<matrix*>(rhs.get(i,j))) != nullptr) {
+                            bool is_smaller = m1 < m2;
+                            if (is_smaller) {
+                                return true;
+                            } else if (m1 > m2) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+}
+
+bool matrix::operator>(const matrix& rhs) const {
+    return rhs < *this;
+}
+
 matrix::~matrix() {
     if (data != nullptr) {
         for (size_t i=0; i<row; i++) {

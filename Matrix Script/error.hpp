@@ -42,6 +42,7 @@ public:
     static const int ERROR_INVALID_VAR_NAME;
     static const int ERROR_EMPTY_MATRIX;
     static const int ERROR_NOTHING_ON_RHS;
+    static const int ERROR_NOT_ROW_VECTOR;
     error();
     error(int);
     error(int,std::string);

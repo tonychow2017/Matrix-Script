@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "$a=1\n$matrix=[$a,2;3,4]\n";
+    std::string input = "sort([5,[1;2],1,[1,2;3,4],3])";
     std::cout << calculate(input) << std::endl;
 }
 

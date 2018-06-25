@@ -19,6 +19,7 @@ public:
     ~number();
     number& operator=(number n);
     bool operator<(const number& n) const;
+    bool operator>(const number& n) const;
     double get_value() const;
     matrix as_matrix() const;
     std::string get_string_representation() const override;

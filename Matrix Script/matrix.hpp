@@ -19,6 +19,8 @@ public:
     matrix(const matrix& mat);
     matrix(matrix&& mat);
     matrix& operator=(matrix m);
+    bool operator<(const matrix&) const;
+    bool operator>(const matrix&) const;
     ~matrix();
     entry* get(size_t row, size_t column) const;
     void set(size_t _row, size_t _column, const entry& data);

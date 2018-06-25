@@ -283,7 +283,7 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
     std::vector<expression> row;
     std::vector<token> exp;
     int max_col = 0;
-    for (auto i=0; i<tokens.size(); i++) {
+    for (auto i=0; i<=tokens.size(); i++) {
         //std::vector<token> exp;
         std::cout << "current token is: " << tokens[i].get_string_representation() << "\n";
         while (i != tokens.size() && tokens[i].get_string_representation() != "," && tokens[i].get_string_representation() != ";" && tokens[i].get_string_representation() != "(" && tokens[i].get_string_representation() != "[") {
@@ -591,6 +591,7 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("min",1);
         argcount.emplace("maxmin",1);
         argcount.emplace("range",2);
+        argcount.emplace("sort",1);
     }
     auto it = argcount.find(name);
     if (it != argcount.end()) {
@@ -680,6 +681,8 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_min(m1,has_error,e).as_matrix();
         } else if (name == "maxmin") {
             return matrix_maxmin(m1,has_error,e);
+        } else if (name == "sort") {
+            return matrix_sort(m1,has_error,e);
         } else if (get_function_argument_count(name) >= 2) {
             token t2 = argv[1];
             matrix m2 = *(matrix*)(t2.get_content());

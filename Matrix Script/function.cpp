@@ -1043,3 +1043,48 @@ matrix matrix_range(const number& n1, const number& n2) {
     return range;
 }
 
+bool is_smaller_entry(entry* ent1, entry* ent2) {
+    matrix* m1, *m2;
+    number* n1, *n2;
+    if ((n1 = dynamic_cast<number*>(ent1)) != nullptr) {
+        if ((n2 = dynamic_cast<number*>(ent2)) != nullptr) {
+            return *n1 < *n2;
+        } else {
+            return true;
+        }
+    } else if ((m1 = dynamic_cast<matrix*>(ent1)) != nullptr) {
+        if ((n2 = dynamic_cast<number*>(ent2)) != nullptr) {
+            return false;
+        } else if ((m2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
+            return m1 < m2;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+matrix matrix_sort(const matrix& m, bool& has_error, error& e) {
+    if (m.row_count() != 1) {
+        has_error = true;
+        e = error(error::ERROR_NOT_ROW_VECTOR);
+        return m;
+    } else {
+        if (m.column_count() <= 1) {
+            return m;
+        } else {
+            entry** row = new entry*[m.column_count()];
+            for (size_t i=0; i<m.column_count(); i++) {
+                row[i] = m.get(0,i);
+            }
+            std::sort(row,row+m.column_count(),is_smaller_entry);
+            matrix result(1,m.column_count());
+            for (size_t i=0; i<m.column_count(); i++) {
+                result.set(0,i,*(row[i]));
+            }
+            return result;
+        }
+    }
+}
+
