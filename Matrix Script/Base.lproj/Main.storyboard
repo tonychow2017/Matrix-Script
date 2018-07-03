@@ -10,6 +10,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="FiraSans-Regular.ttf">
+            <string>FiraSans-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -19,24 +24,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-g9-rb4">
-                                <rect key="frame" x="5" y="25" width="310" height="217"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-g9-rb4">
+                                <rect key="frame" x="5" y="25" width="310" height="191.5"/>
                                 <color key="backgroundColor" red="0.99593511382258104" green="1" blue="0.51375948838899266" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="bcT-g9-rb4" secondAttribute="height" multiplier="10:7" id="YiI-Af-tRW"/>
+                                    <constraint firstAttribute="width" secondItem="bcT-g9-rb4" secondAttribute="height" multiplier="1000:618" id="MVQ-vu-r0n"/>
                                 </constraints>
                                 <color key="textColor" red="0.42735994170984459" green="0.20576101163205718" blue="0.034827206398691184" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="FiraSans-Regular" family="Fira Sans" pointSize="30"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywg-xi-YQA">
-                                <rect key="frame" x="5" y="247" width="310" height="42"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N/A" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywg-xi-YQA">
+                                <rect key="frame" x="5" y="221.5" width="310" height="36"/>
+                                <fontDescription key="fontDescription" name="FiraSans-Regular" family="Fira Sans" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nVX-XT-5DV">
-                                <rect key="frame" x="42.5" y="294" width="245" height="29"/>
+                            <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="fill" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nVX-XT-5DV">
+                                <rect key="frame" x="37.5" y="262.5" width="245" height="29"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <segments>
                                     <segment title="General"/>
                                     <segment title="Functions"/>
@@ -45,10 +51,10 @@
                                 <color key="tintColor" red="0.47976036269430056" green="0.2916790705230371" blue="0.087044189048476092" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </segmentedControl>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FS4-aZ-mKd">
-                                <rect key="frame" x="5" y="327" width="310" height="236"/>
+                                <rect key="frame" x="5" y="295.5" width="310" height="267.5"/>
                                 <subviews>
                                     <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Og1-MS-qNt">
-                                        <rect key="frame" x="0.0" y="0.0" width="310" height="236"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="267.5"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <sections/>
                                     </tableView>
@@ -61,10 +67,34 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uGh-hG-gmI">
-                                <rect key="frame" x="5" y="327" width="310" height="236"/>
+                                <rect key="frame" x="5" y="295.5" width="310" height="267.5"/>
+                                <subviews>
+                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="V2V-Bv-tpz">
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="267.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="V2V-Bv-tpz" secondAttribute="bottom" id="IUB-pM-FAf"/>
+                                    <constraint firstAttribute="trailing" secondItem="V2V-Bv-tpz" secondAttribute="trailing" id="QyW-pq-urX"/>
+                                    <constraint firstItem="V2V-Bv-tpz" firstAttribute="top" secondItem="uGh-hG-gmI" secondAttribute="top" id="mgC-jZ-Ddk"/>
+                                    <constraint firstItem="V2V-Bv-tpz" firstAttribute="leading" secondItem="uGh-hG-gmI" secondAttribute="leading" id="zYH-vN-LB7"/>
+                                </constraints>
                             </view>
                             <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baM-GW-2ni">
-                                <rect key="frame" x="5" y="327" width="310" height="236"/>
+                                <rect key="frame" x="5" y="295.5" width="310" height="267.5"/>
+                                <subviews>
+                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9jJ-96-yPv">
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="267.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="9jJ-96-yPv" secondAttribute="bottom" id="1Lf-z6-5Wm"/>
+                                    <constraint firstAttribute="trailing" secondItem="9jJ-96-yPv" secondAttribute="trailing" id="Z6F-CV-yOm"/>
+                                    <constraint firstItem="9jJ-96-yPv" firstAttribute="top" secondItem="baM-GW-2ni" secondAttribute="top" id="cj7-8O-07z"/>
+                                    <constraint firstItem="9jJ-96-yPv" firstAttribute="leading" secondItem="baM-GW-2ni" secondAttribute="leading" id="gvF-qp-vtK"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.13901165127754211" green="0.33194899559020996" blue="0.061707623302936554" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -73,18 +103,18 @@
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="5" id="3FM-Sc-fWk"/>
                             <constraint firstItem="uGh-hG-gmI" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="7fr-vq-V5j"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="baM-GW-2ni" secondAttribute="bottom" constant="5" id="9Mh-8Z-fpd"/>
-                            <constraint firstItem="nVX-XT-5DV" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" constant="5" id="CEe-Ea-0HD"/>
+                            <constraint firstItem="nVX-XT-5DV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CEe-Ea-0HD"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uGh-hG-gmI" secondAttribute="trailing" constant="5" id="Iqp-0i-Vo1"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="baM-GW-2ni" secondAttribute="trailing" constant="5" id="KlX-69-tLW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uGh-hG-gmI" secondAttribute="bottom" constant="5" id="MlD-Gn-LH5"/>
                             <constraint firstItem="FS4-aZ-mKd" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="N7Y-aT-VJ1"/>
-                            <constraint firstItem="bcT-g9-rb4" firstAttribute="leading" secondItem="ywg-xi-YQA" secondAttribute="leading" id="Q8b-88-bdk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="leading" secondItem="ywg-xi-YQA" secondAttribute="leading" constant="-5" id="Q8b-88-bdk"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="FS4-aZ-mKd" secondAttribute="bottom" constant="5" id="UHQ-ZK-ZXG"/>
                             <constraint firstItem="ywg-xi-YQA" firstAttribute="top" secondItem="bcT-g9-rb4" secondAttribute="bottom" constant="5" id="WCP-FU-jyx"/>
                             <constraint firstItem="bcT-g9-rb4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XDC-Rx-Blg"/>
-                            <constraint firstItem="bcT-g9-rb4" firstAttribute="trailing" secondItem="ywg-xi-YQA" secondAttribute="trailing" id="ceM-e1-E2C"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ywg-xi-YQA" secondAttribute="trailing" constant="5" id="ceM-e1-E2C"/>
+                            <constraint firstItem="bcT-g9-rb4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="hLm-aS-Kd5"/>
                             <constraint firstItem="FS4-aZ-mKd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="nv7-ca-q7M"/>
-                            <constraint firstItem="bcT-g9-rb4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="nw4-IP-rFc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FS4-aZ-mKd" secondAttribute="trailing" constant="5" id="oOp-em-yd1"/>
                             <constraint firstItem="baM-GW-2ni" firstAttribute="top" secondItem="nVX-XT-5DV" secondAttribute="bottom" constant="5" id="vRB-I1-yfc"/>
                             <constraint firstItem="baM-GW-2ni" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="vsI-zZ-kQM"/>
@@ -94,7 +124,12 @@
                     </view>
                     <connections>
                         <outlet property="answerLabel" destination="ywg-xi-YQA" id="Ghx-Pt-PzM"/>
+                        <outlet property="characterTable" destination="9jJ-96-yPv" id="rsl-6T-kYh"/>
+                        <outlet property="characterView" destination="baM-GW-2ni" id="bta-et-qy9"/>
+                        <outlet property="functionTable" destination="V2V-Bv-tpz" id="x6b-da-Ryd"/>
+                        <outlet property="functionView" destination="uGh-hG-gmI" id="qDB-Is-ab5"/>
                         <outlet property="generalTable" destination="Og1-MS-qNt" id="WvL-gZ-1Zt"/>
+                        <outlet property="generalView" destination="FS4-aZ-mKd" id="hgd-2m-QjT"/>
                         <outlet property="mainTextView" destination="bcT-g9-rb4" id="9nZ-0y-OyJ"/>
                         <outlet property="segmentedControl" destination="nVX-XT-5DV" id="lGg-eg-wFq"/>
                         <outlet property="view" destination="8bC-Xf-vdC" id="npm-kc-9wY"/>

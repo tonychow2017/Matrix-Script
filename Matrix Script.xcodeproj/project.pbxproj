@@ -43,6 +43,7 @@
 		EAAAAD8A20233CA7007CA3DA /* token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA40836E201C6834001EAB93 /* token.cpp */; };
 		EAAAAD8B20233CA7007CA3DA /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
 		EAAAAD8D20233CE0007CA3DA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAAAD8C20233CE0007CA3DA /* main.cpp */; };
+		EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +96,7 @@
 		EA9B9D9720CE709100E51E3B /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Matrix Script CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAAAD8C20233CE0007CA3DA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				EA01459720886A9300675B14 /* error.cpp */,
 				EA01459820886A9300675B14 /* error.hpp */,
 				EA75709520DCD1D3006A0C17 /* Matrix Script.swift */,
+				EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */,
 			);
 			path = "Matrix Script";
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 			files = (
 				EA958B54200B56E900696366 /* LaunchScreen.storyboard in Resources */,
 				EA958B51200B56E900696366 /* Assets.xcassets in Resources */,
+				EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */,
 				EA958B4F200B56E900696366 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,6 +608,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -621,6 +626,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";

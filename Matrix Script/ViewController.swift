@@ -8,55 +8,75 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegate {
-
+class ViewController: UIViewController, UITableViewDataSource {
     //MARK: Properties
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var mainTextView: UITextView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var generalTable: UITableView!
+    @IBOutlet weak var functionTable: UITableView!
+    @IBOutlet weak var characterTable: UITableView!
+    @IBOutlet weak var generalView: UIView!
+    @IBOutlet weak var functionView: UIView!
+    @IBOutlet weak var characterView: UIView!
     
-    static let generalTableCells = [["+","-","*","/","^","."],["(",")","[","]",",",";"]]
+    
+    static let generalTableCells = [["(",")","[","]",",",";"],["7","8","9","^","",""],["4","5","6","*","/",""],["1","2","3","+","-","docs"],["0",".","","\\n","C","AC"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","ceil","floor","rnd"],["det","inv","rref","A\'","sum","prod"]]
+    static let characterTableCells = [["$"]]
+    //static let tableDataDict = [generalTable: generalTableCells]
     static let screenWidth = Int(UIScreen.main.bounds.width)
     static let buttonColumnCount = generalTableCells[0].count
-    static let gap = 5
-    static let buttonWidth = Int(min(70,((ViewController.screenWidth-10)-ViewController.gap)/ViewController.buttonColumnCount-ViewController.gap))
-    static let firstIndent = ((ViewController.screenWidth-10)-(buttonWidth+gap)*buttonColumnCount+gap)/2
+    static let gap = UIDevice.current.userInterfaceIdiom == .phone ? 5 : 10
+    static let buttonWidth = Int(min(70,((screenWidth-gap*2)-gap)/buttonColumnCount-gap))
+    static let firstIndent = (screenWidth-2*gap-((buttonWidth+gap)*buttonColumnCount-gap))/2
+    static let firaSans = loadFiraSans()
+    static var tableDataDict = [UITableView: [[String]]]()
+    static var tableCellIdentifierDict = [UITableView: String]()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ViewController.generalTableCells.count
+        return ViewController.tableDataDict[tableView]!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = generalTable.dequeueReusableCell(withIdentifier: "generalTableCell", for: indexPath)
-        //cell.textLabel!.text = ViewController.generalTableCells[indexPath.row]
-        //cell.addSubview(createButton(ViewController.generalTableCells[indexPath.row]))
-        for button in createButtonSet(ViewController.generalTableCells[indexPath.row]) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.tableCellIdentifierDict[tableView]!, for: indexPath)
+        for button in createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row]) {
             cell.addSubview(button)
         }
         cell.backgroundColor = UIColor.clear
-        //cell.textLabel!.backgroundColor = UIColor.clear
-        //cell.selectedBackgroundView = cell.backgroundView//UIView()
-        //cell.selectedBackgroundView?.isOpaque = false
-        //cell.isOpaque = false
-        //cell.textLabel!.isOpaque = false
-        return cell
+       return cell
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        mainTextView.delegate = self
-        generalTable.register(UITableViewCell.self, forCellReuseIdentifier: "generalTableCell")
-        //generalTable.register(UITableViewCell.self,"generalTableCell")
-        generalTable.dataSource = self
-        generalTable.separatorColor = UIColor.clear
-        generalTable.rowHeight = CGFloat(ViewController.gap+ViewController.buttonWidth)
-        generalTable.allowsSelection = false
+        // constants
+        ViewController.tableDataDict = [generalTable: ViewController.generalTableCells,
+                                        functionTable: ViewController.functionTableCells,
+                                        characterTable: ViewController.characterTableCells]
+        ViewController.tableCellIdentifierDict = [generalTable: "general",
+                                                  functionTable: "function",
+                                                  characterTable: "character"]
+        // UI
+        for tableView in [generalTable!, functionTable!, characterTable!] {
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: ViewController.tableCellIdentifierDict[tableView]!)
+            tableView.dataSource = self
+            tableView.separatorColor = UIColor.clear
+            tableView.rowHeight = CGFloat(ViewController.gap+ViewController.buttonWidth)
+            tableView.allowsSelection = false
+        }
+        //generalTable.dataSource = self
+        //generalTable.register(UITableViewCell.self, forCellReuseIdentifier: "generalTableCell")
         segmentedControl.layer.cornerRadius = 5
         for i in 0..<segmentedControl.numberOfSegments {
-            segmentedControl.setWidth(CGFloat((ViewController.screenWidth-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
+            segmentedControl.setWidth(CGFloat((ViewController.screenWidth-ViewController.gap*2-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
         }
+        let attr = [NSAttributedStringKey.font: ViewController.firaSans.withSize(segmentedControl.frame.height*0.5)]
+        segmentedControl.setTitleTextAttributes(attr, for: .normal)
+        segmentedControl.addTarget(nil, action: #selector(segmentTouched(_:)), for: .valueChanged)
+        /*for family in UIFont.familyNames.sorted() {
+            print(UIFont.fontNames(forFamilyName: family))
+        }*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,8 +84,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        answerLabel.text = MatrixScript().calculate(input: textView.text);
+    static func loadFiraSans() -> UIFont {
+        guard let font = UIFont(name: "FiraSans-Regular", size: UIFont.buttonFontSize) else {
+            fatalError()
+        }
+        return font
     }
     
     func createButton(_ name: String) -> UIButton {
@@ -73,29 +96,66 @@ class ViewController: UIViewController, UITableViewDataSource, UITextViewDelegat
         button.setTitle(name, for: .normal);
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = UIColor.brown
-        //button.layer.cornerRadius = 25
-        //button.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
-        button.addTarget(nil,action: #selector(buttonTouched(_:)), for: .touchDown)
+        button.addTarget(nil, action: #selector(buttonTouched(_:)), for: .touchDown)
         return button
     }
     
     func createButtonSet(_ names: [String]) -> [UIButton] {
         var buttonSet = [UIButton]()
         var count = 0
-        
-        //print(buttonWidth)
         for name in names {
             let button = createButton(name);
             buttonSet += [button]
             button.frame = CGRect(x: (ViewController.buttonWidth+ViewController.gap)*count+ViewController.firstIndent, y: ViewController.gap, width: ViewController.buttonWidth, height: ViewController.buttonWidth)
             button.layer.cornerRadius = CGFloat(ViewController.buttonWidth/2)
+            button.titleLabel?.font = ViewController.firaSans.withSize(CGFloat(ViewController.buttonWidth*2/5))
+            //button.titleLabel?.adjustsFontForContentSizeCategory = true
             count += 1
         }
         return buttonSet
     }
     
+    static func insertableString(_ str: String) -> String {
+        if str == "rnd" {
+            return "round"
+        } else if str == "\\n" {
+            return "\n"
+        } else if str == "A\'" {
+            return "transpose"
+        } else {
+            return str
+        }
+    }
+    
     @objc func buttonTouched(_ sender: UIButton) {
-        mainTextView.text? += sender.currentTitle!
+        if (sender.currentTitle == "AC") {
+            mainTextView.text = ""
+        } else if (sender.currentTitle == "C") {
+            mainTextView.text = String(mainTextView.text.dropLast())
+        } else {
+            mainTextView.text? += ViewController.insertableString(sender.currentTitle!)
+        }
+        answerLabel.text = MatrixScript().calculate(input: mainTextView.text)
+    }
+    
+    @objc func segmentTouched(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            generalView.isHidden = false
+            functionView.isHidden = true
+            characterView.isHidden = true
+        case 1:
+            generalView.isHidden = true
+            functionView.isHidden = false
+            characterView.isHidden = true
+        case 2:
+            generalView.isHidden = true
+            functionView.isHidden = true
+            characterView.isHidden = false
+        default:
+            fatalError()
+        }
     }
 }
+
 
