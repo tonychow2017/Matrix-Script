@@ -563,6 +563,7 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("round",1);
         argcount.emplace("exp",1);
         argcount.emplace("ln",1);
+        argcount.emplace("sqrt",1);
         argcount.emplace("sin",1);
         argcount.emplace("cos",1);
         argcount.emplace("tan",1);
@@ -641,6 +642,8 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_func_error(m1,&number_exp,has_error,e);
         } else if (name == "ln") {
             return matrix_func_error(m1,&number_ln,has_error,e);
+        } else if (name == "sqrt") {
+            return matrix_func_error(m1,&number_sqrt,has_error,e);
         } else if (name == "sin") {
             return matrix_func(m1,&number_sin);
         } else if (name == "cos") {

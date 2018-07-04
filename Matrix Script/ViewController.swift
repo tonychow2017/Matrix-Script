@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 class ViewController: UIViewController, UITableViewDataSource {
     //MARK: Properties
@@ -20,19 +21,24 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var characterView: UIView!
     
-    
-    static let generalTableCells = [["(",")","[","]",",",";"],["7","8","9","^","",""],["4","5","6","*","/",""],["1","2","3","+","-","docs"],["0",".","","\\n","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","ceil","floor","rnd"],["det","inv","rref","A\'","sum","prod"]]
-    static let characterTableCells = [["$"]]
-    //static let tableDataDict = [generalTable: generalTableCells]
+    static let generalTableCells = [["(",")","[","]",",",";"],["7","8","9","ceil","floor","rnd"],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","docs","\u{21B2}","C","AC"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","row","col","size"],["det","inv","rref","A\'","sum","prod"],["fact","sort","flat","max","min","Mm"]]
+    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"]]
+
     static let screenWidth = Int(UIScreen.main.bounds.width)
     static let buttonColumnCount = generalTableCells[0].count
+    static let smallButtonColumnCount = characterTableCells[0].count
     static let gap = UIDevice.current.userInterfaceIdiom == .phone ? 5 : 10
     static let buttonWidth = Int(min(70,((screenWidth-gap*2)-gap)/buttonColumnCount-gap))
+    static let smallButtonWidth = Int(min(50,((screenWidth-gap*2)-gap)/smallButtonColumnCount-gap))
     static let firstIndent = (screenWidth-2*gap-((buttonWidth+gap)*buttonColumnCount-gap))/2
+    static let smallFirstIndent = (screenWidth-2*gap-((smallButtonWidth+gap)*smallButtonColumnCount-gap))/2
     static let firaSans = loadFiraSans()
     static var tableDataDict = [UITableView: [[String]]]()
     static var tableCellIdentifierDict = [UITableView: String]()
+    
+    static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    static var docController: UIViewController? = nil
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ViewController.tableDataDict[tableView]!.count
@@ -40,7 +46,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.tableCellIdentifierDict[tableView]!, for: indexPath)
-        for button in createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row]) {
+        for button in createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row], width: tableView == characterTable ? ViewController.smallButtonWidth : ViewController.buttonWidth, offset: tableView == characterTable ? ViewController.smallFirstIndent : ViewController.firstIndent) {
+            if tableView == characterTable {
+                button.frame = button.frame.offsetBy(dx: CGFloat(indexPath.row*ViewController.smallButtonWidth/2), dy: 0)
+            }
             cell.addSubview(button)
         }
         cell.backgroundColor = UIColor.clear
@@ -65,16 +74,14 @@ class ViewController: UIViewController, UITableViewDataSource {
             tableView.rowHeight = CGFloat(ViewController.gap+ViewController.buttonWidth)
             tableView.allowsSelection = false
         }
-        //generalTable.dataSource = self
-        //generalTable.register(UITableViewCell.self, forCellReuseIdentifier: "generalTableCell")
         segmentedControl.layer.cornerRadius = 5
         for i in 0..<segmentedControl.numberOfSegments {
             segmentedControl.setWidth(CGFloat((ViewController.screenWidth-ViewController.gap*2-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
         }
-        let attr = [NSAttributedStringKey.font: ViewController.firaSans.withSize(segmentedControl.frame.height*0.5)]
-        segmentedControl.setTitleTextAttributes(attr, for: .normal)
+        let segmentedAttr = [NSAttributedStringKey.font: ViewController.firaSans.withSize(segmentedControl.frame.height*0.5)]
+        segmentedControl.setTitleTextAttributes(segmentedAttr, for: .normal)
         segmentedControl.addTarget(nil, action: #selector(segmentTouched(_:)), for: .valueChanged)
-        /*for family in UIFont.familyNames.sorted() {
+                /*for family in UIFont.familyNames.sorted() {
             print(UIFont.fontNames(forFamilyName: family))
         }*/
     }
@@ -100,14 +107,14 @@ class ViewController: UIViewController, UITableViewDataSource {
         return button
     }
     
-    func createButtonSet(_ names: [String]) -> [UIButton] {
+    func createButtonSet(_ names: [String], width buttonWidth: Int = ViewController.buttonWidth, offset beforeOffset: Int = ViewController.firstIndent) -> [UIButton] {
         var buttonSet = [UIButton]()
         var count = 0
         for name in names {
             let button = createButton(name);
             buttonSet += [button]
-            button.frame = CGRect(x: (ViewController.buttonWidth+ViewController.gap)*count+ViewController.firstIndent, y: ViewController.gap, width: ViewController.buttonWidth, height: ViewController.buttonWidth)
-            button.layer.cornerRadius = CGFloat(ViewController.buttonWidth/2)
+            button.frame = CGRect(x: (buttonWidth+ViewController.gap)*count + beforeOffset, y: ViewController.gap, width: buttonWidth, height: ViewController.buttonWidth)
+            button.layer.cornerRadius = CGFloat(buttonWidth/2)
             button.titleLabel?.font = ViewController.firaSans.withSize(CGFloat(ViewController.buttonWidth*2/5))
             //button.titleLabel?.adjustsFontForContentSizeCategory = true
             count += 1
@@ -118,20 +125,35 @@ class ViewController: UIViewController, UITableViewDataSource {
     static func insertableString(_ str: String) -> String {
         if str == "rnd" {
             return "round"
-        } else if str == "\\n" {
+        } else if str == "\u{21B2}" {
             return "\n"
         } else if str == "A\'" {
             return "transpose"
+        } else if str == "Mm" {
+            return "maxmin"
+        } else if str == "\u{221A}" {
+            return "sqrt"
+        } else if str == "\u{00D7}" {
+            return "*"
+        } else if str == "\u{00F7}" {
+            return "/"
+        } else if str == "flat" {
+            return "flatten"
         } else {
             return str
         }
     }
     
     @objc func buttonTouched(_ sender: UIButton) {
-        if (sender.currentTitle == "AC") {
+        if sender.currentTitle == "AC" {
             mainTextView.text = ""
-        } else if (sender.currentTitle == "C") {
+        } else if (sender.currentTitle == "C" && mainTextView.text != "") {
             mainTextView.text = String(mainTextView.text.dropLast())
+        } else if sender.currentTitle == "docs" {
+            if (ViewController.docController == nil) {
+                ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier: "DocumentationController")
+            }
+            self.present(ViewController.docController!, animated: true)
         } else {
             mainTextView.text? += ViewController.insertableString(sender.currentTitle!)
         }
@@ -158,4 +180,28 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
 }
 
+class DocViewController: UIViewController {
+    @IBOutlet weak var docNavigationItem: UINavigationItem!
+    @IBOutlet weak var docDoneButton: UIBarButtonItem!
+    @IBOutlet weak var docWebView: WKWebView!
+    
+    override func viewDidLoad() {
+        let docLabel = UILabel()
+        docLabel.text = "Documentation"
+        docLabel.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
+        docLabel.textColor = UIColor.brown
+        docLabel.adjustsFontForContentSizeCategory = true
+        docNavigationItem.titleView = docLabel
+        let docButtonAttr = [NSAttributedStringKey.font: ViewController.firaSans, NSAttributedStringKey.foregroundColor: UIColor.brown]
+        docDoneButton.setTitleTextAttributes(docButtonAttr, for: .normal)
+        docDoneButton.action = #selector(docDoneButtonTouched(_:))
+        let url = Bundle.main.url(forResource: "docs", withExtension: "html")
+        docWebView.load(URLRequest(url: url!))
+    }
+    
+    @objc func docDoneButtonTouched(_ sender: UIBarButtonItem) {
+        //self.present(ViewController.mainStoryboard.instantiateViewController(withIdentifier: "MainController"), animated: true)
+        ViewController.docController?.dismiss(animated: true)
+    }
+}
 

@@ -1,0 +1,34 @@
+@font-face {
+    font-family: "Fira Sans";
+    src: url("FiraSans-Regular.ttf")
+}
+
+body {
+    background-color: rgb(250,255,160);
+    color: rgb(130,80,20);
+    font-family: "Fira Sans";
+}
+
+h1 {
+    font-size: 80px;
+}
+
+h2 {
+    font-size: 55px;
+}
+
+p, td {
+    font-size: 35px;
+}
+
+th {
+    font-size: 35px;
+}
+
+::selection {
+    background: rgb(200,255,200);
+}
+
+::-moz-selection {
+    background: rgb(200,255,200);
+}

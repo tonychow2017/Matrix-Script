@@ -44,6 +44,9 @@
 		EAAAAD8B20233CA7007CA3DA /* main_calculator_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408380201C9746001EAB93 /* main_calculator_c.cpp */; };
 		EAAAAD8D20233CE0007CA3DA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAAAD8C20233CE0007CA3DA /* main.cpp */; };
 		EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */; };
+		EAF3604620EC96980053C5EE /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF3604220EC96830053C5EE /* WebKit.framework */; };
+		EAF3604C20EC9F360053C5EE /* docs.html in Resources */ = {isa = PBXBuildFile; fileRef = EAF3604B20EC9F350053C5EE /* docs.html */; };
+		EAF3605020ECAC0B0053C5EE /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = EAF3604F20ECAC0B0053C5EE /* style.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -97,6 +100,9 @@
 		EAAAAD7E20233C8F007CA3DA /* Matrix Script CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Matrix Script CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAAAD8C20233CE0007CA3DA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Regular.ttf"; sourceTree = "<group>"; };
+		EAF3604220EC96830053C5EE /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		EAF3604B20EC9F350053C5EE /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
+		EAF3604F20ECAC0B0053C5EE /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAF3604620EC96980053C5EE /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +160,7 @@
 				EA75708520DCCBC6006A0C17 /* Matrix Script Test */,
 				EA958B47200B56E900696366 /* Products */,
 				EA9B9D9720CE709100E51E3B /* CMakeLists.txt */,
+				EAF3604120EC96820053C5EE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -195,6 +203,8 @@
 				EA01459720886A9300675B14 /* error.cpp */,
 				EA01459820886A9300675B14 /* error.hpp */,
 				EA75709520DCD1D3006A0C17 /* Matrix Script.swift */,
+				EAF3604F20ECAC0B0053C5EE /* style.css */,
+				EAF3604B20EC9F350053C5EE /* docs.html */,
 				EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */,
 			);
 			path = "Matrix Script";
@@ -206,6 +216,14 @@
 				EAAAAD8C20233CE0007CA3DA /* main.cpp */,
 			);
 			path = "Matrix Script CLI";
+			sourceTree = "<group>";
+		};
+		EAF3604120EC96820053C5EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EAF3604220EC96830053C5EE /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,9 +360,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA958B54200B56E900696366 /* LaunchScreen.storyboard in Resources */,
+				EAF3605020ECAC0B0053C5EE /* style.css in Resources */,
 				EA958B51200B56E900696366 /* Assets.xcassets in Resources */,
 				EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */,
 				EA958B4F200B56E900696366 /* Main.storyboard in Resources */,
+				EAF3604C20EC9F360053C5EE /* docs.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,7 +628,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -626,7 +646,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Matrix Script/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tonychow.Matrix-Script";
 				PRODUCT_NAME = "$(TARGET_NAME)";

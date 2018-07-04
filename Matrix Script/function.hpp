@@ -38,6 +38,7 @@ number number_asec(const number& n, bool& has_error, error& e);
 number number_acot(const number& n);
 number number_log(const number& n1, const number& n2, bool& has_error, error& e);
 number number_ln(const number& n, bool& has_error, error& e);
+number number_sqrt(const number& n, bool& has_error, error& e);
 number number_ceil(const number& n);
 number number_floor(const number& n);
 number number_round(const number& n);

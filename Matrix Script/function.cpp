@@ -746,6 +746,17 @@ number number_exp(const number& n, bool& has_error, error& e) {
     }
 }
 
+number number_sqrt(const number& n, bool& has_error, error& e) {
+    double value = n.get_value();
+    if (value < 0) {
+        has_error = true;
+        e = error(error::ERROR_POWER);
+        return n;
+    } else {
+        return number(std::sqrt(value));
+    }
+}
+
 number pi() {
     return number(std::atan(1)*4);
 }
