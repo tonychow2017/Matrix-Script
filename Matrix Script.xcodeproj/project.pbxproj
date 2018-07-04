@@ -47,6 +47,7 @@
 		EAF3604620EC96980053C5EE /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF3604220EC96830053C5EE /* WebKit.framework */; };
 		EAF3604C20EC9F360053C5EE /* docs.html in Resources */ = {isa = PBXBuildFile; fileRef = EAF3604B20EC9F350053C5EE /* docs.html */; };
 		EAF3605020ECAC0B0053C5EE /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = EAF3604F20ECAC0B0053C5EE /* style.css */; };
+		EAF3605420ECC6270053C5EE /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = EAF3605320ECC6270053C5EE /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -103,6 +104,7 @@
 		EAF3604220EC96830053C5EE /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		EAF3604B20EC9F350053C5EE /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		EAF3604F20ECAC0B0053C5EE /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		EAF3605320ECC6270053C5EE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../../../Downloads/LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +208,7 @@
 				EAF3604F20ECAC0B0053C5EE /* style.css */,
 				EAF3604B20EC9F350053C5EE /* docs.html */,
 				EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */,
+				EAF3605320ECC6270053C5EE /* LICENSE */,
 			);
 			path = "Matrix Script";
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				EA958B54200B56E900696366 /* LaunchScreen.storyboard in Resources */,
 				EAF3605020ECAC0B0053C5EE /* style.css in Resources */,
 				EA958B51200B56E900696366 /* Assets.xcassets in Resources */,
+				EAF3605420ECC6270053C5EE /* LICENSE in Resources */,
 				EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */,
 				EA958B4F200B56E900696366 /* Main.storyboard in Resources */,
 				EAF3604C20EC9F360053C5EE /* docs.html in Resources */,
