@@ -16,19 +16,57 @@
     
     <h2>Usage</h2>
     <p>Type the expression into the text box and the answer will appear (usually) immediately.
-    
-    If the text box is empty, "N/A" (not available) will be shown. In case the input creates an error, "Error" will be shown.</p>
-    
-    <h2>Matrices</h2>
-    <p>You can input matrices and perform matrix operations in Matrix Script.
-    To create a matrix, you may start with [ and end with ].
-    Use comma (,) as the element separator and (;) as the row separator.
-    
-    When a matrix is passed into a scientific function, evaluation is performed entry-wise.
-    For example, det([1,2;3,4]) returns -2.
+    <br><br>If the text box is empty, "N/A" (not available) will be shown. In case the input creates an error, "Error" will be shown.
     </p>
     
-    <h2>Examples</h2>
+    <h2>Matrices</h2>
+    <p>You can input matrices and perform matrix operations in Matrix Script.</p>
+    <ul>
+        <li>To create a matrix, you may start with [ and end with ].
+            <br>Use a comma (,) as the element separator and a semi-colon(;) as the row separator.
+            <br>For example,
+            <br>>>    det([1,2;3,4])
+            <br>returns -2.
+        </li>
+        <li>When a matrix is passed into a scientific function, evaluation is performed entry-wise.
+            <br>For example,
+            <br>>>    fact([1,2;4,5])
+            <br>returns [1,2;24,120] (factorial function).
+        </li>
+        <li>Create ranges with ~.
+            <br>>>    2*(2~5)
+            <br>returns [4,6,8,10].
+        </li>
+        <li>Use "eye" or "id" to create identity matrices.
+            <br>Use "one" to create matrices filled with 1 and "zero" to create matrices filled with 0.
+            <br>>>    eye(2)
+            <br>returns [1,0;0,1].
+            <br>>>    zero(2,3)
+            <br>returns [0,0,0;0,0,0].
+        </li>
+    </ul>
+    
+
+    <h2>Variables</h2>
+    <p>You can store the calculation results into variables.
+        <br>**WARNING**: This is not persistent over multiple runs (that means, the variables will be discarded upon exit). Don't store important data in this way!</p>
+    <ul>
+        <li>Assign a result to a variable using the syntax:
+            <br>>>    {variable_name}={expression}
+        </li>
+        <li>Retrieve it using:
+            <br>>>    ${variable_name}
+            <br>Note: It is important to add the dollar sign ($) before the variable name. Otherwise, we treat the name as a function name.
+        </li>
+        <li>The variable $answer stores the last answer.
+        </li>
+        <li>For example, the following expressions return [3,4,5,6]:
+            <br>>>    a=[5,4,2,3]
+            <br>>>    sort($a+1)
+        </li>
+    </ul>
+    
+    <h2>Other Examples</h2>
     <table>
         <tr>
             <th>Expression</th>
@@ -47,7 +85,10 @@
             <td>sin(pi/2)</td><td>1</td>
         </tr>
         <tr>
-            <td>det([1,2;3,4])</td><td>-2</td>
+            <td>flatten([1,2;3,4]</td><td>[1,2,3,4]</td>
+        </tr>
+        <tr>
+            <td>pi</td><td>3.14159265358979</td>
         </tr>
     </table>
     

@@ -34,14 +34,14 @@ class MatrixScript {
      }
      }*/
 
-    func calculate(input: String) -> String {
+    func calculate(input: String) -> (String, String?) {
         let ans = input.withCString({ (ptr: UnsafePointer<Int8>) -> String in
             return calculateExpression(expression: UnsafeMutablePointer<Int8>(mutating: ptr))
         })
         if ans.starts(with: "Error: ") {
-            return "Error"
+            return ("Error", String(ans.dropFirst(7)))
         } else {
-            return ans
+            return (ans,nil)
         }
     }
 }

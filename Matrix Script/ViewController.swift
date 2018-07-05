@@ -22,8 +22,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var characterView: UIView!
     
     static let generalTableCells = [["ceil","floor","rnd","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","eye","get","rep","sort"],["fact","sort","flat","max","min","Mm"]]
-    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["pi","","","","","#","="]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","eye","get","rep","sort"],["fact","sort","flat","max","min","Mm"],["~"]]
+    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["pi","","","","_","#","="]]
 
     static let screenWidth = Int(UIScreen.main.bounds.width)
     static let buttonColumnCount = generalTableCells[0].count
@@ -40,13 +40,15 @@ class ViewController: UIViewController, UITableViewDataSource {
     static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
     static var docController: UIViewController? = nil
     
+    var anotherLabelString: String? = nil
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ViewController.tableDataDict[tableView]!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.tableCellIdentifierDict[tableView]!, for: indexPath)
-        for button in createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row], width: tableView == characterTable ? ViewController.smallButtonWidth : ViewController.buttonWidth, offset: tableView == characterTable ? ViewController.smallFirstIndent : ViewController.firstIndent) {
+        for button in ViewController.createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row], width: tableView == characterTable ? ViewController.smallButtonWidth : ViewController.buttonWidth, offset: tableView == characterTable ? ViewController.smallFirstIndent : ViewController.firstIndent) {
             if tableView == characterTable {
                 button.frame = button.frame.offsetBy(dx: CGFloat(indexPath.row*(ViewController.gap+ViewController.smallButtonWidth)/2), dy: 0)
             }
@@ -95,6 +97,11 @@ class ViewController: UIViewController, UITableViewDataSource {
         mainTextView.inputAssistantItem.trailingBarButtonGroups = []
         mainTextView.autocorrectionType = .no
         mainTextView.autocapitalizationType = .none
+        answerLabel.isUserInteractionEnabled = true
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(labelTapped(_:)))
+        answerLabel.addGestureRecognizer(recognizer)
+        //answerLabel.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
+        //answerLabel.adjustsFontForContentSizeCategory = true
         //layout
         //let phoneWidth = 6*ViewController.buttonWidth + 5*ViewController.gap + 2*ViewController.firstIndent
         let phoneHeight = 5*ViewController.buttonWidth + 6*ViewController.gap + 1
@@ -117,7 +124,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         return font
     }
     
-    func createButton(_ name: String) -> UIButton {
+    static func createButton(_ name: String) -> UIButton {
         let button = UIButton()
         button.setTitle(name, for: .normal);
         button.setTitleColor(UIColor.white, for: .normal)
@@ -127,7 +134,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         return button
     }
     
-    func createButtonSet(_ names: [String], width buttonWidth: Int, offset beforeOffset: Int) -> [UIButton] {
+    static func createButtonSet(_ names: [String], width buttonWidth: Int, offset beforeOffset: Int) -> [UIButton] {
         var buttonSet = [UIButton]()
         var count = 0
         for name in names {
@@ -170,6 +177,14 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
     }
     
+    @objc func labelTapped(_ sender: UILabel) {
+        if anotherLabelString != nil {
+            let tmp = answerLabel.text
+            answerLabel.text = anotherLabelString
+            anotherLabelString = tmp
+        }
+    }
+    
     @objc func buttonTouched(_ sender: UIButton) {
         if sender.currentTitle == "AC" {
             mainTextView.text = ""
@@ -203,7 +218,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         } else {
             mainTextView.insertText(ViewController.insertableString(sender.currentTitle!))
         }
-        answerLabel.text = MatrixScript().calculate(input: mainTextView.text)
+        (answerLabel.text!, anotherLabelString) = MatrixScript().calculate(input: mainTextView.text)
     }
     
     @objc func segmentTouched(_ sender: UISegmentedControl) {
@@ -250,4 +265,5 @@ class DocViewController: UIViewController {
         ViewController.docController?.dismiss(animated: true)
     }
 }
+
 
