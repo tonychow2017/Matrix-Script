@@ -43,6 +43,7 @@ public:
     static const int ERROR_EMPTY_MATRIX;
     static const int ERROR_NOTHING_ON_RHS;
     static const int ERROR_NOT_ROW_VECTOR;
+    static const int ERROR_OUT_OF_BOUNDARY;
     error();
     error(int);
     error(int,std::string);

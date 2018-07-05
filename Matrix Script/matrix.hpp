@@ -11,6 +11,9 @@
 
 #include <string>
 #include "entry.hpp"
+#include "number.hpp"
+
+class number;
 
 class matrix: public entry {
 public:
@@ -31,6 +34,7 @@ public:
     void exchange_rows(size_t i, size_t j, size_t starting_col = 0);
     bool is_row_zero(size_t r) const;
     bool is_singleton() const;
+    number* is_number_singleton() const;
     bool is_empty() const;
     std::string get_size_string() const;
     void transpose();

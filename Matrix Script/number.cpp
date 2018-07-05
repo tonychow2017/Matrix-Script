@@ -38,6 +38,7 @@ double number::get_value() const {
 
 std::string number::get_string_representation() const {
     std::ostringstream oss;
+    oss.precision(15);
     oss << value;
     return oss.str();
 }

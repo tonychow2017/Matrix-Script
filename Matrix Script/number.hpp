@@ -12,6 +12,8 @@
 #include "entry.hpp"
 #include "matrix.hpp"
 
+class matrix;
+
 class number: public entry {
 public:
     number(double value);

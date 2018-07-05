@@ -21,18 +21,18 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var characterView: UIView!
     
-    static let generalTableCells = [["(",")","[","]",",",";"],["7","8","9","ceil","floor","rnd"],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","docs","\u{21B2}","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","row","col","size"],["det","inv","rref","A\'","sum","prod"],["fact","sort","flat","max","min","Mm"]]
-    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"]]
+    static let generalTableCells = [["ceil","floor","rnd","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","eye","get","rep","sort"],["fact","sort","flat","max","min","Mm"]]
+    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["pi","","","","","#","="]]
 
     static let screenWidth = Int(UIScreen.main.bounds.width)
     static let buttonColumnCount = generalTableCells[0].count
     static let smallButtonColumnCount = characterTableCells[0].count
     static let gap = UIDevice.current.userInterfaceIdiom == .phone ? 5 : 10
-    static let buttonWidth = Int(min(70,((screenWidth-gap*2)-gap)/buttonColumnCount-gap))
-    static let smallButtonWidth = Int(min(50,((screenWidth-gap*2)-gap)/smallButtonColumnCount-gap))
-    static let firstIndent = (screenWidth-2*gap-((buttonWidth+gap)*buttonColumnCount-gap))/2
-    static let smallFirstIndent = (screenWidth-2*gap-((smallButtonWidth+gap)*smallButtonColumnCount-gap))/2
+    static let buttonWidth = Int(min(70,((screenWidth-10)-gap)/buttonColumnCount-gap))
+    static let smallButtonWidth = Int(min(50,((screenWidth-10)-gap)/smallButtonColumnCount-gap))
+    static let firstIndent = (screenWidth-10-((buttonWidth+gap)*buttonColumnCount-gap))/2
+    static let smallFirstIndent = (screenWidth-10-((smallButtonWidth+gap)*smallButtonColumnCount-gap))/2
     static let firaSans = loadFiraSans()
     static var tableDataDict = [UITableView: [[String]]]()
     static var tableCellIdentifierDict = [UITableView: String]()
@@ -48,7 +48,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ViewController.tableCellIdentifierDict[tableView]!, for: indexPath)
         for button in createButtonSet(ViewController.tableDataDict[tableView]![indexPath.row], width: tableView == characterTable ? ViewController.smallButtonWidth : ViewController.buttonWidth, offset: tableView == characterTable ? ViewController.smallFirstIndent : ViewController.firstIndent) {
             if tableView == characterTable {
-                button.frame = button.frame.offsetBy(dx: CGFloat(indexPath.row*ViewController.smallButtonWidth/2), dy: 0)
+                button.frame = button.frame.offsetBy(dx: CGFloat(indexPath.row*(ViewController.gap+ViewController.smallButtonWidth)/2), dy: 0)
             }
             cell.addSubview(button)
         }
@@ -76,14 +76,33 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
         segmentedControl.layer.cornerRadius = 5
         for i in 0..<segmentedControl.numberOfSegments {
-            segmentedControl.setWidth(CGFloat((ViewController.screenWidth-ViewController.gap*2-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
+            segmentedControl.setWidth(CGFloat((ViewController.screenWidth-10-ViewController.firstIndent*2)/segmentedControl.numberOfSegments), forSegmentAt: i)
         }
         let segmentedAttr = [NSAttributedStringKey.font: ViewController.firaSans.withSize(segmentedControl.frame.height*0.5)]
         segmentedControl.setTitleTextAttributes(segmentedAttr, for: .normal)
         segmentedControl.addTarget(nil, action: #selector(segmentTouched(_:)), for: .valueChanged)
-                /*for family in UIFont.familyNames.sorted() {
+        /*for family in UIFont.familyNames.sorted() {
             print(UIFont.fontNames(forFamilyName: family))
         }*/
+        let dummy1 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 0))
+        //let dummy2 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 10))
+        //dummy1.backgroundColor = UIColor.clear
+        //dummy1.isHidden = true
+        //dummy2.isOpaque = false
+        mainTextView.tintColor = UIColor.black
+        mainTextView.inputView = dummy1
+        mainTextView.inputAssistantItem.leadingBarButtonGroups = []
+        mainTextView.inputAssistantItem.trailingBarButtonGroups = []
+        mainTextView.autocorrectionType = .no
+        mainTextView.autocapitalizationType = .none
+        //layout
+        //let phoneWidth = 6*ViewController.buttonWidth + 5*ViewController.gap + 2*ViewController.firstIndent
+        let phoneHeight = 5*ViewController.buttonWidth + 6*ViewController.gap + 1
+        //print([phoneWidth, ViewController.screenWidth])
+        //let ratio = CGFloat(Double(max(phoneWidth, ViewController.screenWidth))/Double(phoneHeight))
+        let ratio = Double(ViewController.screenWidth-10)/Double(phoneHeight)
+        let generalViewConstraint = NSLayoutConstraint(item: generalView, attribute: .width, relatedBy: .equal, toItem: generalView, attribute: .height, multiplier: CGFloat(ratio), constant: 1)
+        generalViewConstraint.isActive = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,12 +121,13 @@ class ViewController: UIViewController, UITableViewDataSource {
         let button = UIButton()
         button.setTitle(name, for: .normal);
         button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.yellow, for: .highlighted)
         button.backgroundColor = UIColor.brown
         button.addTarget(nil, action: #selector(buttonTouched(_:)), for: .touchDown)
         return button
     }
     
-    func createButtonSet(_ names: [String], width buttonWidth: Int = ViewController.buttonWidth, offset beforeOffset: Int = ViewController.firstIndent) -> [UIButton] {
+    func createButtonSet(_ names: [String], width buttonWidth: Int, offset beforeOffset: Int) -> [UIButton] {
         var buttonSet = [UIButton]()
         var count = 0
         for name in names {
@@ -139,6 +159,12 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "/"
         } else if str == "flat" {
             return "flatten"
+        } else if str == "ANS" {
+            return "$answer"
+        } else if str == "\u{2211}" {
+            return "sum"
+        } else if str == "\u{220F}" {
+            return "product"
         } else {
             return str
         }
@@ -148,14 +174,34 @@ class ViewController: UIViewController, UITableViewDataSource {
         if sender.currentTitle == "AC" {
             mainTextView.text = ""
         } else if (sender.currentTitle == "C" && mainTextView.text != "") {
-            mainTextView.text = String(mainTextView.text.dropLast())
+            //mainTextView.text = String(mainTextView.text.dropLast())
+            let range = mainTextView.selectedTextRange
+            if range == nil {
+                mainTextView.text = String(mainTextView.text.dropLast());
+            } else if range!.isEmpty {
+                let position = mainTextView.offset(from: mainTextView.beginningOfDocument, to: range!.start)
+                if position == 0 {
+                    //mainTextView.text = String(mainTextView.text.dropFirst());
+                    if let next = mainTextView.position(from: mainTextView.beginningOfDocument, offset: 1) {
+                        mainTextView.replace(mainTextView.textRange(from: mainTextView.beginningOfDocument, to: next)!, withText: "")
+                    }
+                } else {
+                    if let before = mainTextView.position(from: range!.start, offset: -1) {
+                        mainTextView.replace(mainTextView.textRange(from: before, to: range!.start)!, withText: "");
+                    }
+                    //let positionIndex = String.Index(encodedOffset: position);
+                    //mainTextView.text.removeSubrange(mainTextView.text.index(before: positionIndex)..<positionIndex)
+                }
+            } else {
+                mainTextView.replace(range!, withText: "")
+            }
         } else if sender.currentTitle == "docs" {
             if (ViewController.docController == nil) {
                 ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier: "DocumentationController")
             }
             self.present(ViewController.docController!, animated: true)
         } else {
-            mainTextView.text? += ViewController.insertableString(sender.currentTitle!)
+            mainTextView.insertText(ViewController.insertableString(sender.currentTitle!))
         }
         answerLabel.text = MatrixScript().calculate(input: mainTextView.text)
     }

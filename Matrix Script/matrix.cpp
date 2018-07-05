@@ -181,6 +181,14 @@ bool matrix::is_singleton() const {
     return (row == 1) && (column == 1);
 }
 
+number* matrix::is_number_singleton() const {
+    if (!this->is_singleton()) {
+        return nullptr;
+    } else {
+        return dynamic_cast<number*>(this->get(0,0));
+    }
+}
+
 bool matrix::is_empty() const {
     return (row == 0) || (column == 0);
 }

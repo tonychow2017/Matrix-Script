@@ -57,11 +57,16 @@ matrix matrix_product(const matrix&, bool&, error&);
 number number_factorial(const number&, bool&, error&);
 matrix matrix_flatten(const matrix&);
 matrix matrix_transpose(matrix);
+matrix matrix_eye(const matrix&, bool&, error&);
+matrix matrix_zero(const matrix&, const matrix&, bool&, error&);
+matrix matrix_one(const matrix&, const matrix&, bool&, error&);
 number matrix_max(const matrix&, bool&, error&);
 number matrix_min(const matrix&, bool&, error&);
 matrix matrix_maxmin(const matrix&, bool&, error&);
 matrix matrix_range(const number&, const number&);
 //matrix matrix_range_ext(const number&, const number&);
 matrix matrix_sort(const matrix&, bool&, error&);
+matrix matrix_get(const matrix&, const matrix&, const matrix&, bool&, error&);
+matrix matrix_rep(matrix, const matrix&, const matrix&, const matrix&, bool&, error&);
 
 #endif /* function_hpp */

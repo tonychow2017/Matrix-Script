@@ -71,7 +71,7 @@ inline bool is_valid_function_identifier(char c) {
 }
 
 inline bool is_valid_symbol(char c) {
-    return std::string("+-*/^()[].,;$=#\n").find(c) != std::string::npos;
+    return std::string("+-*/^~()[].,;$=#\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
@@ -429,6 +429,8 @@ expression merge_matrix(expression exp, bool& has_error, error& e) {
 
 int get_precedence(const token& op) {
     switch (op.get_string_representation()[0]) {
+        case '~':
+            return 4;
         case '^':
             return 3;
         case '*':
@@ -553,6 +555,7 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("*",2);
         argcount.emplace("/",2);
         argcount.emplace("^",2);
+        argcount.emplace("~",2);
         argcount.emplace("log",2);
         argcount.emplace("inv",1);
         argcount.emplace("det",1);
@@ -593,6 +596,12 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("maxmin",1);
         argcount.emplace("range",2);
         argcount.emplace("sort",1);
+        argcount.emplace("one",2);
+        argcount.emplace("zero",2);
+        argcount.emplace("id",1);
+        argcount.emplace("eye",1);
+        argcount.emplace("get",3);
+        argcount.emplace("rep",4);
     }
     auto it = argcount.find(name);
     if (it != argcount.end()) {
@@ -686,6 +695,8 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_maxmin(m1,has_error,e);
         } else if (name == "sort") {
             return matrix_sort(m1,has_error,e);
+        } else if (name == "eye" || name == "id") {
+            return matrix_eye(m1,has_error,e);
         } else if (get_function_argument_count(name) >= 2) {
             token t2 = argv[1];
             matrix m2 = *(matrix*)(t2.get_content());
@@ -701,9 +712,25 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
                 return matrix_func_error_numonly(m1,m2,&number_pow,has_error,e);
             } else if (name == "log") {
                 return matrix_func_error_numonly(m1,m2,&number_log,has_error,e);
-            } else if (name == "range") {
+            } else if (name == "range" || name == "~") {
                 //return matrix_range(m1,m2,has_error,e);
                 return matrix_func_numonly(m1,m2,&matrix_range,has_error,e);
+            } else if (name == "one") {
+                return matrix_one(m1,m2,has_error,e);
+            } else if (name == "zero") {
+                return matrix_zero(m1,m2,has_error,e);
+            } else if (get_function_argument_count(name) >= 3) {
+                token t3 = argv[2];
+                matrix m3 = *(matrix*)(t3.get_content());
+                if (name == "get") {
+                    return matrix_get(m1,m2,m3,has_error,e);
+                } else if (get_function_argument_count(name) >= 4) {
+                    token t4 = argv[3];
+                    matrix m4 = *(matrix*)(t4.get_content());
+                    if (name == "rep") {
+                        return matrix_rep(m1,m2,m3,m4,has_error,e);
+                    }
+                }
             }
         }
     }

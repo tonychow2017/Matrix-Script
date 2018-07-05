@@ -23,11 +23,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-g9-rb4">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-g9-rb4">
                                 <rect key="frame" x="5" y="25" width="310" height="192"/>
                                 <color key="backgroundColor" red="0.99593511382258104" green="1" blue="0.51375948838899266" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="bcT-g9-rb4" secondAttribute="height" multiplier="1000:618" id="zaz-ng-f3j"/>
+                                    <constraint firstAttribute="width" secondItem="bcT-g9-rb4" secondAttribute="height" multiplier="1000:618" placeholder="YES" id="zaz-ng-f3j"/>
                                 </constraints>
                                 <color key="textColor" red="0.42735994170984459" green="0.20576101163205718" blue="0.034827206398691184" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="FiraSans-Regular" family="Fira Sans" pointSize="30"/>

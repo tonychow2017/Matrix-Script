@@ -1099,3 +1099,139 @@ matrix matrix_sort(const matrix& m, bool& has_error, error& e) {
     }
 }
 
+matrix matrix_eye_private(const number& n, bool& has_error, error& e) {
+    double v = n.get_value();
+    if (v != std::round(v) || v < 0) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NATURAL_NUMBER);
+        return matrix(0,0);
+    } else if (v == 0) {
+        return matrix(0,0);
+    } else {
+        size_t size = std::round(v);
+        matrix result(size,size);
+        for (size_t i=0; i<size; i++) {
+            for (size_t j=0; j<size; j++) {
+                result.set(i,j,number(i==j?1:0));
+            }
+        }
+        return result;
+    }
+}
+
+matrix matrix_eye(const matrix& m, bool& has_error, error& e) {
+    number* num;
+    if ((num = m.is_number_singleton()) == nullptr) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NATURAL_NUMBER);
+        return matrix(0,0);
+    } else {
+        return matrix_eye_private(*num, has_error, e);
+    }
+}
+
+matrix matrix_fill(const number& n1, const number& n2, double value, bool& has_error, error& e) {
+    double v1 = n1.get_value();
+    double v2 = n2.get_value();
+    if (v1 != std::round(v1) || v2 != std::round(v2) || v1 < 0 || v2 < 0) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NATURAL_NUMBER);
+        return matrix(0,0);
+    } else if (v1 == 0 || v2 == 0) {
+        return matrix(0,0);
+    } else {
+        size_t size1 = std::round(v1);
+        size_t size2 = std::round(v2);
+        matrix result(size1,size2);
+        for (size_t i=0; i<size1; i++) {
+            for (size_t j=0; j<size2; j++) {
+                result.set(i,j,number(value));
+            }
+        }
+        return result;
+    }
+}
+
+matrix matrix_fill_value(const matrix& m1, const matrix& m2, double value, bool& has_error, error& e) {
+    number* n1 = m1.is_number_singleton();
+    number* n2 = m2.is_number_singleton();
+    if (n1 == nullptr || n2 == nullptr) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return matrix(0,0);
+    } else {
+        return matrix_fill(*n1,*n2,value,has_error,e);
+    }
+}
+
+matrix matrix_zero(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+    return matrix_fill_value(m1,m2,0,has_error,e);
+}
+        
+matrix matrix_one(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+    return matrix_fill_value(m1,m2,1,has_error,e);
+}
+
+matrix matrix_get(const matrix& m1, const matrix& m2, const matrix& m3, bool& has_error, error& e) {
+    number* n2 = m2.is_number_singleton();
+    number* n3 = m3.is_number_singleton();
+    if (n2 == nullptr || n3 == nullptr) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return matrix(0,0);
+    } else {
+        double v2 = n2->get_value();
+        double v3 = n3->get_value();
+        if (v2 < 0 || v3 < 0) {
+            has_error = true;
+            e = error(error::ERROR_NOT_NATURAL_NUMBER);
+            return matrix(0,0);
+        } else if (v2 != std::round(v2) || v3 != std::round(v3)) {
+            has_error = true;
+            e = error(error::ERROR_NOT_NATURAL_NUMBER);
+            return matrix(0,0);
+        } else if (v2 >= m1.row_count() || v3 >= m1.column_count()) {
+            has_error = true;
+            e = error(error::ERROR_OUT_OF_BOUNDARY,std::string("matrix has size ") + m1.get_size_string() + " but getting entry (" + num2str(std::round(v2)) + ", " + num2str(std::round(v3)) + ")");
+            return matrix(0,0);
+        } else {
+            entry* ent = m1.get(std::round(v2),std::round(v3));
+            matrix result(1,1);
+            result.set(0,0,*ent);
+            return result;
+        }
+    }
+}
+
+matrix matrix_rep(matrix m1, const matrix& m2, const matrix& m3, const matrix& m4, bool& has_error, error& e) {
+    number* n2 = m2.is_number_singleton();
+    number* n3 = m3.is_number_singleton();
+    if (n2 == nullptr || n3 == nullptr) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return matrix(0,0);
+    } else {
+        double v2 = n2->get_value();
+        double v3 = n3->get_value();
+        if (v2 < 0 || v3 < 0) {
+            has_error = true;
+            e = error(error::ERROR_NOT_NATURAL_NUMBER);
+            return matrix(0,0);
+        } else if (v2 != std::round(v2) || v3 != std::round(v3)) {
+            has_error = true;
+            e = error(error::ERROR_NOT_NATURAL_NUMBER);
+            return matrix(0,0);
+        } else if (v2 >= m1.row_count() || v3 >= m1.column_count()) {
+            has_error = true;
+            e = error(error::ERROR_OUT_OF_BOUNDARY,std::string("matrix has size ") + m1.get_size_string() + " but getting entry (" + num2str(std::round(v2)) + ", " + num2str(std::round(v3)) + ")");
+            return matrix(0,0);
+        } else {
+            /*entry* ent = m1.get(std::round(v2),std::round(v3));
+            matrix result(1,1);
+            result.set(0,0,*ent);
+            return result;*/
+            m1.set(std::round(v2),std::round(v3),m4);
+            return m1;
+        }
+    }
+}
