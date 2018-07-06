@@ -9,6 +9,7 @@
 #include "function.hpp"
 #include <memory>
 #include <vector>
+#include <set>
 #include <cmath>
 #include <utility>
 #include <algorithm>
@@ -1235,3 +1236,172 @@ matrix matrix_rep(matrix m1, const matrix& m2, const matrix& m3, const matrix& m
         }
     }
 }
+
+matrix matrix_append(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+    if (m1.row_count() != m2.row_count()) {
+        has_error = true;
+        e = error(error::ERROR_DIM_MISMATCH,std::string("Appending matrices of size ") + m1.get_size_string() + " and " + m2.get_size_string());
+        return m1;
+    } else {
+        size_t col = m1.column_count() + m2.column_count();
+        matrix result(m1.row_count(), col);
+        for (size_t i=0; i<m1.row_count(); i++) {
+            for (size_t j=0; j<m1.column_count(); j++) {
+                result.set(i,j,*(m1.get(i,j)));
+            }
+        }
+        for (size_t i=0; i<m2.row_count(); i++) {
+            for (size_t j=0; j<m2.column_count(); j++) {
+                result.set(i,j+m1.column_count(),*(m2.get(i,j)));
+            }
+        }
+        return result;
+    }
+}
+
+matrix force_as_matrix(entry* ent) {
+    number* num;
+    matrix* mat;
+    if ((num = dynamic_cast<number*>(ent)) != nullptr) {
+        return num->as_matrix();
+    } else if ((mat = dynamic_cast<matrix*>(ent)) != nullptr) {
+        return *mat;
+    } else {
+        return matrix(0,0);
+    }
+}
+
+matrix matrix_unique(const matrix& m) {
+    std::set<matrix> set;
+    for (size_t i=0; i<m.row_count(); i++) {
+        for (size_t j=0; j<m.column_count(); j++) {
+            auto ele = (force_as_matrix(m.get(i,j)));
+            set.emplace(ele);
+        }
+    }
+    matrix result(1,set.size());
+    size_t count = 0;
+    for (const auto& ent: set) {
+        result.set(0,count,ent);
+        count++;
+    }
+    return result;
+}
+
+matrix matrix_union(const matrix& m1, const matrix& m2) {
+    std::set<matrix> set;
+    for (size_t i=0; i<m1.row_count(); i++) {
+        for (size_t j=0; j<m1.column_count(); j++) {
+            set.emplace(force_as_matrix(m1.get(i,j)));
+        }
+    }
+    for (size_t i=0; i<m2.row_count(); i++) {
+        for (size_t j=0; j<m2.column_count(); j++) {
+            set.emplace(force_as_matrix(m2.get(i,j)));
+        }
+    }
+    matrix result(1,set.size());
+    size_t count = 0;
+    for (const auto& ent: set) {
+        result.set(0,count,ent);
+        count++;
+    }
+    return result;
+}
+
+matrix matrix_intersection(const matrix& m1, const matrix& m2) {
+    std::set<matrix> set1, set2, intersection;
+    for (size_t i=0; i<m1.row_count(); i++) {
+        for (size_t j=0; j<m1.column_count(); j++) {
+            set1.emplace(force_as_matrix(m1.get(i,j)));
+        }
+    }
+    for (size_t i=0; i<m2.row_count(); i++) {
+        for (size_t j=0; j<m2.column_count(); j++) {
+            set2.emplace(force_as_matrix(m2.get(i,j)));
+        }
+    }
+    for (const auto& ent: set1) {
+        if (set2.count(ent) == 1) {
+            intersection.emplace(ent);
+        }
+    }
+    matrix result(1,intersection.size());
+    size_t count = 0;
+    for (const auto& ent: intersection) {
+        result.set(0,count,ent);
+        count++;
+    }
+    return result;
+}
+
+matrix matrix_sym_diff(const matrix& m1, const matrix& m2) {
+    std::set<matrix> set1, set2, symdiff;
+    for (size_t i=0; i<m1.row_count(); i++) {
+        for (size_t j=0; j<m1.column_count(); j++) {
+            set1.emplace(force_as_matrix(m1.get(i,j)));
+        }
+    }
+    for (size_t i=0; i<m2.row_count(); i++) {
+        for (size_t j=0; j<m2.column_count(); j++) {
+            set2.emplace(force_as_matrix(m2.get(i,j)));
+        }
+    }
+    for (const auto& ent: set1) {
+        if (set2.count(ent) == 0) {
+            symdiff.emplace(ent);
+        }
+    }
+    for (const auto& ent: set2) {
+        if (set1.count(ent) == 0) {
+            symdiff.emplace(ent);
+        }
+    }
+    matrix result(1,symdiff.size());
+    size_t count = 0;
+    for (const auto& ent: symdiff) {
+        result.set(0,count,ent);
+        count++;
+    }
+    return result;
+
+}
+
+matrix matrix_resize_private(const matrix& m1, const number& n1, const number& n2, bool& has_error, error& e) {
+    double v1 = n1.get_value();
+    double v2 = n2.get_value();
+    if (v1 <= 0 || v2 <= 0 || v1 != std::round(v1) || v2 != std::round(v2)) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NATURAL_NUMBER);
+        return m1;
+    } else if (std::round(v1*v2) != m1.size()) {
+        has_error = true;
+        e = error(error::ERROR_DIM_MISMATCH);
+        return m1;
+    } else {
+        size_t row = std::round(v1);
+        size_t col = std::round(v2);
+        matrix result(row,col);
+        for (size_t i=0; i<row; i++) {
+            for (size_t j=0; j<col; j++) {
+                size_t order = i*col + j;
+                result.set(i,j,*(m1.get(order/m1.column_count(),order%m1.column_count())));
+            }
+        }
+        return result;
+    }
+}
+
+matrix matrix_resize(const matrix& m1, const matrix& m2, const matrix& m3, bool& has_error, error& e) {
+    number* n1 = m2.is_number_singleton();
+    number* n2 = m3.is_number_singleton();
+    if (n1 == nullptr || n2 == nullptr) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return m1;
+    } else {
+        return matrix_resize_private(m1, *n1, *n2, has_error, e);
+    }
+}
+
+

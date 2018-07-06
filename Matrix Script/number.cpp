@@ -32,6 +32,14 @@ bool number::operator>(const number& n) const {
     return n < *this;
 }
 
+bool number::operator==(const number& n) const {
+    return this->value == n.get_value();
+}
+
+bool number::operator!=(const number& n) const {
+    return !(*this == n);
+}
+
 double number::get_value() const {
     return value;
 }

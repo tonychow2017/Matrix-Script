@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "sort([5,[1;2],1,[1,2;3,4],3])";
+    std::string input = "resize([2,3,4;1,2,3],6,1)";
     std::cout << calculate(input) << std::endl;
 }
 

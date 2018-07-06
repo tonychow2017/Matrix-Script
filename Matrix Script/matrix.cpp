@@ -6,6 +6,7 @@
 //  Copyright © 2018 Tony Chow. All rights reserved.
 //
 
+#include <string>
 #include <utility>
 #include <sstream>
 #include <algorithm>
@@ -63,10 +64,10 @@ bool matrix::operator<(const matrix& rhs) const {
                     matrix* m1, *m2;
                     if ((n1 = dynamic_cast<number*>(this->get(i,j))) != nullptr) {
                         if ((n2 = dynamic_cast<number*>(rhs.get(i,j))) != nullptr) {
-                            bool is_smaller = n1 < n2;
+                            bool is_smaller = *n1 < *n2;
                             if (is_smaller) {
                                 return true;
-                            } else if (n1 > n2) {
+                            } else if (*n1 > *n2) {
                                 return false;
                             }
                         } else {
@@ -76,10 +77,10 @@ bool matrix::operator<(const matrix& rhs) const {
                         if ((n2 = dynamic_cast<number*>(rhs.get(i,j))) != nullptr) {
                             return false;
                         } else if ((m2 = dynamic_cast<matrix*>(rhs.get(i,j))) != nullptr) {
-                            bool is_smaller = m1 < m2;
+                            bool is_smaller = *m1 < *m2;
                             if (is_smaller) {
                                 return true;
-                            } else if (m1 > m2) {
+                            } else if (*m1 > *m2) {
                                 return false;
                             }
                         } else {
@@ -97,6 +98,47 @@ bool matrix::operator<(const matrix& rhs) const {
 
 bool matrix::operator>(const matrix& rhs) const {
     return rhs < *this;
+}
+
+bool matrix::operator==(const matrix& rhs) const {
+    if (this->is_empty() && rhs.is_empty()) {
+        return true;
+    } else if (this->row_count() != rhs.row_count() || this->column_count() != rhs.column_count()) {
+        return false;
+    } else {
+        for (size_t i=0; i<this->row_count(); i++) {
+            for (size_t j=0; j<this->column_count(); j++) {
+                entry* ent1 = this->get(i,j);
+                entry* ent2 = rhs.get(i,j);
+                number* n1, *n2;
+                matrix* m1, *m2;
+                if ((n1 = dynamic_cast<number*>(ent1)) != nullptr) {
+                    if ((n2 = dynamic_cast<number*>(ent2)) != nullptr) {
+                        if (*n1 != *n2) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else if ((m1 = dynamic_cast<matrix*>(ent1)) != nullptr) {
+                    if ((m2 = dynamic_cast<matrix*>(ent2)) != nullptr) {
+                        if (*m1 != *m2) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+bool matrix::operator!=(const matrix& m) const {
+    return !(*this == m);
 }
 
 matrix::~matrix() {
@@ -125,6 +167,10 @@ size_t matrix::row_count() const {
 
 size_t matrix::column_count() const {
     return column;
+}
+
+size_t matrix::size() const {
+    return row * column;
 }
 
 entry* matrix::clone() const {
@@ -220,5 +266,10 @@ void matrix::transpose() {
         delete[] old_data;
     }
     std::swap(row,column);
+}
+
+size_t matrix::hasher(const matrix& m) {
+    std::hash<std::string> strHash;
+    return strHash(m.get_string_representation());
 }
 

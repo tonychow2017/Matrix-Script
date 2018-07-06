@@ -22,7 +22,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var characterView: UIView!
     
     static let generalTableCells = [["ceil","floor","rnd","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","eye","get","rep","sort"],["fact","sort","flat","max","min","Mm"],["~"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","I","get","rep","~"],["sum","prod","sort","max","min","Mm"],["[]+[]","\u{222a}","\u{2229}","\u{0394}","{a}","[..]"]]
     static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["pi","","","","_","#","="]]
 
     static let screenWidth = Int(UIScreen.main.bounds.width)
@@ -172,6 +172,18 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "sum"
         } else if str == "\u{220F}" {
             return "product"
+        } else if str == "\u{222a}" {
+            return "union"
+        } else if str == "\u{2229}" {
+            return "intersection"
+        } else if str == "\u{0394}" {
+            return "symdiff"
+        } else if str == "[]+[]" {
+            return "append"
+        } else if str == "[..]" {
+            return "resize"
+        } else if str == "I" {
+            return "eye"
         } else {
             return str
         }
@@ -189,14 +201,12 @@ class ViewController: UIViewController, UITableViewDataSource {
         if sender.currentTitle == "AC" {
             mainTextView.text = ""
         } else if (sender.currentTitle == "C" && mainTextView.text != "") {
-            //mainTextView.text = String(mainTextView.text.dropLast())
             let range = mainTextView.selectedTextRange
             if range == nil {
                 mainTextView.text = String(mainTextView.text.dropLast());
             } else if range!.isEmpty {
                 let position = mainTextView.offset(from: mainTextView.beginningOfDocument, to: range!.start)
                 if position == 0 {
-                    //mainTextView.text = String(mainTextView.text.dropFirst());
                     if let next = mainTextView.position(from: mainTextView.beginningOfDocument, offset: 1) {
                         mainTextView.replace(mainTextView.textRange(from: mainTextView.beginningOfDocument, to: next)!, withText: "")
                     }

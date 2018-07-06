@@ -68,5 +68,11 @@ matrix matrix_range(const number&, const number&);
 matrix matrix_sort(const matrix&, bool&, error&);
 matrix matrix_get(const matrix&, const matrix&, const matrix&, bool&, error&);
 matrix matrix_rep(matrix, const matrix&, const matrix&, const matrix&, bool&, error&);
+matrix matrix_append(const matrix&, const matrix&, bool&, error&);
+matrix matrix_unique(const matrix&);
+matrix matrix_union(const matrix&, const matrix&);
+matrix matrix_intersection(const matrix&, const matrix&);
+matrix matrix_sym_diff(const matrix&, const matrix&);
+matrix matrix_resize(const matrix&, const matrix&, const matrix&, bool&, error&);
 
 #endif /* function_hpp */

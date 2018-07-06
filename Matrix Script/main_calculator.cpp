@@ -71,7 +71,7 @@ inline bool is_valid_function_identifier(char c) {
 }
 
 inline bool is_valid_symbol(char c) {
-    return std::string("+-*/^~()[].,;$=#\n").find(c) != std::string::npos;
+    return std::string("+-*/^~()[].,;:$=#_\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
@@ -465,9 +465,11 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                 resulting_token.push_back(next);
                 std::cout << "insert " << next.get_string_representation() << " to result\n";
                 break;
+                
             case token::FUNCTION:
                 operator_stack.push(next);
                 break;
+                
             case token::SYMBOL:
                 if (next.get_string_representation() == "(") {
                     operator_stack.push(next);
@@ -501,6 +503,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                     }
                 }
                 break;
+                
             case token::MATRIX:
                 //call shunting yard for each entry
                 //then treat it as a number
@@ -601,7 +604,13 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("id",1);
         argcount.emplace("eye",1);
         argcount.emplace("get",3);
+        argcount.emplace("resize",3);
         argcount.emplace("rep",4);
+        argcount.emplace("append",2);
+        argcount.emplace("union",2);
+        argcount.emplace("intersection",2);
+        argcount.emplace("symdiff",2);
+        argcount.emplace("unique",1);
     }
     auto it = argcount.find(name);
     if (it != argcount.end()) {
@@ -687,6 +696,8 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_flatten(m1);
         } else if (name == "transpose" || name == "t") {
             return matrix_transpose(m1);
+        } else if (name == "unique") {
+            return matrix_unique(m1);
         } else if (name == "max") {
             return matrix_max(m1,has_error,e).as_matrix();
         } else if (name == "min") {
@@ -719,11 +730,21 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
                 return matrix_one(m1,m2,has_error,e);
             } else if (name == "zero") {
                 return matrix_zero(m1,m2,has_error,e);
+            } else if (name == "append") {
+                return matrix_append(m1,m2,has_error,e);
+            } else if (name == "union") {
+                return matrix_union(m1,m2);
+            } else if (name == "intersection") {
+                return matrix_intersection(m1,m2);
+            } else if (name == "symdiff") {
+                return matrix_sym_diff(m1,m2);
             } else if (get_function_argument_count(name) >= 3) {
                 token t3 = argv[2];
                 matrix m3 = *(matrix*)(t3.get_content());
                 if (name == "get") {
                     return matrix_get(m1,m2,m3,has_error,e);
+                } else if (name == "resize") {
+                    return matrix_resize(m1,m2,m3,has_error,e);
                 } else if (get_function_argument_count(name) >= 4) {
                     token t4 = argv[3];
                     matrix m4 = *(matrix*)(t4.get_content());
