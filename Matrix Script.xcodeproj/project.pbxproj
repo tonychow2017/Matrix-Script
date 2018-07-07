@@ -160,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				EA958B48200B56E900696366 /* Matrix Script */,
+				EA2E0EEB20F0B18B0097FD6E /* README */,
 				EAAAAD7F20233C8F007CA3DA /* Matrix Script CLI */,
 				EA0204E620CBCB25003A7BCB /* Matrix Script Java */,
 				EA75708520DCCBC6006A0C17 /* Matrix Script Test */,
@@ -212,7 +213,6 @@
 				EAF3604B20EC9F350053C5EE /* docs.html */,
 				EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */,
 				EAF3605320ECC6270053C5EE /* LICENSE */,
-				EA2E0EEB20F0B18B0097FD6E /* README */,
 			);
 			path = "Matrix Script";
 			sourceTree = "<group>";
