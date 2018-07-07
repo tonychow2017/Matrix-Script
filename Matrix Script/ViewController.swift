@@ -21,7 +21,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var characterView: UIView!
     
-    static let generalTableCells = [["docs","","Int","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
+    static let generalTableCells = [["Docs","Ans","Int","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","#","\u{21B2}","C","AC"]]
     static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","sort","\u{2308}\u{2309}","\u{230A}\u{230B}"],["det","inv","rref","row","col","size"],["one","zero","Id","get","rep","~"],["\u{2211}","\u{220F}","A'","max","min","Mm"],["[]+[]","\u{222a}","\u{2229}","\u{0394}","{a}","[..]"]]
     static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["\u{03C0}","\u{03D5}","G","R","_","#","="]]
 
@@ -172,7 +172,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "/"
         } else if str == "flat" {
             return "flatten"
-        } else if str == "ANS" {
+        } else if str == "Ans" {
             return "$answer"
         } else if str == "\u{2211}" {
             return "sum"
@@ -249,7 +249,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             } else {
                 mainTextView.replace(range!, withText: "")
             }
-        } else if sender.currentTitle == "docs" {
+        } else if sender.currentTitle == "Docs" {
             if (ViewController.docController == nil) {
                 ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier: "DocumentationController")
                 ViewController.docController!.loadViewIfNeeded()
