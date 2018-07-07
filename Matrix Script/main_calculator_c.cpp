@@ -19,3 +19,8 @@ void calculate_c(char** result, const char* input) {
     strcpy(returning,result_c_string);
     *result = returning;
 }
+
+void reduceMemoryUsage() {
+    reduceMemoryUsageCpp();
+}
+

@@ -52,7 +52,7 @@
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FS4-aZ-mKd">
                                 <rect key="frame" x="5" y="296" width="310" height="267"/>
                                 <subviews>
-                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Og1-MS-qNt">
+                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Og1-MS-qNt">
                                         <rect key="frame" x="0.0" y="0.0" width="310" height="267"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <sections/>
@@ -83,7 +83,7 @@
                             <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baM-GW-2ni">
                                 <rect key="frame" x="5" y="296" width="310" height="267"/>
                                 <subviews>
-                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9jJ-96-yPv">
+                                    <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9jJ-96-yPv">
                                         <rect key="frame" x="0.0" y="0.0" width="310" height="267"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
@@ -141,7 +141,7 @@
         <!--Matrix Script Documentation-->
         <scene sceneID="S2T-8n-0Yv">
             <objects>
-                <viewController storyboardIdentifier="DocumentationController" title="Matrix Script Documentation" id="udW-k3-ah2" customClass="DocViewController" customModule="Matrix_Script" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DocumentationController" title="Matrix Script Documentation" id="udW-k3-ah2" customClass="WebViewController" customModule="Matrix_Script" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bTT-sS-1yV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

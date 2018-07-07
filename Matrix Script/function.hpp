@@ -9,11 +9,14 @@
 #ifndef function_hpp
 #define function_hpp
 
+#include <map>
 #include <cmath>
 #include "matrix.hpp"
 #include "number.hpp"
 #include "token.hpp"
 #include "error.hpp"
+
+extern std::map<size_t, double> factorial;
 
 matrix matrix_add(matrix m1, matrix& m2, bool& has_error, error& e);
 matrix matrix_subtract(matrix m1, matrix& m2, bool& has_error, error& e);

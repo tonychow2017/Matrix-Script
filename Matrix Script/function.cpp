@@ -17,6 +17,8 @@
 #include <sstream>
 #include <iostream>
 
+std::map<size_t, double> factorial;
+
 std::string num2str(int i) {
     std::ostringstream oss;
     oss << i;
@@ -765,7 +767,13 @@ number pi() {
 matrix matrix_func(matrix m, number (*ptr)(const number&)) {
     for (size_t i=0; i<m.row_count(); i++) {
         for (size_t j=0; j<m.column_count(); j++) {
-            m.set(i,j,ptr(*dynamic_cast<number*>(m.get(i,j))));
+            number* num;
+            matrix* mat;
+            if ((num = dynamic_cast<number*>(m.get(i,j))) != nullptr) {
+                m.set(i,j,ptr(*num));//*dynamic_cast<number*>(m.get(i,j))));
+            } else if ((mat = dynamic_cast<matrix*>(m.get(i,j))) != nullptr) {
+                m.set(i,j,matrix_func(*mat,ptr));
+            }
         }
     }
     return m;
@@ -774,7 +782,16 @@ matrix matrix_func(matrix m, number (*ptr)(const number&)) {
 matrix matrix_func_error(matrix m, number (*ptr)(const number&, bool&, error&), bool& has_error, error& e) {
     for (size_t i=0; i<m.row_count(); i++) {
         for (size_t j=0; j<m.column_count(); j++) {
-            m.set(i,j,ptr(*dynamic_cast<number*>(m.get(i,j)),has_error,e));
+            number* num;
+            matrix* mat;
+            if ((num = dynamic_cast<number*>(m.get(i,j))) != nullptr) {
+                m.set(i,j,ptr(*num,has_error,e));
+            } else if ((mat = dynamic_cast<matrix*>(m.get(i,j))) != nullptr) {
+                m.set(i,j,matrix_func_error(*mat,ptr,has_error,e));
+            } else {
+                has_error = true;
+                e = error(error::ERROR_INTERNAL);
+            }
             if (has_error) {
                 return m;
             }
@@ -948,11 +965,32 @@ number number_factorial(const number& n, bool& has_error, error& e) {
         e = error(error::ERROR_NOT_NATURAL_NUMBER,n.get_string_representation());
         return n;
     } else {
-        double prod = 1;
+        /*double prod = 1;
         for (size_t i=2; i<=std::round(n.get_value()); i++) {
             prod *= i;
         }
-        return number(prod);
+         return number(prod);*/
+        //lookup table
+        size_t arg = static_cast<size_t>(std::round(n.get_value()));
+        if (factorial.empty()) {
+            factorial.emplace(0,1);
+            factorial.emplace(1,1);
+            factorial.emplace(2,2);
+        }
+        auto it = factorial.find(arg);
+        if (it == factorial.end()) {
+            //check the largest
+            auto largest = factorial.rbegin()->first;
+            //now largest must be smaller than arg
+            double prod = factorial.rbegin()->second;
+            for (size_t i=largest+1; i<=arg; i++) {
+                prod *= i;
+                factorial.emplace(i,prod);
+            }
+            return factorial[arg];
+        } else {
+            return it->second;
+        }
     }
 }
 

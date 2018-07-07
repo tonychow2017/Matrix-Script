@@ -13,6 +13,7 @@
 extern "C" {
 #endif
     void calculate_c(char** result, const char* input);
+    void reduceMemoryUsage();
 #ifdef __cplusplus
 }
 #endif

@@ -21,9 +21,9 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var characterView: UIView!
     
-    static let generalTableCells = [["ceil","floor","rnd","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","A\'","\u{2211}","\u{220F}"],["det","inv","rref","row","col","size"],["one","zero","I","get","rep","~"],["sum","prod","sort","max","min","Mm"],["[]+[]","\u{222a}","\u{2229}","\u{0394}","{a}","[..]"]]
-    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["pi","","","","_","#","="]]
+    static let generalTableCells = [["docs","","Int","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","ANS","\u{21B2}","C","AC"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","sort","\u{2308}\u{2309}","\u{230A}\u{230B}"],["det","inv","rref","row","col","size"],["one","zero","Id","get","rep","~"],["\u{2211}","\u{220F}","A'","max","min","Mm"],["[]+[]","\u{222a}","\u{2229}","\u{0394}","{a}","[..]"]]
+    static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["\u{03C0}","\u{03D5}","G","R","_","#","="]]
 
     static let screenWidth = Int(UIScreen.main.bounds.width)
     static let buttonColumnCount = generalTableCells[0].count
@@ -34,6 +34,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     static let firstIndent = (screenWidth-10-((buttonWidth+gap)*buttonColumnCount-gap))/2
     static let smallFirstIndent = (screenWidth-10-((smallButtonWidth+gap)*smallButtonColumnCount-gap))/2
     static let firaSans = loadFiraSans()
+    static let buttonBackgroundImage = createBackgroundImageForButton(color: UIColor(red: 1, green: 0.647, blue: 0, alpha: 1))
     static var tableDataDict = [UITableView: [[String]]]()
     static var tableCellIdentifierDict = [UITableView: String]()
     
@@ -87,10 +88,6 @@ class ViewController: UIViewController, UITableViewDataSource {
             print(UIFont.fontNames(forFamilyName: family))
         }*/
         let dummy1 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 0))
-        //let dummy2 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 10))
-        //dummy1.backgroundColor = UIColor.clear
-        //dummy1.isHidden = true
-        //dummy2.isOpaque = false
         mainTextView.tintColor = UIColor.black
         mainTextView.inputView = dummy1
         mainTextView.inputAssistantItem.leadingBarButtonGroups = []
@@ -100,8 +97,6 @@ class ViewController: UIViewController, UITableViewDataSource {
         answerLabel.isUserInteractionEnabled = true
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(labelTapped(_:)))
         answerLabel.addGestureRecognizer(recognizer)
-        //answerLabel.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
-        //answerLabel.adjustsFontForContentSizeCategory = true
         //layout
         //let phoneWidth = 6*ViewController.buttonWidth + 5*ViewController.gap + 2*ViewController.firstIndent
         let phoneHeight = 5*ViewController.buttonWidth + 6*ViewController.gap + 1
@@ -115,6 +110,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        reduceMemoryUsage()
     }
     
     static func loadFiraSans() -> UIFont {
@@ -124,12 +120,22 @@ class ViewController: UIViewController, UITableViewDataSource {
         return font
     }
     
+    static func createBackgroundImageForButton(color: UIColor) -> UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: buttonWidth, height: buttonWidth))
+        color.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: buttonWidth, height: buttonWidth))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return image!;
+    }
+    
     static func createButton(_ name: String) -> UIButton {
         let button = UIButton()
         button.setTitle(name, for: .normal);
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColor.yellow, for: .highlighted)
+        button.setBackgroundImage(buttonBackgroundImage, for: .highlighted)
         button.backgroundColor = UIColor.brown
+        button.clipsToBounds = true
         button.addTarget(nil, action: #selector(buttonTouched(_:)), for: .touchDown)
         return button
     }
@@ -150,7 +156,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
     
     static func insertableString(_ str: String) -> String {
-        if str == "rnd" {
+        if str == "Int" {
             return "round"
         } else if str == "\u{21B2}" {
             return "\n"
@@ -177,23 +183,46 @@ class ViewController: UIViewController, UITableViewDataSource {
         } else if str == "\u{2229}" {
             return "intersection"
         } else if str == "\u{0394}" {
-            return "symdiff"
+            return "sym_diff"
+        } else if str == "\u{2308}\u{2309}" {
+            return "ceil"
+        } else if str == "\u{230A}\u{230B}" {
+            return "floor"
         } else if str == "[]+[]" {
             return "append"
         } else if str == "[..]" {
             return "resize"
-        } else if str == "I" {
+        } else if str == "Id" {
             return "eye"
+        } else if str == "\u{03C0}" {
+            return "pi"
+        } else if str == "\u{03D5}" {
+            return "golden_ratio"
+        } else if str == "G" {
+            return "gravitational_const"
+        } else if str == "R" {
+            return "gas_const"
         } else {
             return str
         }
     }
     
     @objc func labelTapped(_ sender: UILabel) {
-        if anotherLabelString != nil {
-            let tmp = answerLabel.text
-            answerLabel.text = anotherLabelString
-            anotherLabelString = tmp
+        //if let another = anotherLabelString {
+        if (ViewController.docController == nil) {
+            ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier:"DocumentationController")
+            ViewController.docController!.loadViewIfNeeded()
+        }
+        if let another = anotherLabelString {
+            if let controller = ViewController.docController as? WebViewController {
+                controller.load(errorMessage: another);
+            }
+            self.present(ViewController.docController!, animated: true)
+        } else if answerLabel.text! != "N/A" {
+            if let controller = ViewController.docController as? WebViewController {
+                controller.load(answer: answerLabel.text!)
+            }
+            self.present(ViewController.docController!, animated: true)
         }
     }
     
@@ -223,6 +252,10 @@ class ViewController: UIViewController, UITableViewDataSource {
         } else if sender.currentTitle == "docs" {
             if (ViewController.docController == nil) {
                 ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier: "DocumentationController")
+                ViewController.docController!.loadViewIfNeeded()
+            }
+            if let controller = ViewController.docController as? WebViewController {
+                controller.loadDocumentation()
             }
             self.present(ViewController.docController!, animated: true)
         } else {
@@ -251,23 +284,54 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
 }
 
-class DocViewController: UIViewController {
+class WebViewController: UIViewController {
     @IBOutlet weak var docNavigationItem: UINavigationItem!
     @IBOutlet weak var docDoneButton: UIBarButtonItem!
     @IBOutlet weak var docWebView: WKWebView!
     
+    static let htmlPrefix1 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<title>"
+    static let htmlPrefix2 = "</title>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />\n</head>\n<body>"
+    
     override func viewDidLoad() {
-        let docLabel = UILabel()
-        docLabel.text = "Documentation"
-        docLabel.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
-        docLabel.textColor = UIColor.brown
-        docLabel.adjustsFontForContentSizeCategory = true
-        docNavigationItem.titleView = docLabel
         let docButtonAttr = [NSAttributedStringKey.font: ViewController.firaSans, NSAttributedStringKey.foregroundColor: UIColor.brown]
         docDoneButton.setTitleTextAttributes(docButtonAttr, for: .normal)
         docDoneButton.action = #selector(docDoneButtonTouched(_:))
+        //docWebView.configuration.dataDetectorTypes = .link
+    }
+    
+    static func createLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
+        label.textColor = UIColor.brown
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }
+    
+    func loadDocumentation() {
+        docNavigationItem.titleView = WebViewController.createLabel(text: "Documentation")
         let url = Bundle.main.url(forResource: "docs", withExtension: "html")
         docWebView.load(URLRequest(url: url!))
+    }
+    
+    func load(answer: String) {
+        /*let answerLabel = UILabel();
+        answerLabel.text = "Answer"
+        answerLabel.font = UIFontMetrics.default.scaledFont(for: ViewController.firaSans)
+        answerLabel.textColor = UIColor.brown
+        answerLabel.adjustsFontForContentSizeCategory = true*/
+        docNavigationItem.titleView = WebViewController.createLabel(text: "Answer")
+        let htmlString = WebViewController.htmlPrefix1 + "Answer" + WebViewController.htmlPrefix2
+        + "<h1>Answer</h1><h2>Full answer representation:</h2>\n<p>" + answer + ".</p></body></html>"
+        //print(htmlString)
+        docWebView.loadHTMLString(htmlString, baseURL: Bundle.main.url(forResource: "docs", withExtension: "html"))
+    }
+    
+    func load(errorMessage: String) {
+        docNavigationItem.titleView = WebViewController.createLabel(text: "Error")
+        let htmlString = WebViewController.htmlPrefix1 + "Error" + WebViewController.htmlPrefix2
+        + "<h1>Error</h1><h2>An error occured.</h2>\n<p>Error: " + errorMessage + "</p></body></html>"
+        docWebView.loadHTMLString(htmlString, baseURL: Bundle.main.url(forResource: "docs", withExtension: "html"))
     }
     
     @objc func docDoneButtonTouched(_ sender: UIBarButtonItem) {

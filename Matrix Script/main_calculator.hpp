@@ -9,6 +9,8 @@
 #ifndef main_calculator_hpp
 #define main_calculator_hpp
 
+#define debug_print(a) //
+
 #include <string>
 #include <vector>
 #include <stack>
@@ -28,5 +30,6 @@ bool is_matrix_relevant_symbol(char c);
 expression merge_matrix(expression exp, bool& has_error, error& e);
 void get_answer(std::string input, matrix& result, bool& has_error, error& e);
 std::string calculate(std::string input);
+void reduceMemoryUsageCpp();
 
 #endif /* main_calculator_hpp */

@@ -18,11 +18,16 @@ h2 {
 }
 
 p, td, li {
-    font-size: 35px;
+    font-size: 50px;
+}
+
+a {
+    color: rgb(130,80,20);
+    text-decoration: none;
 }
 
 th {
-    font-size: 35px;
+    font-size: 50px;
 }
 
 ::selection {

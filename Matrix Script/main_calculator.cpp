@@ -175,7 +175,7 @@ std::string preprocess(std::string input, bool& has_error, error& e) {
         oss << "0" << result;
         result = oss.str();
     }
-    std::cout << "preprocessed: " << result << "\n";
+    debug_print(std::cout << "preprocessed: " << result << "\n";)
     return result;
 }
 
@@ -184,7 +184,7 @@ expression tokenize(std::string input, bool& has_error, error& e) {
     size_t input_size = input.size();
     for (size_t i=0; i<input_size; i++) {
         char c = input[i];
-        std::cout << "current char " << i << "/" << input_size << ": " << c << std::endl;
+        debug_print(std::cout << "current char " << i << "/" << input_size << ": " << c << std::endl;)
         if (c == '$') {
             size_t index = i+1;
             while (is_valid_function_identifier(input[index])) {
@@ -219,7 +219,7 @@ expression tokenize(std::string input, bool& has_error, error& e) {
             size_t index = i+1;
             bool already_has_dot = false;
             while (is_digit(input[index]) || (input[index] == '.')) {
-                std::cout << "index: " << index << " is digit\n";
+                debug_print(std::cout << "index: " << index << " is digit\n";)
                 if (input[index] == '.') {
                     if (already_has_dot) {
                         e = error(error::ERROR_EXTRA_DOTS,input.substr(i,index-i));
@@ -250,7 +250,7 @@ expression tokenize(std::string input, bool& has_error, error& e) {
                 double result;
                 iss >> result;
                 number n(result);
-                std::cout << "number is: " << result << "\n";
+                debug_print(std::cout << "number is: " << result << "\n";)
                 token t(n);
                 tokens.push_back(t);
                 i = index-1;
@@ -259,7 +259,7 @@ expression tokenize(std::string input, bool& has_error, error& e) {
         } else if (c == '#') {
             return tokens;
         } else if (is_valid_symbol(c)) {
-            std::cout << "symbol\n";
+            debug_print(std::cout << "symbol\n";)
             token t(c);
             tokens.push_back(t);
         } else {
@@ -275,17 +275,17 @@ expression tokenize(std::string input, bool& has_error, error& e) {
 
 matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
     std::cout << "now build matrix: ";
-    for (auto& i: tokens) {
+    debug_print(for (auto& i: tokens) {
         std::cout << i.get_string_representation() << " ";
-    }
-    std::cout << "\n";
+    })
+    debug_print(std::cout << "\n";)
     std::vector<std::vector<expression>> rows;
     std::vector<expression> row;
     std::vector<token> exp;
     int max_col = 0;
     for (auto i=0; i<=tokens.size(); i++) {
         //std::vector<token> exp;
-        std::cout << "current token is: " << tokens[i].get_string_representation() << "\n";
+        debug_print(std::cout << "current token is: " << tokens[i].get_string_representation() << "\n";)
         while (i != tokens.size() && tokens[i].get_string_representation() != "," && tokens[i].get_string_representation() != ";" && tokens[i].get_string_representation() != "(" && tokens[i].get_string_representation() != "[") {
             exp.push_back(tokens[i]);
             i++;
@@ -304,14 +304,14 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
                 } else {
                     exp.push_back(tokens[i]);
                     const std::string& rep = tokens[i].get_string_representation();
-                    std::cout << "build matrix: sub-matrix or exp: rep: " << rep << "; exp contains: " << exp.size() << std::endl;
+                    debug_print(std::cout << "build matrix: sub-matrix or exp: rep: " << rep << "; exp contains: " << exp.size() << std::endl;)
                     if (is_closed_bracket(rep[0])) {
                         brackets.pop();
                     } else if (is_open_bracket(rep[0])) {
                         brackets.push(rep);
                     }
                     if (brackets.empty()) {
-                        std::cout << "empty\n";
+                        debug_print(std::cout << "empty\n";)
                         break;
                     }
                     i++;
@@ -322,12 +322,12 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
                 e = error(brackets.top() == "("?error::ERROR_MISMATCHED_BRACKET:error::ERROR_UNCLOSED_MATRIX);
                 return matrix(0,0);
             }*/
-            std::cout << "while-end: exp contains: " << exp.size() << "\n";
+            debug_print(std::cout << "while-end: exp contains: " << exp.size() << "\n";)
         }
-        std::cout << "leaving if: exp size: " << exp.size() << "\n";
+        debug_print(std::cout << "leaving if: exp size: " << exp.size() << "\n";)
         if (i == tokens.size() || tokens[i].get_string_representation() == ";") {
             //end row
-            std::cout << "end row: exp contains: " << exp.size() << "\n";
+            debug_print(std::cout << "end row: exp contains: " << exp.size() << "\n";)
             expression e(exp);
             row.push_back(e);
             max_col = std::max((int)(row.size()),max_col);
@@ -336,14 +336,14 @@ matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
             row = std::vector<expression>(); //.clear();
             exp = std::vector<token>(); //.clear();
         } else if (tokens[i].get_string_representation() == ",") {
-            std::cout << ",\n";
+            debug_print(std::cout << ",\n";)
             expression e(exp);
             row.push_back(e);
             exp = std::vector<token>(); //.clear();
         }
-        std::cout << "end of for loop body: i: " << i << ", size: " << tokens.size() << "\n";
+        debug_print(std::cout << "end of for loop body: i: " << i << ", size: " << tokens.size() << "\n";)
     }
-    std::cout << "creating matrix of size " << rows.size() << " " << max_col << std::endl;
+    debug_print(std::cout << "creating matrix of size " << rows.size() << " " << max_col << std::endl;)
     matrix m(rows.size(),max_col);
     for (size_t i=0; i<rows.size(); i++) {
         for (size_t j=0; j<rows[i].size(); j++) {
@@ -376,21 +376,21 @@ expression merge_matrix(expression exp, bool& has_error, error& e) {
     for (auto i=0; i<tokens.size(); i++) {
         token& tok = tokens[i];
         if (tok.get_type() == token::SYMBOL && tok.get_string_representation() == "[") {
-            std::cout << "token is open\n";
+            debug_print(std::cout << "token is open\n";)
             size_t open_count = 0;
             auto index = i;
             index++;
             while (true) {
                 if (index == tokens.size()) {
-                    std::cout << "does not end?\n";
+                    debug_print(std::cout << "does not end?\n";)
                     has_error = true;
                     e = error(error::ERROR_UNCLOSED_MATRIX,"");
                     return expression(result); //unclosed?
                 } else if (!tokens[index].is_matrix_symbol()) {
-                    std::cout << "index " << index << " is not matrix symbol\n";
+                    debug_print(std::cout << "index " << index << " is not matrix symbol\n";)
                     index++;
                 } else if (tokens[index].get_string_representation() == "[") {
-                    std::cout << "index " << index << " is [\n";
+                    debug_print(std::cout << "index " << index << " is [\n";)
                     open_count++;
                     index++;
                 } else if (tokens[index].get_string_representation() == "]") {
@@ -418,7 +418,7 @@ expression merge_matrix(expression exp, bool& has_error, error& e) {
                 }
             }
         } else {
-            std::cout << "token " << tok.get_string_representation() << " is not [" << std::endl;
+            debug_print(std::cout << "token " << tok.get_string_representation() << " is not [" << std::endl;)
             result.push_back(tok);
         }
     }
@@ -449,7 +449,7 @@ bool is_left_associative(const token& op) {
 }
 
 expression shunting_yard(const expression& exp, bool& has_error, error& e) {
-    std::cout << "now do shunting yard: " << exp.get_string_representation() << std::endl;
+    debug_print(std::cout << "now do shunting yard: " << exp.get_string_representation() << std::endl;)
     std::vector<token> resulting_token;
     std::stack<token> operator_stack;
     /*
@@ -459,11 +459,11 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
     std::vector<token> original_tokens = exp.get_tokens();
     for (size_t next_element = 0; next_element < original_tokens.size(); next_element++) {
         token next = original_tokens[next_element];
-        std::cout << next.get_type() << ", " << next.get_string_representation() << std::endl;
+        debug_print(std::cout << next.get_type() << ", " << next.get_string_representation() << std::endl;)
         switch (next.get_type()) {
             case token::NUMBER:
                 resulting_token.push_back(next);
-                std::cout << "insert " << next.get_string_representation() << " to result\n";
+                debug_print(std::cout << "insert " << next.get_string_representation() << " to result\n";)
                 break;
                 
             case token::FUNCTION:
@@ -478,7 +478,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                         token t = operator_stack.top();
                         operator_stack.pop();
                         resulting_token.push_back(t);
-                        std::cout << "insert " << t.get_string_representation() << " to result\n";
+                        debug_print(std::cout << "insert " << t.get_string_representation() << " to result\n";)
                     }
                     if (operator_stack.empty()) {
                         //mismatched bracket?
@@ -496,7 +496,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                         token top_token = operator_stack.top();
                         operator_stack.pop();
                         resulting_token.push_back(top_token);
-                        std::cout << "insert " << top_token.get_string_representation() << " to result\n";
+                        debug_print(std::cout << "insert " << top_token.get_string_representation() << " to result\n";)
                     }
                     if (next.get_string_representation() != ",") {
                         operator_stack.push(next);
@@ -511,12 +511,12 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                     matrix* m = (matrix*)(next.get_content());
                     for (size_t i=0; i<m->row_count(); i++) {
                         for (size_t j=0; j<m->column_count(); j++) {
-                            std::cout << "getting matrix " << i << " " << j << "\n";
+                            debug_print(std::cout << "getting matrix " << i << " " << j << "\n";)
                             entry* ent = m->get(i,j);
                             expression* exp;
-                            std::cout << "trying dynamic cast\n";
+                            debug_print(std::cout << "trying dynamic cast\n";)
                             if ((exp = dynamic_cast<expression*>(ent)) != nullptr) {
-                                std::cout << "--do shunting yard on " << exp->get_string_representation() << "\n";
+                                debug_print(std::cout << "--do shunting yard on " << exp->get_string_representation() << "\n";)
                                 expression done = shunting_yard(*exp,has_error,e);
                                 if (has_error) {
                                     return done;
@@ -639,6 +639,12 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
         }
     } else if (name == "pi") {
         return pi().as_matrix();
+    } else if (name == "goldenratio" || name == "golden_ratio") {
+        return number((1+std::sqrt(5))/2).as_matrix();
+    } else if (name == "gravitational_const") {
+        return number(6.67408e-11).as_matrix();
+    } else if (name == "gas_const") {
+        return number(8.3144598).as_matrix();
     } else if (get_function_argument_count(name) >= 1) {
         token t1 = argv[0];
         matrix m1 = *(matrix*)(t1.get_content());
@@ -763,7 +769,7 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
 }
 
 matrix evaluate(const expression& exp, bool& has_error, error& e) {
-    std::cout << "eval expression: " << exp.get_string_representation()<< std::endl;
+    debug_print(std::cout << "eval expression: " << exp.get_string_representation()<< std::endl;)
     std::vector<token> tokens = exp.get_tokens();
     std::stack<token> arg_stack;
     for (const token& tok: tokens) {
@@ -851,7 +857,7 @@ void get_answer(std::string input, matrix& result, bool& has_error, error& e) {
         if (has_error) {
             return;
         } else {
-            std::cout << "trying to merge matrix\n";
+            debug_print(std::cout << "trying to merge matrix\n";)
             tokenized_exp = merge_matrix(tokenized_exp,has_error,e);
             if (has_error) {
                 return;
@@ -884,5 +890,9 @@ std::string calculate(std::string input) {
     } else {
         return m.get_string_representation();
     }
+}
+
+void reduceMemoryUsageCpp() {
+    factorial.clear();
 }
 
