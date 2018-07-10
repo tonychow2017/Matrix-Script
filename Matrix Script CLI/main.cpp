@@ -10,7 +10,7 @@
 #include "main_calculator.hpp"
 
 int main() {
-    std::string input = "resize([2,3,4;1,2,3],6,1)";
+    std::string input = "rm([1,2,3],[2,1])";
     std::cout << calculate(input) << std::endl;
 }
 

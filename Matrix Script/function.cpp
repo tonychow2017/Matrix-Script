@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cerrno>
 #include <sstream>
+#include <new>
 #include <iostream>
 
 std::map<size_t, double> factorial;
@@ -26,6 +27,12 @@ std::string num2str(int i) {
 }
 
 std::string num2str(double i) {
+    std::ostringstream oss;
+    oss << i;
+    return oss.str();
+}
+
+std::string num2str(size_t i) {
     std::ostringstream oss;
     oss << i;
     return oss.str();
@@ -1402,7 +1409,31 @@ matrix matrix_sym_diff(const matrix& m1, const matrix& m2) {
         count++;
     }
     return result;
+}
 
+matrix matrix_remove(const matrix& m1, const matrix& m2) {
+    std::set<matrix> set1, set2;
+    for (size_t i=0; i<m2.row_count(); i++) {
+        for (size_t j=0; j<m2.column_count(); j++) {
+            set2.emplace(force_as_matrix(m2.get(i,j)));
+        }
+    }
+    for (size_t i=0; i<m1.row_count(); i++) {
+        for (size_t j=0; j<m1.column_count(); j++) {
+            const matrix& mat = force_as_matrix(m1.get(i,j));
+            if (set2.count(mat) == 0) {
+                //retain because not in m2
+                set1.emplace(mat);
+            }
+        }
+    }
+    matrix result(1,set1.size());
+    size_t count = 0;
+    for (const auto& ent: set1) {
+        result.set(0,count,ent);
+        count++;
+    }
+    return result;
 }
 
 matrix matrix_resize_private(const matrix& m1, const number& n1, const number& n2, bool& has_error, error& e) {
@@ -1442,4 +1473,106 @@ matrix matrix_resize(const matrix& m1, const matrix& m2, const matrix& m3, bool&
     }
 }
 
+matrix matrix_median(const matrix& m1, bool& has_error, error& e) {
+    bool has_error_local;
+    error e_local;
+    matrix result = matrix_sort(matrix_flatten(m1), has_error_local, e_local);
+    size_t colcount = result.column_count();
+    if (colcount%2 == 0) {
+        //even
+        number half(0.5);
+        std::unique_ptr<entry> ent = generic_add(result.get(0,colcount/2),result.get(0,colcount/2-1),has_error,e);
+        if (has_error) {
+            return m1;
+        }
+        std::unique_ptr<entry> product = generic_mult(ent.get(),&half,has_error,e);
+        return force_as_matrix(product.get());
+    } else {
+        return force_as_matrix(result.get(0,colcount/2));
+    }
+}
+
+matrix matrix_reverse(const matrix& m1, bool& has_error, error& e) {
+    if (m1.row_count() != 1) {
+        has_error = true;
+        e = error(error::ERROR_NOT_ROW_VECTOR);
+        return m1;
+    } else {
+        entry** ent = new (std::nothrow) entry*[m1.column_count()];
+        if (ent == nullptr) {
+            has_error = true;
+            e = error(error::ERROR_INTERNAL);
+            return m1;
+        }
+        for (size_t i=0; i<m1.column_count(); i++) {
+            ent[i] = m1.get(0,m1.column_count()-i-1);
+        }
+        matrix result(1,m1.column_count());
+        for (size_t i=0; i<m1.column_count(); i++) {
+            result.set(0,i,*(ent[i]));
+        }
+        return result;
+    }
+}
+
+matrix matrix_percent(matrix& m1) {
+    number n_local(0.01);
+    bool has_error;
+    error e;
+    return force_as_matrix(generic_mult(&m1,&n_local,has_error,e).get());
+}
+
+matrix matrix_trace(const matrix& m1, bool& has_error, error& e) {
+    if (m1.row_count() != m1.column_count()) {
+        has_error = true;
+        e = error(error::ERROR_NON_SQUARE_MATRIX);
+        return m1;
+    } else {
+        matrix result(1,m1.row_count());
+        for (size_t i=0; i<m1.row_count(); i++) {
+            result.set(0,i,*(m1.get(i,i)));
+        }
+        return matrix_sum(result,has_error,e);
+    }
+}
+
+matrix matrix_pow_1(const matrix&, size_t, bool&, error&);
+
+matrix matrix_pow(const matrix& m1, const matrix& m2, bool& has_error, error& e) {
+    if (m1.row_count() != m1.column_count()) {
+        has_error = true;
+        e = error(error::ERROR_NON_SQUARE_MATRIX);
+        return m1;
+    } else if (!m2.is_number_singleton()) {
+        has_error = true;
+        e = error(error::ERROR_NOT_NUMBER);
+        return m1;
+    } else {
+        double v = dynamic_cast<number*>(m2.get(0,0))->get_value();
+        if (v < 0 || v != std::round(v)) {
+            has_error = true;
+            e = error(error::ERROR_NOT_NATURAL_NUMBER);
+            return m1;
+        } else {
+            size_t pow = std::round(v);
+            return matrix_pow_1(m1,pow,has_error,e);
+        }
+    }
+}
+
+matrix matrix_pow_1(const matrix& m1, size_t pow, bool& has_error, error& e) {
+    if (pow == 0) {
+        return matrix_eye(number(m1.row_count()).as_matrix(),has_error,e);
+    } else if (pow == 1) {
+        return m1;
+    } else if (pow % 2 == 0) {
+        //even
+        matrix mat = matrix_pow_1(m1,pow/2,has_error,e);
+        return matrix_mult(mat,mat,has_error,e);
+    } else {
+        matrix mat = matrix_pow_1(m1,pow/2,has_error,e);
+        matrix mat2 = matrix_mult(mat,mat,has_error,e);
+        return matrix_mult(mat2,m1,has_error,e);
+    }
+}
 

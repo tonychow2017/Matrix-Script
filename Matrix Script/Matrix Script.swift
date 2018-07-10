@@ -39,7 +39,7 @@ class MatrixScript {
             return calculateExpression(expression: UnsafeMutablePointer<Int8>(mutating: ptr))
         })
         if ans.starts(with: "Error: ") {
-            return ("Error", String(ans.dropFirst(7)))
+            return ("Error", ans)
         } else {
             return (ans,nil)
         }

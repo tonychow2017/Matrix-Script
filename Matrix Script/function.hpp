@@ -18,6 +18,9 @@
 
 extern std::map<size_t, double> factorial;
 
+std::string num2str(int);
+std::string num2str(double);
+std::string num2str(size_t);
 matrix matrix_add(matrix m1, matrix& m2, bool& has_error, error& e);
 matrix matrix_subtract(matrix m1, matrix& m2, bool& has_error, error& e);
 matrix matrix_mult(const matrix& m1, const matrix& m2, bool& has_error, error& e);
@@ -76,6 +79,12 @@ matrix matrix_unique(const matrix&);
 matrix matrix_union(const matrix&, const matrix&);
 matrix matrix_intersection(const matrix&, const matrix&);
 matrix matrix_sym_diff(const matrix&, const matrix&);
+matrix matrix_remove(const matrix&, const matrix&);
 matrix matrix_resize(const matrix&, const matrix&, const matrix&, bool&, error&);
+matrix matrix_median(const matrix&, bool&, error&);
+matrix matrix_reverse(const matrix&, bool&, error&);
+matrix matrix_percent(matrix&);
+matrix matrix_trace(const matrix&, bool&, error&);
+matrix matrix_pow(const matrix&, const matrix&, bool&, error&);
 
 #endif /* function_hpp */

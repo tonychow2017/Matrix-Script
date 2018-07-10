@@ -71,7 +71,7 @@ inline bool is_valid_function_identifier(char c) {
 }
 
 inline bool is_valid_symbol(char c) {
-    return std::string("+-*/^~()[].,;:$=#_\n").find(c) != std::string::npos;
+    return std::string("+-*/^~!%()[].,;:$=#_\n").find(c) != std::string::npos;
 }
 
 bool is_matrix_relevant_symbol(char c) {
@@ -90,12 +90,15 @@ inline bool is_closed_bracket(char c) {
     return c == ']' || c == ')';
 }
 
-void process_line(std::string input, matrix& result, bool& has_error, error& e) {
+void process_line(std::string input, matrix& result, bool& has_error, error& e, size_t& error_line) {
     std::istringstream iss(input);
     std::string line;
+    size_t lineno = 0;
     while (std::getline(iss,line)) {
+        lineno++;
         line = preprocess(line,has_error,e);
         if (has_error) {
+            error_line = lineno;
             return;
         }
         size_t pos = line.find("=");
@@ -106,10 +109,13 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
             if (var_name.empty()) {
                 has_error = true;
                 e = error(error::ERROR_INVALID_VAR_NAME,"Empty");
+                error_line = lineno;
                 return;
             } else if (var_name == "$") {
                 has_error = true;
                 e = error(error::ERROR_INVALID_VAR_NAME,"$");
+                error_line = lineno;
+                return;
             } else if (var_name[0] == '$') {
                 var_name = var_name.substr(1,var_name.size()-1);
             }
@@ -117,12 +123,14 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
             if (line.empty()) {
                 has_error = true;
                 e = error(error::ERROR_NOTHING_ON_RHS);
+                error_line = lineno;
                 return;
             }
             for (size_t i=0; i<var_name.size(); i++) {
                 if (!is_valid_function_identifier(var_name.at(i))) {
                     has_error = true;
                     e = error(error::ERROR_INVALID_VAR_NAME,std::string(1,var_name[i]));
+                    error_line = lineno;
                     return;
                 }
             }
@@ -140,6 +148,7 @@ void process_line(std::string input, matrix& result, bool& has_error, error& e) 
                 set_variable(var_name,result);
             }
         } else {
+            error_line = lineno;
             return;
         }
     }
@@ -274,7 +283,7 @@ expression tokenize(std::string input, bool& has_error, error& e) {
 }
 
 matrix build_matrix(std::vector<token> tokens, bool& has_error, error& e) {
-    std::cout << "now build matrix: ";
+    debug_print(std::cout << "now build matrix: ";)
     debug_print(for (auto& i: tokens) {
         std::cout << i.get_string_representation() << " ";
     })
@@ -429,6 +438,9 @@ expression merge_matrix(expression exp, bool& has_error, error& e) {
 
 int get_precedence(const token& op) {
     switch (op.get_string_representation()[0]) {
+        case '!':
+        case '%':
+            return 5;
         case '~':
             return 4;
         case '^':
@@ -483,7 +495,7 @@ expression shunting_yard(const expression& exp, bool& has_error, error& e) {
                     if (operator_stack.empty()) {
                         //mismatched bracket?
                         has_error = true;
-                        e = error(error::ERROR_MISMATCHED_BRACKET,"");
+                        e = error(error::ERROR_MISMATCHED_BRACKET);
                         expression result(resulting_token);
                         return result;
                     } else {
@@ -559,6 +571,8 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("/",2);
         argcount.emplace("^",2);
         argcount.emplace("~",2);
+        argcount.emplace("!",1);
+        argcount.emplace("%",1);
         argcount.emplace("log",2);
         argcount.emplace("inv",1);
         argcount.emplace("det",1);
@@ -583,9 +597,9 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("asec",1);
         argcount.emplace("acot",1);
         argcount.emplace("size",1);
-        argcount.emplace("row",1);
-        argcount.emplace("col",1);
-        argcount.emplace("column",1);
+        argcount.emplace("rowcount",1);
+        argcount.emplace("colcount",1);
+        argcount.emplace("columncount",1);
         argcount.emplace("fact",1);
         argcount.emplace("factorial",1);
         argcount.emplace("flatten",1);
@@ -605,12 +619,20 @@ size_t get_function_argument_count(const std::string& name) {
         argcount.emplace("eye",1);
         argcount.emplace("get",3);
         argcount.emplace("resize",3);
-        argcount.emplace("rep",4);
+        argcount.emplace("replace",4);
         argcount.emplace("append",2);
         argcount.emplace("union",2);
         argcount.emplace("intersection",2);
-        argcount.emplace("symdiff",2);
+        argcount.emplace("sym_diff",2);
         argcount.emplace("unique",1);
+        argcount.emplace("remove",2);
+        argcount.emplace("rm",2);
+        argcount.emplace("median",1);
+        argcount.emplace("reverse",1);
+        argcount.emplace("rev",1);
+        argcount.emplace("tr",1);
+        argcount.emplace("trace",1);
+        argcount.emplace("mat_pow",2);
     }
     auto it = argcount.find(name);
     if (it != argcount.end()) {
@@ -688,16 +710,18 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_func_error(m1,&number_cot,has_error,e);
         } else if (name == "size") {
             return matrix_size(m1);
-        } else if (name == "row") {
+        } else if (name == "rowcount") {
             return matrix_row(m1).as_matrix();
-        } else if (name == "col" || name == "column") {
+        } else if (name == "colcount" || name == "columncount") {
             return matrix_col(m1).as_matrix();
-        } else if (name == "fact" || name == "factorial") {
+        } else if (name == "fact" || name == "factorial" || name == "!") {
             return matrix_func_error(m1,&number_factorial,has_error,e);
         } else if (name == "sum") {
             return matrix_sum(m1,has_error,e);
         } else if (name == "prod" || name == "product") {
             return matrix_product(m1,has_error,e);
+        } else if (name == "median") {
+            return matrix_median(m1,has_error,e);
         } else if (name == "flatten") {
             return matrix_flatten(m1);
         } else if (name == "transpose" || name == "t") {
@@ -712,8 +736,14 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
             return matrix_maxmin(m1,has_error,e);
         } else if (name == "sort") {
             return matrix_sort(m1,has_error,e);
+        } else if (name == "reverse" || name == "rev") {
+            return matrix_reverse(m1,has_error,e);
         } else if (name == "eye" || name == "id") {
             return matrix_eye(m1,has_error,e);
+        } else if (name == "%") {
+            return matrix_percent(m1);
+        } else if (name == "tr" || name == "trace") {
+            return matrix_trace(m1,has_error,e);
         } else if (get_function_argument_count(name) >= 2) {
             token t2 = argv[1];
             matrix m2 = *(matrix*)(t2.get_content());
@@ -742,8 +772,12 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
                 return matrix_union(m1,m2);
             } else if (name == "intersection") {
                 return matrix_intersection(m1,m2);
-            } else if (name == "symdiff") {
+            } else if (name == "sym_diff") {
                 return matrix_sym_diff(m1,m2);
+            } else if (name == "rm" || name == "remove") {
+                return matrix_remove(m1,m2);
+            } else if (name == "mat_pow") {
+                return matrix_pow(m1,m2,has_error,e);
             } else if (get_function_argument_count(name) >= 3) {
                 token t3 = argv[2];
                 matrix m3 = *(matrix*)(t3.get_content());
@@ -754,7 +788,7 @@ matrix evaluate_function(const std::string& name, const std::vector<token>& argv
                 } else if (get_function_argument_count(name) >= 4) {
                     token t4 = argv[3];
                     matrix m4 = *(matrix*)(t4.get_content());
-                    if (name == "rep") {
+                    if (name == "replace") {
                         return matrix_rep(m1,m2,m3,m4,has_error,e);
                     }
                 }
@@ -782,7 +816,7 @@ matrix evaluate(const expression& exp, bool& has_error, error& e) {
                 for (size_t i=0; i<arg_count; i++) {
                     if (arg_stack.empty()) {
                         has_error = true;
-                        e = error(error::ERROR_WRONG_ARG_COUNT,tok.get_string_representation());
+                        e = error(error::ERROR_WRONG_ARG_COUNT,tok.get_string_representation() + ": Expected " + num2str(arg_count) + " argument" + (arg_count==1?"":"s") + " but " + num2str(i) + (i==1?" was":" were") + " provided");
                         matrix m(0,0);
                         return m;
                     } else {
@@ -884,9 +918,10 @@ std::string calculate(std::string input) {
     matrix m(0,0);
     bool has_error = false;
     error e;
-    process_line(input,m,has_error,e);
+    size_t error_line;
+    process_line(input,m,has_error,e,error_line);
     if (has_error) {
-        return e.get_message();
+        return e.get_message() + "\nAt line: " + num2str(static_cast<int>(error_line)) + ".";
     } else {
         return m.get_string_representation();
     }

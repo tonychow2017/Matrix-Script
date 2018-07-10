@@ -21,8 +21,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var functionView: UIView!
     @IBOutlet weak var characterView: UIView!
     
-    static let generalTableCells = [["Docs","Ans","Int","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","#","\u{21B2}","C","AC"]]
-    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","sort","\u{2308}\u{2309}","\u{230A}\u{230B}"],["det","inv","rref","row","col","size"],["one","zero","Id","get","rep","~"],["\u{2211}","\u{220F}","A'","max","min","Mm"],["[]+[]","\u{222a}","\u{2229}","\u{0394}","{a}","[..]"]]
+    static let generalTableCells = [["Docs","Ans","x!","[","]",";"],["7","8","9","(",")",","],["4","5","6","\u{00D7}","\u{00F7}","\u{221A}"],["1","2","3","+","-","^"],["0",".","%","\u{21B2}","C","AC"]]
+    static let functionTableCells = [["sin","cos","tan","asin","acos","atan"],["csc","sec","cot","acsc","asec","acot"],["log","ln","exp","Int","\u{2308}\u{2309}","\u{230A}\u{230B}"],["\u{2211}","\u{220F}","~","max","min","Mm"],["det","inv","rref","[1..]","[0..]","[Id]"],["#row","#col","size","get","rep","sort"],["[]+[]","[]\\[]","\u{222a}","\u{2229}","\u{0394}","{a}"],["[..]","[\u{21C6}]","A'","Q50","tr","[]^"]]
     static let characterTableCells = [["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l"],["z","x","c","v","b","n","m","$"],["\u{03C0}","\u{03D5}","G","R","_","#","="]]
 
     static let screenWidth = Int(UIScreen.main.bounds.width)
@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
     static var docController: UIViewController? = nil
     
-    var anotherLabelString: String? = nil
+    var detailString: String? = nil
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ViewController.tableDataDict[tableView]!.count
@@ -56,7 +56,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             cell.addSubview(button)
         }
         cell.backgroundColor = UIColor.clear
-       return cell
+        return cell
     }
 
     override func viewDidLoad() {
@@ -170,6 +170,8 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "*"
         } else if str == "\u{00F7}" {
             return "/"
+        } else if str == "x!" {
+            return "!"
         } else if str == "flat" {
             return "flatten"
         } else if str == "Ans" {
@@ -192,7 +194,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "append"
         } else if str == "[..]" {
             return "resize"
-        } else if str == "Id" {
+        } else if str == "[Id]" {
             return "eye"
         } else if str == "\u{03C0}" {
             return "pi"
@@ -202,6 +204,20 @@ class ViewController: UIViewController, UITableViewDataSource {
             return "gravitational_const"
         } else if str == "R" {
             return "gas_const"
+        } else if str == "Q50" {
+            return "median"
+        } else if str == "[\u{21C6}]" {
+            return "reverse"
+        } else if str == "#row" {
+            return "rowcount"
+        } else if str == "#col" {
+            return "colcount"
+        } else if str == "[1..]" {
+            return "one"
+        } else if str == "[0..]" {
+            return "zero"
+        } else if str == "[]^" {
+            return "mat_pow"
         } else {
             return str
         }
@@ -213,7 +229,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             ViewController.docController = ViewController.mainStoryboard.instantiateViewController(withIdentifier:"DocumentationController")
             ViewController.docController!.loadViewIfNeeded()
         }
-        if let another = anotherLabelString {
+        if let another = detailString {
             if let controller = ViewController.docController as? WebViewController {
                 controller.load(errorMessage: another);
             }
@@ -261,7 +277,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         } else {
             mainTextView.insertText(ViewController.insertableString(sender.currentTitle!))
         }
-        (answerLabel.text!, anotherLabelString) = MatrixScript().calculate(input: mainTextView.text)
+        (answerLabel.text!, detailString) = MatrixScript().calculate(input: mainTextView.text)
     }
     
     @objc func segmentTouched(_ sender: UISegmentedControl) {
@@ -330,7 +346,7 @@ class WebViewController: UIViewController {
     func load(errorMessage: String) {
         docNavigationItem.titleView = WebViewController.createLabel(text: "Error")
         let htmlString = WebViewController.htmlPrefix1 + "Error" + WebViewController.htmlPrefix2
-        + "<h1>Error</h1><h2>An error occured.</h2>\n<p>Error: " + errorMessage + "</p></body></html>"
+        + "<h1>Error</h1><h2>An error occured.</h2>\n<p>" + errorMessage.replacingOccurrences(of: "\n", with: "<br>") + "</p></body></html>"
         docWebView.loadHTMLString(htmlString, baseURL: Bundle.main.url(forResource: "docs", withExtension: "html"))
     }
     
