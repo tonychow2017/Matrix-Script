@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EA01459920886A9300675B14 /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA01459720886A9300675B14 /* error.cpp */; };
 		EA01459A20887C7E00675B14 /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA01459720886A9300675B14 /* error.cpp */; };
+		EA22376120F4994600EDB678 /* license.html in Resources */ = {isa = PBXBuildFile; fileRef = EA22376020F4994600EDB678 /* license.html */; };
 		EA2E0EEC20F0B18B0097FD6E /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = EA2E0EEB20F0B18B0097FD6E /* LICENSE.txt */; };
 		EA2E0EED20F0B18B0097FD6E /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = EA2E0EEB20F0B18B0097FD6E /* LICENSE.txt */; };
 		EA408346201C63D8001EAB93 /* main_calculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA408344201C63D8001EAB93 /* main_calculator.cpp */; };
@@ -69,6 +70,7 @@
 		EA01459820886A9300675B14 /* error.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = error.hpp; sourceTree = "<group>"; };
 		EA0204E820CBCB55003A7BCB /* MainFrame.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = MainFrame.java; sourceTree = "<group>"; };
 		EA0204F020CBCBFC003A7BCB /* MatrixScript.java */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.java; path = MatrixScript.java; sourceTree = "<group>"; };
+		EA22376020F4994600EDB678 /* license.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = license.html; sourceTree = "<group>"; };
 		EA2E0EEB20F0B18B0097FD6E /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		EA408344201C63D8001EAB93 /* main_calculator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_calculator.cpp; sourceTree = "<group>"; };
 		EA408345201C63D8001EAB93 /* main_calculator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_calculator.hpp; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				EA75709520DCD1D3006A0C17 /* Matrix Script.swift */,
 				EAF3604F20ECAC0B0053C5EE /* style.css */,
 				EAF3604B20EC9F350053C5EE /* docs.html */,
+				EA22376020F4994600EDB678 /* license.html */,
 				EADD034A20EB5CAD00C6CC79 /* FiraSans-Regular.ttf */,
 				EAF3605320ECC6270053C5EE /* LICENSE */,
 			);
@@ -370,6 +373,7 @@
 				EA958B54200B56E900696366 /* LaunchScreen.storyboard in Resources */,
 				EAF3605020ECAC0B0053C5EE /* style.css in Resources */,
 				EA958B51200B56E900696366 /* Assets.xcassets in Resources */,
+				EA22376120F4994600EDB678 /* license.html in Resources */,
 				EAF3605420ECC6270053C5EE /* LICENSE in Resources */,
 				EA2E0EEC20F0B18B0097FD6E /* LICENSE.txt in Resources */,
 				EADD034B20EB5CAD00C6CC79 /* FiraSans-Regular.ttf in Resources */,
